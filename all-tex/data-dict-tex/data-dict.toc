@@ -1,0 +1,55 @@
+\contentsline {section}{\numberline {1}Overview and Data Structure}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Conceptual Framework}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Data Source Options}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Output Files}{3}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Time Zero and Survival Framework}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Time Zero Definition}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Continuous-Time Outcome}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Discrete-Time Outcome}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Static Baseline Matrix X (ready\_df)}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Identification Variables}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Demographics}{4}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Admission \& ICU Variables}{5}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Survival Outcomes}{5}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Vital Sign Summaries}{5}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Laboratory Summaries}{6}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Comorbidity Flags (ICD-9)}{7}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}Procedures \& Interventions}{7}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.9}DRG Severity Scores}{7}{subsection.3.9}%
+\contentsline {section}{\numberline {4}Time-Varying Matrix Z (longitudinal\_df)}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Key Variables}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Vital Signs (Raw Values)}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Scaled Vitals}{8}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Outcome Information (Merged from Cohort)}{8}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Filtering Applied}{8}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Discrete-Time Format (person\_period\_df)}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Why Discrete-Time Survival?}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Mathematical Formulation}{9}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Polya-Gamma Augmentation}{9}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Key Variables}{9}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Static Covariates (from X)}{10}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Time-Varying Covariates (from Z)}{10}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Missingness Indicators}{10}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.8}Missing Data Imputation}{10}{subsection.5.8}%
+\contentsline {section}{\numberline {6}Discretized Variables for BART Modeling}{11}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Rationale for Binary Factorization}{11}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Variables Removed Before Factorization}{11}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Demographic Factors}{11}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}ICU Stay Factors}{12}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Vital Sign Factors}{12}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Laboratory Factors}{12}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}Variability and Complexity Factors}{13}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Existing Binary Indicators (Converted to Factors)}{13}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.9}Categorical Variables (Multi-level Factors)}{14}{subsection.6.9}%
+\contentsline {subsection}{\numberline {6.10}Missing Data Handling}{14}{subsection.6.10}%
+\contentsline {section}{\numberline {7}Preprocessing Rationale}{14}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Age Capping}{14}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Vital Sign Harmonization}{14}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Variable Scaling}{14}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Missing Data Defaults}{15}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Hierarchical Structure}{15}{section.8}%
+\contentsline {section}{\numberline {9}Modeling Recommendations}{15}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Suggested Workflow}{15}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}BART Implementation Notes}{15}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Prior Recommendations}{16}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Data Quality Notes}{16}{section.10}%
