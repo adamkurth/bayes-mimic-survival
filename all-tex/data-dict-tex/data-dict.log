@@ -1,9 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.11)  25 MAR 2026 23:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.11)  26 MAR 2026 21:19
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
-**data-dict.tex
-(./data-dict.tex
+**/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/all-tex/data-dict-tex/data-dict.tex
+(/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/all-tex/data-dict-tex/data-dict.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
@@ -366,45 +367,95 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write4
 \openout4 = `data-dict.toc'.
 
- [2] [3] [4] [5] [6] [7] [8]
-ignored: Infinite glue shrinkage found in box being split [9] [10]
-ignored: Infinite glue shrinkage found in box being split [11]
-Overfull \hbox (2.91708pt too wide) in paragraph at lines 666--666
-[]|\OT1/cmr/m/n/10.95 hgb[]severe[]anemia|  
+ [2] [3]
+LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 106.
+ (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/omscmtt.fd
+File: omscmtt.fd 
+)
+LaTeX Font Info:    Font shape `OMS/cmtt/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 106.
+
+ignored: Infinite glue shrinkage found in box being split [4] [5]
+ignored: Infinite glue shrinkage found in box being split [6] [7]
+Overfull \hbox (92.6729pt too wide) in paragraph at lines 306--315
+ [] 
  []
 
+[8] [9] [10] [11] [12] [13]
+ignored: Infinite glue shrinkage found in box being split [14] [15]
+ignored: Infinite glue shrinkage found in box being split [16]
+Overfull \hbox (13.82805pt too wide) in paragraph at lines 825--825
+[]|\OT1/cmr/m/n/10.95 multiple[]icu[]stays|  
+ []
 
-ignored: Infinite glue shrinkage found in box being split [12]
-Overfull \hbox (14.19775pt too wide) in paragraph at lines 709--710
+[17]
+Overfull \hbox (14.19775pt too wide) in paragraph at lines 905--906
 []\OT1/cmr/bx/n/10.95 ICD Co-mor-bidi-ties\OT1/cmr/m/n/10.95 : icd[]sepsis, icd[]heart[]failure, icd[]aki, icd[]ckd, icd[]resp[]failure, icd[]pneumonia,
  []
 
-
-Overfull \hbox (52.00882pt too wide) in paragraph at lines 710--711
-[]\OT1/cmr/bx/n/10.95 Interventions\OT1/cmr/m/n/10.95 : is[]ventilated, re-ceived[]dialysis, has[]central[]line, re-ceived[]transfusion, re-ceived[]vasopressors,
+[18]
+Overfull \hbox (44.40222pt too wide) in paragraph at lines 957--958
+\OT1/cmr/m/n/10.95 resp[]rate[]sd[]val, resp[]rate[]n[]obs, spo2[]mean[]val, spo2[]sd[]val, spo2[]n[]obs, temp[]c[]mean[]val, temp[]c[]sd[]val,
  []
 
-[13] [14] [15] [16] (./data-dict.aux)
+
+Overfull \hbox (14.82144pt too wide) in paragraph at lines 958--959
+[]\OT1/cmr/bx/n/10.95 Original labs\OT1/cmr/m/n/10.95 : bun[]mean[]val, bun[]n[]labs, cre-a-ti-nine[]mean[]val, cre-a-ti-nine[]n[]labs, glu-cose[]mean[]val,
+ []
+
+
+Overfull \hbox (16.27286pt too wide) in paragraph at lines 958--959
+\OT1/cmr/m/n/10.95 glu-cose[]n[]labs, hemoglobin[]mean[]val, hemoglobin[]n[]labs, platelets[]mean[]val, platelets[]n[]labs, potas-
+ []
+
+[19] [20]
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 1064.
+ (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 1064.
+ [21] [22]
+Overfull \hbox (10.88704pt too wide) in paragraph at lines 1156--1157
+[]\OT1/cmr/bx/n/10.95 Excluded IDs and out-comes\OT1/cmr/m/n/10.95 : sub-ject[]id, hadm[]id, icus-tay[]id, event[]status, hos-pi-tal[]expire[]flag,
+ []
+
+
+Overfull \hbox (19.62555pt too wide) in paragraph at lines 1166--1167
+[]\OT1/cmr/bx/n/10.95 Multi-level fac-tors\OT1/cmr/m/n/10.95 : age[]group, los[]group, gcs[]status, hr[]status, rr[]status, spo2[]status, temp[]status,
+ []
+
+
+Overfull \hbox (43.67944pt too wide) in paragraph at lines 1169--1170
+[]\OT1/cmr/bx/n/10.95 Numeric\OT1/cmr/m/n/10.95 : age, los[]icu, n[]diagnoses, n[]procedures, n[]prescriptions, drg[]mortality[]score, drg[]severity[]score,
+ []
+
+
+Overfull \hbox (22.81241pt too wide) in paragraph at lines 1169--1170
+\OT1/cmr/m/n/10.95 n[]vasopressor[]doses, va-so-pres-sor[]duration[]hrs, n[]service[]changes, n[]transfers, n[]callouts, gcs[]mean[]val 
+ []
+
+[23] [24] (./data-dict.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `data-dict.out' has not changed.
-(rerunfilecheck)             Checksum: 111FEEAC9534BC8BB908E401212E152E;10064.
+(rerunfilecheck)             Checksum: 794BC872D36CD6F33044BD47558F98E5;13521.
  ) 
 Here is how much of TeX's memory you used:
- 10754 strings out of 469515
- 163141 string characters out of 5468761
- 608990 words of memory out of 5000000
- 39163 multiletter control sequences out of 15000+600000
- 637216 words of font info for 75 fonts, out of 8000000 for 9000
+ 10859 strings out of 469515
+ 164936 string characters out of 5468761
+ 602381 words of memory out of 5000000
+ 39220 multiletter control sequences out of 15000+600000
+ 637639 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,10n,79p,373b,639s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </Users/adamkurth/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on data-dict.pdf (16 pages, 216756 bytes).
+ 75i,12n,79p,482b,595s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </Users/adamkurth/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on data-dict.pdf (24 pages, 266312 bytes).
 PDF statistics:
- 507 PDF objects out of 1000 (max. 8388607)
- 458 compressed objects within 5 object streams
- 131 named destinations out of 1000 (max. 500000)
- 441 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 652 PDF objects out of 1000 (max. 8388607)
+ 590 compressed objects within 6 object streams
+ 169 named destinations out of 1000 (max. 500000)
+ 561 words of extra memory for PDF output out of 10000 (max. 10000000)
 

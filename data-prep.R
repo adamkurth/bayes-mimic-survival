@@ -1,9 +1,6 @@
 # data-prep.R
 # ==============================================================================
 # MIMIC-III Data Extraction for Bayesian Hierarchical Survival Modeling
-# PHP2530 Final Project - Brown University
-# Author: Adam Kurth
-# Last Modified: 2026-03-25
 # ==============================================================================
 #
 # PURPOSE:
@@ -1068,27 +1065,25 @@ message(sprintf("  longitudinal_df: %d observations x %d variables",
 # 4. Computational efficiency for large datasets like MIMIC-III
 
 message("\n=== SECTION 16: Creating person_period_df (discrete-time format) ===")
-
 # -------------------------------------------------------------------------
-# STEP 1: Aggregate longitudinal data into 24-hour periods
+# STEP 1: Aggregate longitudinal data (Z) into 24-hour periods
 # -------------------------------------------------------------------------
-# This creates period-level summaries of time-varying covariates
-
 longitudinal_daily <- longitudinal_df %>%
   mutate(
     # Assign each measurement to a discrete period (day)
     # period 1 = hours 0-24, period 2 = hours 24-48, etc.
     period = ceiling(hours_since_icu_admit / 24)
   ) %>%
-  # Keep first 7 days only (matches max_period cap below)
+  # Keep first 7 days only
   filter(period >= 1 & period <= 7) %>%
   group_by(hadm_id, period) %>%
-  # Compute period-level summaries
+  # Compute period-level summaries (mean, min, max, count)
   summarize(
     across(
       c(hr, map, resp_rate, spo2, temp_c),
       list(
         mean = ~ mean(., na.rm = TRUE),
+        min  = ~ if(all(is.na(.))) NA_real_ else min(., na.rm = TRUE),
         max  = ~ if(all(is.na(.))) NA_real_ else max(., na.rm = TRUE),
         n    = ~ sum(!is.na(.))
       ),
@@ -1098,44 +1093,24 @@ longitudinal_daily <- longitudinal_df %>%
   )
 
 # -------------------------------------------------------------------------
-# STEP 2: Extract static baseline variables from ready_df
+# STEP 2 & 3: Expand static variables (X) to person-period format
 # -------------------------------------------------------------------------
-# These are the X_i covariates that will be REPEATED across periods
-
-survival_base <- ready_df %>%
-  select(
-    hadm_id, subject_id, event_status, los_icu,
-    age, gender, first_careunit, comorbidity_count,
-    # Add more baseline variables as needed:
-    received_vasopressors, is_ventilated, icd_sepsis, drg_mortality_score
-  )
-
-# -------------------------------------------------------------------------
-# STEP 3: Expand to person-period format using uncount()
-# -------------------------------------------------------------------------
-# For each patient, create T_i rows (one per period at risk)
-
-person_period_df <- survival_base %>%
+person_period_df <- ready_df %>%
   mutate(
     # Total periods at risk: ceiling of ICU LOS, capped at 7 days
     max_period = pmin(ceiling(los_icu), 7),
     max_period = pmax(max_period, 1)  # At least 1 period
   ) %>%
-  # uncount() duplicates each row max_period times
-  # .id = "period" creates a period counter (1, 2, ..., max_period)
+  # Duplicate each row 'max_period' times, creating a period counter
   uncount(max_period, .id = "period")
 
 # -------------------------------------------------------------------------
 # STEP 4: Construct discrete-time outcome y_{i,t}
 # -------------------------------------------------------------------------
-# y_{i,t} = 1 ONLY in the final period AND if the patient died
-
 person_period_df <- person_period_df %>%
   group_by(hadm_id) %>%
   mutate(
-    # Recompute max_period within group (it was lost in uncount)
     max_period = max(period),
-    # Is this the patient's final observation period?
     is_last_period = (period == max_period),
     # DISCRETE-TIME OUTCOME:
     # 1 only if (a) this is the last period AND (b) the patient died
@@ -1145,59 +1120,75 @@ person_period_df <- person_period_df %>%
   select(-is_last_period)
 
 # -------------------------------------------------------------------------
-# STEP 5: Merge time-varying covariates (Z_{i,t})
+# STEP 5 & 6: Merge Z_{i,t} and Handle Missing Data
 # -------------------------------------------------------------------------
-
 person_period_df <- person_period_df %>%
-  left_join(longitudinal_daily, by = c("hadm_id", "period"))
-
-# -------------------------------------------------------------------------
-# STEP 6: Handle missing time-varying covariates
-# -------------------------------------------------------------------------
-# Strategy:
-#   1. Create missingness indicators (informative in ICU context)
-#   2. Apply LOCF (last observation carried forward) within patient
-#   3. Fill remaining NAs with population median
-
-person_period_df <- person_period_df %>%
+  left_join(longitudinal_daily, by = c("hadm_id", "period")) %>%
   group_by(hadm_id) %>%
   mutate(
-    # MISSINGNESS INDICATORS
-    # Justification: In ICU, missing vitals may indicate patient stability
-    # (nurse not recording as frequently) - this is informative
+    # MISSINGNESS INDICATORS (Informative sparsity)
     hr_missing = as.integer(is.na(hr_mean)),
     temp_c_missing = as.integer(is.na(temp_c_mean)),
     map_missing = as.integer(is.na(map_mean)),
-
-    # LOCF IMPUTATION
-    # Justification: Use most recent value as best guess for current period
-    # Note: This artificially shrinks variance - consider Bayesian imputation
-    hr_mean = zoo::na.locf(hr_mean, na.rm = FALSE),
-    temp_c_mean = zoo::na.locf(temp_c_mean, na.rm = FALSE),
-    map_mean = zoo::na.locf(map_mean, na.rm = FALSE),
-    resp_rate_mean = zoo::na.locf(resp_rate_mean, na.rm = FALSE),
-    spo2_mean = zoo::na.locf(spo2_mean, na.rm = FALSE)
+    
+    # LOCF IMPUTATION: carry previous day's vitals forward if unmeasured
+    across(matches("^(hr|map|resp_rate|spo2|temp_c)_(mean|min|max|n)$"), 
+           ~ zoo::na.locf(., na.rm = FALSE))
   ) %>%
   ungroup() %>%
   # POPULATION MEDIAN for remaining NAs (patients with no prior values)
   mutate(
-    hr_mean = replace_na(hr_mean, median(hr_mean, na.rm = TRUE)),
-    temp_c_mean = replace_na(temp_c_mean, median(temp_c_mean, na.rm = TRUE)),
-    map_mean = replace_na(map_mean, median(map_mean, na.rm = TRUE)),
-    resp_rate_mean = replace_na(resp_rate_mean, median(resp_rate_mean, na.rm = TRUE)),
-    spo2_mean = replace_na(spo2_mean, median(spo2_mean, na.rm = TRUE))
+    across(matches("^(hr|map|resp_rate|spo2|temp_c)_(mean|min|max|n)$"), 
+           ~ replace_na(., median(., na.rm = TRUE)))
   )
 
-# Convert IDs to factors for hierarchical modeling
-person_period_df <- person_period_df %>%
-  mutate(
-    hadm_id = as.factor(hadm_id),
-    subject_id = as.factor(subject_id),
-    first_careunit = as.factor(first_careunit)
-  )
-
-message(sprintf("  person_period_df: %d rows from %d admissions",
-                nrow(person_period_df), length(unique(person_period_df$hadm_id))))
+# # -------------------------------------------------------------------------
+# # STEP 6: Handle missing time-varying covariates
+# # -------------------------------------------------------------------------
+# # Strategy:
+# #   1. Create missingness indicators (informative in ICU context)
+# #   2. Apply LOCF (last observation carried forward) within patient
+# #   3. Fill remaining NAs with population median
+# 
+# person_period_df <- person_period_df %>%
+#   group_by(hadm_id) %>%
+#   mutate(
+#     # MISSINGNESS INDICATORS
+#     # Justification: In ICU, missing vitals may indicate patient stability
+#     # (nurse not recording as frequently) - this is informative
+#     hr_missing = as.integer(is.na(hr_mean)),
+#     temp_c_missing = as.integer(is.na(temp_c_mean)),
+#     map_missing = as.integer(is.na(map_mean)),
+# 
+#     # LOCF IMPUTATION
+#     # Justification: Use most recent value as best guess for current period
+#     # Note: This artificially shrinks variance - consider Bayesian imputation
+#     hr_mean = zoo::na.locf(hr_mean, na.rm = FALSE),
+#     temp_c_mean = zoo::na.locf(temp_c_mean, na.rm = FALSE),
+#     map_mean = zoo::na.locf(map_mean, na.rm = FALSE),
+#     resp_rate_mean = zoo::na.locf(resp_rate_mean, na.rm = FALSE),
+#     spo2_mean = zoo::na.locf(spo2_mean, na.rm = FALSE)
+#   ) %>%
+#   ungroup() %>%
+#   # POPULATION MEDIAN for remaining NAs (patients with no prior values)
+#   mutate(
+#     hr_mean = replace_na(hr_mean, median(hr_mean, na.rm = TRUE)),
+#     temp_c_mean = replace_na(temp_c_mean, median(temp_c_mean, na.rm = TRUE)),
+#     map_mean = replace_na(map_mean, median(map_mean, na.rm = TRUE)),
+#     resp_rate_mean = replace_na(resp_rate_mean, median(resp_rate_mean, na.rm = TRUE)),
+#     spo2_mean = replace_na(spo2_mean, median(spo2_mean, na.rm = TRUE))
+#   )
+# 
+# # Convert IDs to factors for hierarchical modeling
+# person_period_df <- person_period_df %>%
+#   mutate(
+#     hadm_id = as.factor(hadm_id),
+#     subject_id = as.factor(subject_id),
+#     first_careunit = as.factor(first_careunit)
+#   )
+# 
+# message(sprintf("  person_period_df: %d rows from %d admissions",
+#                 nrow(person_period_df), length(unique(person_period_df$hadm_id))))
 
 
 # ==============================================================================
@@ -1216,7 +1207,7 @@ setwd(base.path);
 
 exclude <- c(
   # --- PREVIOUS EXCLUSIONS ---
-  "subject_id", "hadm_id", "icustay_id",                   
+  "subject_id", "icustay_id",                   
   "event_status", "hospital_expire_flag",                  
   "time_to_event_hours", "time_to_event_days",             
   "admittime", "dischtime", "deathtime",                   
@@ -1226,11 +1217,8 @@ exclude <- c(
   "diagnosis", "marital_status", "religion", "language",
   
   # --- NEW: EXACT MULTICOLLINEARITY (SCALED DUPLICATES) ---
-  "scaled_age", 
-  "scaled_los_icu", 
-  "scaled_n_diagnoses", 
-  "scaled_n_procedures", 
-  "scaled_n_prescriptions", 
+  "scaled_age", "scaled_los_icu", "scaled_n_diagnoses", 
+  "scaled_n_procedures", "scaled_n_prescriptions", 
   "scaled_comorbidity",
   
   # --- NEW: STRUCTURAL REDUNDANCY ---
@@ -1238,13 +1226,14 @@ exclude <- c(
   "comorbidity_count",      # Exact sum of the icd_* binary flags
   "received_vasopressors"   # Redundant with vasopressor_duration_hrs
 )
+
 # Note: 'icu_mortality' was explicitly removed from the exclude list 
 # above so it can be extracted as the target 'y' below.
 
 # Apply exclusions and drop the EHR artifact _n_obs / _n_labs columns
 dat <- ready_df %>% 
   select(-any_of(exclude)) %>%
-  select(-ends_with("_n_obs"), -ends_with("_n_labs")) %>% # Drops EHR frequency artifacts
+  select(-ends_with("_n_obs"), -ends_with("_n_labs")) %>% 
   select(-any_of(c("total_output_ml", "n_output_events", "n_distinct_cpt", 
                    "n_unique_drugs", "n_unique_drug_classes",
                    "edregtime", "edouttime"))) %>%
@@ -1273,11 +1262,44 @@ dat <- na.omit(dat)
 cat(" After NA omission: ", nrow(na.omit(dat)), " rows\n") # 122
 
 y <- dat$icu_mortality
-X <- as.data.frame(dat %>% select(-icu_mortality))
+X <- as.data.frame(dat %>% select(-icu_mortality, -hadm_id)) # Drop ID now
+rownames(X) <- valid_hadm_ids # Optional: cleanly names the rows in your matrix
 
+# -----------------------------------------------------------------------------
+# CREATE S MATRIX
+# -----------------------------------------------------------------------------
+S <- person_period_df %>%
+  # Filter to matched cohort FIRST, before any column drops
+  filter(hadm_id %in% valid_hadm_ids) %>%
+  select(-any_of(exclude)) %>%
+  select(-ends_with("_n_obs"), -ends_with("_n_labs")) %>% 
+  select(-any_of(c("total_output_ml", "n_output_events", "n_distinct_cpt", 
+                   "n_unique_drugs", "n_unique_drug_classes",
+                   "edregtime", "edouttime"))) %>%
+  mutate_if(is.character, as.factor)
 
+# Recode ethnicity in S to match X exactly
+S$ethnicity <- recode(S$ethnicity,
+                      "WHITE" = "1", "BLACK/AFRICAN AMERICAN" = "2", "ASIAN" = "3",
+                      "AMERICAN INDIAN/ALASKA NATIVE FEDERALLY RECOGNIZED TRIBE" = "4",
+                      "HISPANIC OR LATINO" = "5", "HISPANIC/LATINO - PUERTO RICAN" = "5",
+                      "OTHER" = "6", "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER" = "7",
+                      "UNKNOWN/NOT SPECIFIED" = "0", "OTHER/UNKNOWN" = "0", "UNABLE TO OBTAIN" = "0"
+)
 
+S$ethnicity[is.na(S$ethnicity)] <- "0"
+S$ethnicity <- factor(S$ethnicity, levels = c("0", "1", "2", "3", "4", "5", "6", "7"))
 
+cat(" Before NA omission: ", nrow(S), " rows\n") # 434 rows
+S <- na.omit(S)
+cat(" After NA omission: ", nrow(na.omit(S)), " rows\n") # 424 rows
+
+# Extract y vector for Polya-Gamma
+y_S <- S$y_it
+
+# Remove target labels and ID from the actual S design matrix
+# Note: Keeping `period` is often useful for baseline hazard approximations
+S_mat <- as.data.frame(S %>% select(-y_it, -icu_mortality, -hadm_id))
 
 # ==============================================================================
 # SECTION 17: SUMMARY AND OUTPUT
@@ -1305,6 +1327,8 @@ saveRDS(ready_df, file = file.path(out.path, "ready_df.rds"))
 saveRDS(longitudinal_df, file = file.path(out.path, "longitudinal_df.rds"))
 saveRDS(person_period_df, file = file.path(out.path, "person_period_df.rds"))
 saveRDS (list(X = X, y = y), file = file.path(out.path, "X_y.rds"))
+saveRDS(list(S = S_mat, y = y_S), file = file.path(out.path, "S_y.rds"))
+
 
 message(sprintf("  Files saved to: %s", out.path))
 message("\nData objects available:")

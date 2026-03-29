@@ -2,7 +2,7 @@
 % Data Dictionary for MIMIC-III Bayesian Hierarchical Modeling Project
 % PHP2530 Final Project - Brown University
 % Author: Adam Kurth
-% Last Updated: 2026-03-25
+% Last Updated: 2026-03-26
 
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
@@ -35,20 +35,31 @@ Bayesian Hierarchical Survival Modeling}
 \section{Overview and Data Structure}
 % ============================================================================
 
-This data dictionary documents all variables extracted from the MIMIC-III Clinical Database for Bayesian hierarchical survival modeling. The preprocessing script (\texttt{data-prep.R}) creates three output datasets with distinct mathematical structures:
+This data dictionary documents all variables extracted from the MIMIC-III Clinical Database for Bayesian hierarchical survival modeling. The preprocessing script (\texttt{data-prep.R}) creates intermediate datasets and \textbf{final analytical objects} for modeling.
+
+\textbf{Primary Outputs} (loaded via \texttt{source("load.R")}):
+\begin{itemize}[nosep]
+    \item \texttt{X}: Static baseline predictor matrix ($N \times 66$)
+    \item \texttt{y}: Binary ICU mortality outcome vector (length $N$)
+    \item \texttt{S\_mat}: Time-varying predictor matrix ($\sum T_i \times Q$)
+    \item \texttt{y\_S}: Discrete-time outcome vector (length $\sum T_i$)
+\end{itemize}
+
+See Section~\ref{sec:final-objects} for comprehensive documentation of these objects.
 
 \subsection{Conceptual Framework}
 
-For patient $i = 1, \ldots, N$ with $T_i$ discrete time periods, we define:
+For patient $i = 1, \ldots, N$ with $T_i$ discrete time periods, we define three \textbf{intermediate data frames} (for exploration) and two \textbf{final analytical objects} (for modeling):
+
+\textbf{Intermediate Data Frames} (retain all variables, including IDs and outcomes):
 
 \begin{enumerate}[leftmargin=*]
-    \item \textbf{Static Baseline Covariate Matrix} $\mathbf{X}$ \texttt{(ready\_df)}
+    \item \textbf{Static Baseline Covariate Matrix} $\mathbf{X}$ \texttt{(ready\_df)} $\longrightarrow$ cleaned to \texttt{X, y}
     \begin{itemize}[nosep]
         \item Dimension: $N \times P$ where $N$ = number of admissions, $P$ = number of covariates
         \item Each row represents ONE admission at ``Time Zero'' (ICU admission)
         \item Contains: demographics, aggregated vitals/labs, comorbidities, procedures, interventions
         \item These covariates are \textbf{constant within patient} --- they do not change over time
-        \item In person-period format, $X_i$ is \textbf{repeated across all periods} for patient $i$
     \end{itemize}
 
     \item \textbf{Time-Varying Covariate Matrix} $\mathbf{Z}_{i,t}$ \texttt{(longitudinal\_df)}
@@ -57,10 +68,9 @@ For patient $i = 1, \ldots, N$ with $T_i$ discrete time periods, we define:
         \item $Z_{i,t}$ = covariate vector for patient $i$ at time $t$
         \item Contains: vital signs (HR, BP, SpO2, temp, RR) with precise timestamps
         \item These covariates \textbf{change over time} --- different values at each $t$
-        \item Missing data is common (not all vitals measured at every time point)
     \end{itemize}
 
-    \item \textbf{Discrete-Time Survival Format} \texttt{(person\_period\_df)}
+    \item \textbf{Discrete-Time Survival Format} \texttt{(person\_period\_df)} $\longrightarrow$ cleaned to \texttt{S\_mat, y\_S}
     \begin{itemize}[nosep]
         \item Dimension: $\sum_{i=1}^{N} T_i$ rows (one row per patient per period at risk)
         \item Structure: $(i, t)$ indexed --- patient $i$, period $t$
@@ -80,13 +90,25 @@ The preprocessing script supports two data sources via \texttt{DATA\_SOURCE}:
 
 \subsection{Output Files}
 
-All files saved to \texttt{data/} as R serialized objects:
+All files saved to \texttt{data/rds/} as R serialized objects:
 
-\begin{itemize}[leftmargin=*, nosep]
-    \item \texttt{ready\_df.rds}: Static baseline matrix $\mathbf{X}$
-    \item \texttt{longitudinal\_df.rds}: Time-varying measurements $\mathbf{Z}_{i,t}$
-    \item \texttt{person\_period\_df.rds}: Discrete-time survival format
-\end{itemize}
+\begin{longtable}{L{4.5cm}L{9.5cm}}
+\toprule
+\textbf{File} & \textbf{Description} \\
+\midrule
+\endhead
+\multicolumn{2}{l}{\textit{Intermediate Data Frames (for exploration/debugging)}} \\
+\texttt{ready\_df.rds} & Static baseline matrix before final exclusions \\
+\texttt{longitudinal\_df.rds} & Time-varying measurements $\mathbf{Z}_{i,t}$ \\
+\texttt{person\_period\_df.rds} & Discrete-time survival format (raw) \\
+\midrule
+\multicolumn{2}{l}{\textit{Final Analytical Objects (primary use --- loaded by \texttt{load.R})}} \\
+\texttt{X\_y.rds} & List: \texttt{\{X, y\}} --- Static predictor matrix and outcome \\
+\texttt{S\_y.rds} & List: \texttt{\{S, y\}} --- Time-varying matrix and discrete outcome \\
+\bottomrule
+\end{longtable}
+
+\textbf{Important}: The final analytical objects (\texttt{X\_y.rds} and \texttt{S\_y.rds}) are the primary outputs for modeling. The intermediate data frames are retained for exploration but have NOT undergone final cleaning (exclusion of IDs, outcomes, multicollinear variables, etc.).
 
 % ============================================================================
 \section{Time Zero and Survival Framework}
@@ -142,6 +164,157 @@ Censored in period 4 & 0 & 0 & 0 & 0 & No event (discharged alive) \\
 \end{center}
 
 % ============================================================================
+\section{Final Analytical Objects (Primary Outputs)}
+\label{sec:final-objects}
+% ============================================================================
+
+This section documents the \textbf{primary analytical objects} produced by \texttt{data-prep.R} and loaded by \texttt{load.R}. These are the clean, analysis-ready matrices and vectors for Bayesian modeling.
+
+\subsection{Loading the Data}
+
+Use \texttt{source("load.R")} to load all final objects into your R environment:
+
+\begin{verbatim}
+source("load.R")
+# Objects now available:
+#   X      - Static baseline predictor matrix (N x P)
+#   y      - Binary outcome vector (length N)
+#   S_mat  - Time-varying predictor matrix (sum of T_i x Q)
+#   y_S    - Discrete-time outcome vector (length sum of T_i)
+\end{verbatim}
+
+\subsection{Object Relationship Diagram}
+
+\begin{center}
+\begin{tabular}{ccc}
+\textbf{Static Analysis} & & \textbf{Discrete-Time Analysis} \\
+\midrule
+$\mathbf{X}$ (123 $\times$ 66) & $\longrightarrow$ & $\mathbf{S}$ ($\sum T_i$ $\times$ Q) \\
+$\downarrow$ & & $\downarrow$ \\
+$\mathbf{y}$ (123 elements) & & $\mathbf{y}_S$ ($\sum T_i$ elements) \\
+\midrule
+\textit{One row per admission} & & \textit{One row per person-period} \\
+\textit{BART, logistic regression} & & \textit{Polya-Gamma Gibbs sampling} \\
+\end{tabular}
+\end{center}
+
+\subsection{X: Static Baseline Predictor Matrix}
+
+\textbf{Dimensions}: $N \times P$ where $N$ = number of admissions (after complete-case filtering), $P$ = number of predictors (66 columns in demo data).
+
+\textbf{Source}: Derived from \texttt{ready\_df} after:
+\begin{enumerate}[nosep]
+    \item Exclusion of IDs, outcomes, timestamps, and redundant variables (Section \ref{sec:exclusions})
+    \item Ethnicity recoding to numeric factors (Section \ref{sec:ethnicity})
+    \item Complete-case analysis (\texttt{na.omit()})
+    \item Removal of \texttt{hadm\_id} and \texttt{icu\_mortality} (extracted as \texttt{y})
+\end{enumerate}
+
+\textbf{Column Categories in X}:
+
+\begin{longtable}{L{3.5cm}L{10.5cm}}
+\toprule
+\textbf{Category} & \textbf{Variables Included} \\
+\midrule
+\endhead
+\multicolumn{2}{l}{\textit{Categorical Factors (Multi-level)}} \\
+Demographics & admission\_type, insurance, ethnicity (0--7), gender, first\_careunit \\
+Clinical Factors & age\_group (Adult/Elderly/Very Old), los\_group (Short/Prolonged/Extended), gcs\_status, complexity\_status, comorbidity\_level \\
+Vital Sign Status & hr\_status, rr\_status, spo2\_status, temp\_status \\
+Lab Status & bun\_status, creat\_status, glucose\_status, hgb\_status, plt\_status, k\_status, na\_status, wbc\_status \\
+\midrule
+\multicolumn{2}{l}{\textit{Binary Indicators (as Factors: 0/1)}} \\
+Comorbidities & icd\_sepsis, icd\_heart\_failure, icd\_aki, icd\_ckd, icd\_resp\_failure, icd\_pneumonia, icd\_diabetes, icd\_liver\_disease, icd\_malignancy, icd\_stroke, icd\_mi, icd\_copd \\
+Interventions & is\_ventilated, received\_dialysis, has\_central\_line, received\_transfusion, is\_surgical, on\_antibiotic, on\_anticoagulant, on\_insulin, on\_sedative \\
+Microbiology & positive\_blood\_culture, any\_positive\_culture \\
+Other & multiple\_icu\_stays, callout\_requested, hr\_unstable, temp\_unstable \\
+\midrule
+\multicolumn{2}{l}{\textit{Continuous (Retained)}} \\
+Stay Characteristics & los\_icu, n\_icu\_stays \\
+Counts & n\_diagnoses, n\_procedures, n\_prescriptions \\
+Acuity & gcs\_mean\_val, vasopressor\_duration\_hrs, drg\_severity, drg\_mortality \\
+\bottomrule
+\end{longtable}
+
+\subsection{y: Outcome Vector}
+
+\textbf{Dimensions}: Length $N$ (same as number of rows in \texttt{X}).
+
+\textbf{Definition}: \texttt{icu\_mortality} --- binary indicator of ICU mortality.
+\begin{itemize}[nosep]
+    \item \texttt{y = 1}: Patient died during ICU stay
+    \item \texttt{y = 0}: Patient survived ICU stay (discharged alive or transferred)
+\end{itemize}
+
+\textbf{Relationship to other outcomes}:
+\begin{itemize}[nosep]
+    \item More conservative than \texttt{hospital\_expire\_flag} (hospital-wide mortality)
+    \item Temporally bounded to the ICU admission window
+    \item Used as the target for BART classification and static logistic regression
+\end{itemize}
+
+\subsection{S\_mat: Time-Varying Predictor Matrix}
+
+\textbf{Dimensions}: $\left(\sum_{i=1}^{N} T_i\right) \times Q$ where $T_i$ = number of discrete periods patient $i$ is at risk, $Q$ = number of time-varying predictors.
+
+\textbf{Source}: Derived from \texttt{person\_period\_df} after:
+\begin{enumerate}[nosep]
+    \item Filtering to matched cohort (\texttt{hadm\_id \%in\% valid\_hadm\_ids})
+    \item Same variable exclusions as \texttt{X}
+    \item Ethnicity recoding to match \texttt{X}
+    \item Complete-case analysis (\texttt{na.omit()})
+    \item Removal of \texttt{y\_it}, \texttt{icu\_mortality}, and \texttt{hadm\_id}
+\end{enumerate}
+
+\textbf{Key Variable}: \texttt{period} (integer 1--7) is \textbf{retained} in \texttt{S\_mat} to support baseline hazard approximations in discrete-time models.
+
+\textbf{Structure}: Each patient contributes $T_i$ rows (one per period at risk). Static covariates are repeated across periods; time-varying vitals are period-specific aggregates (mean, min, max per 24-hour window).
+
+\textbf{Example rows for one patient}:
+\begin{center}
+\begin{tabular}{cccccc}
+\toprule
+\textbf{row} & \textbf{period} & \textbf{age\_group} & \textbf{hr\_mean} & \textbf{temp\_mean} & \textbf{...} \\
+\midrule
+1 & 1 & Elderly & 85.2 & 37.1 & ... \\
+2 & 2 & Elderly & 88.7 & 37.3 & ... \\
+3 & 3 & Elderly & 92.1 & 37.8 & ... \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{y\_S: Discrete-Time Outcome Vector}
+
+\textbf{Dimensions}: Length $\sum_{i=1}^{N} T_i$ (same as number of rows in \texttt{S\_mat}).
+
+\textbf{Definition}: \texttt{y\_it} --- binary indicator of event in period $t$ for patient $i$.
+\begin{itemize}[nosep]
+    \item \texttt{y\_S[row] = 1}: Event (death) occurred in this period
+    \item \texttt{y\_S[row] = 0}: No event in this period (survived to next period or censored)
+\end{itemize}
+
+\textbf{Key property}: For each patient, \texttt{y\_S = 1} in \textbf{at most one row} (the final period if they died). All prior periods have \texttt{y\_S = 0}.
+
+\textbf{Use case}: Polya-Gamma augmented Gibbs sampling for discrete-time survival models:
+\[
+\text{logit}\, P(y_{it} = 1 \mid y_{i,t-1} = 0) = \alpha_t + S_{it}' \beta
+\]
+
+\subsection{Correspondence Between Objects}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Static Object} & \textbf{Time-Varying Object} & \textbf{Relationship} \\
+\midrule
+\texttt{X} & \texttt{S\_mat} & Static vars repeated; S adds \texttt{period} + time-varying vitals \\
+\texttt{y} & \texttt{y\_S} & \texttt{y} = patient-level; \texttt{y\_S} = period-level (sums to same \# events) \\
+\texttt{hadm\_id} (row names) & \texttt{hadm\_id} (in S before drop) & Links patients across matrices \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================================
 \section{Static Baseline Matrix X (ready\_df)}
 % ============================================================================
 
@@ -160,6 +333,8 @@ icustay\_id & Integer & First ICU stay identifier within admission \\
 \bottomrule
 \end{longtable}
 
+\textbf{Note}: All identification variables are \textbf{excluded} from the final predictor matrix \texttt{X} in Section 17. They are retained in \texttt{ready\_df} for reference and hierarchical modeling.
+
 \subsection{Demographics}
 
 \begin{longtable}{L{3cm}L{2cm}L{9cm}}
@@ -168,13 +343,18 @@ icustay\_id & Integer & First ICU stay identifier within admission \\
 \midrule
 \endhead
 age & Numeric & Age at admission (years), capped at 90 per MIMIC convention \\
-scaled\_age & Numeric & Standardized age (mean=0, SD=1) \\
+age\_group & Factor & Discretized: Adult ($<$65), Elderly ($\geq$65), Very Old ($\geq$80) \\
 gender & Factor & Patient sex (M/F) \\
-ethnicity & Factor & Self-reported ethnicity/race \\
-marital\_status & Factor & Marital status at admission \\
+ethnicity & Factor & Recoded to numeric levels 0--7 (see Section 5.8) \\
 insurance & Factor & Primary insurance type \\
 \bottomrule
 \end{longtable}
+
+\textbf{Variables removed}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item marital\_status --- dropped in final cleaning
+    \item scaled\_age --- dropped (multicollinear with age)
+\end{itemize}
 
 \subsection{Admission \& ICU Variables}
 
@@ -184,23 +364,25 @@ insurance & Factor & Primary insurance type \\
 \midrule
 \endhead
 admission\_type & Factor & ELECTIVE, EMERGENCY, URGENT \\
-admittime & POSIXct & Hospital admission timestamp \\
-dischtime & POSIXct & Hospital discharge timestamp \\
-deathtime & POSIXct & Time of death (NA if survived) \\
-icu\_intime & POSIXct & First ICU admission (Time Zero) \\
-icu\_outtime & POSIXct & First ICU discharge \\
 first\_careunit & Factor & ICU type: MICU, SICU, CCU, CSRU, TSICU \\
 first\_service & Factor & First hospital service \\
 los\_icu & Numeric & First ICU length of stay (days) \\
-scaled\_los\_icu & Numeric & Standardized ICU LOS \\
+los\_group & Factor & Discretized: Short ($<$3d), Prolonged ($\geq$3d), Extended ($\geq$7d) \\
 n\_icu\_stays & Integer & Total ICU stays during admission \\
-total\_icu\_los & Numeric & Total ICU days across all stays \\
+multiple\_icu\_stays & Binary Factor & 1 if n\_icu\_stays $>1$ \\
 is\_surgical & Binary & 1 if any surgical service involvement \\
 n\_service\_changes & Integer & Number of service transfers \\
 n\_transfers & Integer & Number of unit transfers \\
-n\_unique\_units & Integer & Distinct care units visited \\
 \bottomrule
 \end{longtable}
+
+\textbf{Variables removed}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item admittime, dischtime, deathtime, icu\_intime, icu\_outtime --- timestamps excluded
+    \item scaled\_los\_icu --- multicollinear with los\_icu
+    \item total\_icu\_los --- redundant with los\_icu
+    \item n\_unique\_units --- dropped in final cleaning
+\end{itemize}
 
 \subsection{Survival Outcomes}
 
@@ -209,21 +391,30 @@ n\_unique\_units & Integer & Distinct care units visited \\
 \textbf{Variable} & \textbf{Type} & \textbf{Description} \\
 \midrule
 \endhead
-time\_to\_event\_hours & Numeric & Hours from ICU admission to death/discharge \\
-time\_to\_event\_days & Numeric & Days from ICU admission to death/discharge \\
-event\_status & Binary & 1 = died ($\delta_i = 1$), 0 = censored \\
-icu\_mortality & Binary & 1 = died during ICU stay (stricter definition) \\
-hospital\_expire\_flag & Binary & 1 = died during hospitalization \\
-end\_time & POSIXct & Event/censoring timestamp \\
+icu\_mortality & Binary & \textbf{TARGET}: 1 = died during ICU stay \\
 \bottomrule
 \end{longtable}
 
+\textbf{Variables excluded from X (leakage/outcomes)}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item event\_status --- hospital mortality indicator (1 = died during hospitalization)
+    \item hospital\_expire\_flag --- redundant with event\_status
+    \item time\_to\_event\_hours, time\_to\_event\_days --- time-to-event (use for survival modeling only)
+    \item end\_time --- death/discharge timestamp
+\end{itemize}
+
+\textbf{Note}: The target variable \texttt{icu\_mortality} is a stricter definition than \texttt{event\_status}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item \texttt{icu\_mortality = 1}: Patient died \textbf{during ICU stay} (deathtime $\leq$ icu\_outtime)
+    \item \texttt{event\_status = 1}: Patient died during hospitalization (may have been after ICU discharge)
+\end{itemize}
+
 \subsection{Vital Sign Summaries}
 
-Per-admission aggregates from CHARTEVENTS. Naming pattern: \texttt{vital\_statistic}.
+Per-admission aggregates from CHARTEVENTS. \textbf{Note}: Only mean and SD statistics are retained; min/max values are dropped due to multicollinearity with mean values.
 
 \begin{center}
-\texttt{hr\_mean\_val, hr\_min\_val, hr\_max\_val, hr\_sd\_val, hr\_n\_obs}
+\texttt{hr\_mean\_val, hr\_sd\_val} (then removed after factorization)
 \end{center}
 
 \begin{longtable}{L{3cm}L{2.5cm}L{2.5cm}L{5.5cm}}
@@ -232,9 +423,6 @@ Per-admission aggregates from CHARTEVENTS. Naming pattern: \texttt{vital\_statis
 \midrule
 \endhead
 hr (heart rate) & 211 & 220045 & bpm \\
-sbp & 51 & 220050 & mmHg \\
-dbp & 8364 & 220051 & mmHg \\
-map & 52 & 220052 & mmHg \\
 resp\_rate & 618 & 220210 & breaths/min \\
 spo2 & 646 & 220277 & \% \\
 temp\_c & 676, 678$\to$C & 223762 & \textdegree C \\
@@ -242,30 +430,30 @@ gcs & 198 & 220739 & 3--15 \\
 \bottomrule
 \end{longtable}
 
-\textbf{Statistics computed}:
+\textbf{Variables dropped due to high missingness} ($>25\%$ in demo dataset):
 \begin{itemize}[leftmargin=*, nosep]
-    \item \texttt{mean\_val}: Average across all measurements
-    \item \texttt{min\_val, max\_val}: Extremes (capture decompensation)
-    \item \texttt{sd\_val}: Variability (instability indicator)
-    \item \texttt{n\_obs}: Number of observations (data completeness)
+    \item sbp (systolic BP) --- $\sim$57\% missing
+    \item dbp (diastolic BP) --- $\sim$81\% missing
+    \item map (mean arterial pressure) --- $\sim$58\% missing
+\end{itemize}
+
+\textbf{Statistics computed} (intermediate, later dropped after factorization):
+\begin{itemize}[leftmargin=*, nosep]
+    \item \texttt{mean\_val}: Average across all measurements $\to$ used to create categorical factors
+    \item \texttt{sd\_val}: Variability (instability indicator) $\to$ used for \_unstable flags
+    \item \texttt{min\_val, max\_val, n\_obs}: \textbf{Dropped} due to multicollinearity
 \end{itemize}
 
 \subsection{Laboratory Summaries}
 
-Per-admission aggregates from LABEVENTS. Naming pattern: \texttt{lab\_statistic}.
-
-\begin{center}
-\texttt{lactate\_first\_val, lactate\_last\_val, lactate\_min\_val, lactate\_max\_val, lactate\_mean\_val, lactate\_n\_labs}
-\end{center}
+Per-admission aggregates from LABEVENTS. \textbf{Note}: Only mean values are retained and converted to categorical factors; min/max/first/last values are dropped.
 
 \begin{longtable}{L{3cm}L{1.5cm}L{2cm}L{6.5cm}}
 \toprule
 \textbf{Lab Test} & \textbf{ID} & \textbf{Units} & \textbf{Clinical Relevance} \\
 \midrule
 \endhead
-lactate & 50813 & mmol/L & Tissue perfusion, sepsis marker \\
 creatinine & 50912 & mg/dL & Renal function (SOFA) \\
-bilirubin & 50885 & mg/dL & Hepatic function (SOFA) \\
 platelets & 51265 & K/uL & Coagulation (SOFA) \\
 wbc & 51301 & K/uL & Infection/immune \\
 hemoglobin & 51222 & g/dL & Anemia, bleeding \\
@@ -273,17 +461,21 @@ glucose & 50931 & mg/dL & Metabolic status \\
 bun & 51006 & mg/dL & Renal function \\
 sodium & 50983 & mEq/L & Electrolyte balance \\
 potassium & 50971 & mEq/L & Cardiac/renal \\
-pao2 & 50821 & mmHg & Oxygenation (SOFA resp) \\
-pco2 & 50818 & mmHg & Ventilation \\
-ph & 50820 & --- & Acid-base status \\
 \bottomrule
 \end{longtable}
 
-\textbf{Statistics computed}:
+\textbf{Labs dropped due to high missingness} ($>25\%$ in demo dataset):
 \begin{itemize}[leftmargin=*, nosep]
-    \item \texttt{first\_val}: Baseline at admission
-    \item \texttt{last\_val}: Final status
-    \item \texttt{min\_val, max\_val, mean\_val, n\_labs}: As above
+    \item lactate ($\sim$21\% missing)
+    \item bilirubin ($\sim$32\% missing)
+    \item pao2, pco2 ($\sim$29\% missing)
+    \item ph ($\sim$26\% missing)
+\end{itemize}
+
+\textbf{Statistics computed} (intermediate, later dropped after factorization):
+\begin{itemize}[leftmargin=*, nosep]
+    \item \texttt{mean\_val}: Average across measurements $\to$ used to create categorical factors
+    \item \texttt{first\_val, last\_val, min\_val, max\_val, n\_labs}: \textbf{Dropped} due to multicollinearity
 \end{itemize}
 
 \subsection{Comorbidity Flags (ICD-9)}
@@ -294,22 +486,28 @@ ph & 50820 & --- & Acid-base status \\
 \midrule
 \endhead
 n\_diagnoses & Integer & --- & Total diagnosis codes \\
-icd\_sepsis & Binary & 995.91, 995.92, 038.x & Sepsis/septicemia \\
-icd\_heart\_failure & Binary & 428.x & CHF \\
-icd\_aki & Binary & 584.x & Acute kidney injury \\
-icd\_ckd & Binary & 585.x & Chronic kidney disease \\
-icd\_resp\_failure & Binary & 518.8x & Respiratory failure \\
-icd\_pneumonia & Binary & 480--486 & Pneumonia \\
-icd\_diabetes & Binary & 250.x & Diabetes mellitus \\
-icd\_liver\_disease & Binary & 571.x & Chronic liver disease \\
-icd\_malignancy & Binary & 140--208 & Cancer \\
-icd\_stroke & Binary & 430--438 & Cerebrovascular disease \\
-icd\_mi & Binary & 410.x & Myocardial infarction \\
-icd\_copd & Binary & 490--496 & COPD \\
-comorbidity\_count & Integer & --- & Sum of ICD flags (0--12) \\
-scaled\_comorbidity & Numeric & --- & Standardized burden \\
+icd\_sepsis & Binary Factor & 995.91, 995.92, 038.x & Sepsis/septicemia \\
+icd\_heart\_failure & Binary Factor & 428.x & CHF \\
+icd\_aki & Binary Factor & 584.x & Acute kidney injury \\
+icd\_ckd & Binary Factor & 585.x & Chronic kidney disease \\
+icd\_resp\_failure & Binary Factor & 518.8x & Respiratory failure \\
+icd\_pneumonia & Binary Factor & 480--486 & Pneumonia \\
+icd\_diabetes & Binary Factor & 250.x & Diabetes mellitus \\
+icd\_liver\_disease & Binary Factor & 571.x & Chronic liver disease \\
+icd\_malignancy & Binary Factor & 140--208 & Cancer \\
+icd\_stroke & Binary Factor & 430--438 & Cerebrovascular disease \\
+icd\_mi & Binary Factor & 410.x & Myocardial infarction \\
+icd\_copd & Binary Factor & 490--496 & COPD \\
+comorbidity\_level & Factor & --- & Low/Moderate ($<$3), High ($\geq$3), Very High ($\geq$5) \\
 \bottomrule
 \end{longtable}
+
+\textbf{Variables removed}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item comorbidity\_count --- exact sum of icd\_* flags (redundant)
+    \item scaled\_comorbidity --- multicollinear
+    \item scaled\_n\_diagnoses --- multicollinear with n\_diagnoses
+\end{itemize}
 
 \subsection{Procedures \& Interventions}
 
@@ -319,15 +517,21 @@ scaled\_comorbidity & Numeric & --- & Standardized burden \\
 \midrule
 \endhead
 n\_procedures & Integer & Total ICD-9 procedure codes \\
-is\_ventilated & Binary & Mechanical ventilation (96.7x) \\
-received\_dialysis & Binary & Hemodialysis (39.95) \\
-has\_central\_line & Binary & Central venous catheter \\
-received\_transfusion & Binary & Blood transfusion (99.0x) \\
-received\_vasopressors & Binary & Any vasopressor administered \\
+is\_ventilated & Binary Factor & Mechanical ventilation (96.7x) \\
+received\_dialysis & Binary Factor & Hemodialysis (39.95) \\
+has\_central\_line & Binary Factor & Central venous catheter \\
+received\_transfusion & Binary Factor & Blood transfusion (99.0x) \\
 n\_vasopressor\_doses & Integer & Total vasopressor events \\
 vasopressor\_duration\_hrs & Numeric & Total hours on vasopressors \\
+complexity\_status & Factor & Standard vs. High Complexity \\
 \bottomrule
 \end{longtable}
+
+\textbf{Variables removed}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item received\_vasopressors --- redundant with vasopressor\_duration\_hrs ($>0$)
+    \item scaled\_n\_procedures --- multicollinear with n\_procedures
+\end{itemize}
 
 \subsection{DRG Severity Scores}
 
@@ -545,169 +749,161 @@ For time-varying covariates in person-period format:
 \section{Discretized Variables for BART Modeling}
 % ============================================================================
 
-This section documents the discretization of continuous variables into binary factor variables, following the pattern from \texttt{data\_rebin.R}: \texttt{as.factor(ifelse(...))}.
+This section documents the discretization of continuous variables into \textbf{multi-level categorical factors} for BART modeling. The implementation uses \texttt{factor(case\_when(...), levels = ...)} to create ordered factor variables with clinically meaningful categories.
 
-\subsection{Rationale for Binary Factorization}
+\subsection{Rationale for Multi-Level Factorization}
 
-The approach uses simple binary indicators (0/1 factors) based on clinically meaningful thresholds:
+The approach creates ordered categorical factors with 2--3 levels based on clinical thresholds:
 
 \begin{enumerate}[leftmargin=*, nosep]
-    \item \textbf{Clinical interpretability}: Binary thresholds match clinical decision points (e.g., ``is tachycardic?'' rather than continuous HR)
+    \item \textbf{Clinical interpretability}: Categories match clinical severity grades (Normal $\to$ Mild $\to$ Severe)
     \item \textbf{SOFA/SIRS alignment}: Thresholds correspond to established scoring systems
-    \item \textbf{Simplicity}: Binary factors are efficient for BART tree splits
-    \item \textbf{Missing data handling}: NA converted to ``unknown'' factor level
-    \item \textbf{Consistency}: All variables become factors with clear 0/1 interpretation
+    \item \textbf{Ordered structure}: Factor levels are ordered from normal to most severe
+    \item \textbf{BART efficiency}: Multi-level factors enable efficient tree splits at multiple thresholds
+    \item \textbf{Information preservation}: Distinguishes mild from severe abnormalities (vs.\ binary flags)
 \end{enumerate}
 
-\textbf{Pattern used}: \texttt{as.factor(ifelse(variable >= threshold, 1, 0))}
+\textbf{Pattern used}: \texttt{factor(case\_when(...), levels = c("Normal", "Mild", "Severe"))}
 
-\subsection{Variables Removed Before Factorization}
+\subsection{Variables Removed in Section 14b}
 
-The following variables were removed from \texttt{ready\_df}:
+The following high-cardinality and problematic variables are removed from \texttt{ready\_df}:
 
 \begin{longtable}{L{3.5cm}L{10.5cm}}
 \toprule
 \textbf{Variable} & \textbf{Reason for Removal} \\
 \midrule
 \endhead
-admission\_location & High-cardinality text (7+ categories) \\
-discharge\_location & High-cardinality text; \textbf{LEAKAGE} \\
-language & High-cardinality character \\
-religion & High-cardinality character \\
-diagnosis & Free-text primary diagnosis \\
-dob & POSIXct datetime --- use derived factors \\
-dod & POSIXct datetime --- use \texttt{event\_status} \\
-expire\_flag & Outcome indicator --- \textbf{LEAKAGE} \\
-has\_chartevents\_data & No variance (all ICU patients have data) \\
+admission\_location & High-cardinality text (7+ categories with long strings) \\
+discharge\_location & High-cardinality text (15+ categories); \textbf{LEAKAGE} (known only at discharge) \\
+language & High-cardinality character (many languages + empty strings) \\
+religion & High-cardinality character (many religions + empty strings) \\
+diagnosis & Free-text primary diagnosis --- extremely high cardinality \\
+dob & POSIXct datetime --- use \texttt{age} instead \\
+dod & POSIXct datetime --- use \texttt{event\_status} instead \\
+expire\_flag & Outcome indicator --- \textbf{LEAKAGE} (redundant with event\_status) \\
+has\_chartevents\_data & Binary indicator --- all ICU patients have chart data (no variance) \\
 \bottomrule
 \end{longtable}
 
-All original continuous variables (age, vitals, labs, counts) are also removed after creating binary factors.
+\subsection{Variables Removed Due to High Missingness (Section 14)}
 
-\subsection{Demographic Factors}
-
-\begin{longtable}{L{3.5cm}L{3cm}L{7.5cm}}
-\toprule
-\textbf{Variable} & \textbf{Threshold} & \textbf{Clinical Meaning} \\
-\midrule
-\endhead
-age\_elderly & age $\geq 65$ & Elderly patient (geriatric threshold) \\
-age\_very\_old & age $\geq 80$ & Very old (increased frailty risk) \\
-\bottomrule
-\end{longtable}
-
-\subsection{ICU Stay Factors}
-
-\begin{longtable}{L{3.5cm}L{3cm}L{7.5cm}}
-\toprule
-\textbf{Variable} & \textbf{Threshold} & \textbf{Clinical Meaning} \\
-\midrule
-\endhead
-los\_prolonged & LOS $\geq 3$ days & Prolonged ICU stay \\
-los\_extended & LOS $\geq 7$ days & Extended/chronic critical illness \\
-multiple\_icu\_stays & n\_icu\_stays $> 1$ & Multiple ICU admissions \\
-\bottomrule
-\end{longtable}
-
-\subsection{Vital Sign Factors}
-
-All thresholds based on SIRS criteria and standard clinical cutoffs.
-
-\begin{longtable}{L{3cm}L{3.5cm}L{7.5cm}}
-\toprule
-\textbf{Variable} & \textbf{Threshold} & \textbf{Clinical Meaning} \\
-\midrule
-\endhead
-\multicolumn{3}{l}{\textbf{Glasgow Coma Scale}} \\
-gcs\_impaired & GCS $< 15$ & Any neurologic impairment \\
-gcs\_severe & GCS $\leq 8$ & Severe impairment (intubation threshold) \\
-\midrule
-\multicolumn{3}{l}{\textbf{Heart Rate}} \\
-hr\_tachy & HR $> 100$ bpm & Tachycardia \\
-hr\_brady & HR $< 60$ bpm & Bradycardia \\
-hr\_abnormal & HR $< 60$ or $> 100$ & Any heart rate abnormality \\
-\midrule
-\multicolumn{3}{l}{\textbf{Respiratory Rate}} \\
-rr\_tachy & RR $> 20$ /min & Tachypnea (SIRS criterion) \\
-rr\_severe & RR $> 30$ /min & Severe tachypnea \\
-\midrule
-\multicolumn{3}{l}{\textbf{Oxygen Saturation}} \\
-spo2\_low & SpO2 $< 95\%$ & Hypoxia \\
-spo2\_severe & SpO2 $< 90\%$ & Severe hypoxia \\
-\midrule
-\multicolumn{3}{l}{\textbf{Temperature}} \\
-temp\_fever & Temp $> 38$\textdegree C & Fever (SIRS criterion) \\
-temp\_hypo & Temp $< 36$\textdegree C & Hypothermia (SIRS criterion) \\
-temp\_abnormal & Temp $< 36$ or $> 38$ & Any temperature abnormality \\
-\bottomrule
-\end{longtable}
-
-\subsection{Laboratory Factors}
-
-Thresholds based on SOFA criteria and standard reference ranges.
-
-\begin{longtable}{L{3cm}L{3.5cm}L{7.5cm}}
-\toprule
-\textbf{Variable} & \textbf{Threshold} & \textbf{Clinical Meaning} \\
-\midrule
-\endhead
-\multicolumn{3}{l}{\textbf{Renal Function}} \\
-bun\_high & BUN $> 20$ mg/dL & Elevated BUN \\
-bun\_very\_high & BUN $> 40$ mg/dL & Very high BUN \\
-creat\_elevated & Cr $\geq 1.2$ mg/dL & Elevated creatinine (SOFA 1) \\
-creat\_dysfunction & Cr $\geq 2.0$ mg/dL & Renal dysfunction (SOFA 2) \\
-\midrule
-\multicolumn{3}{l}{\textbf{Glucose}} \\
-glucose\_high & Glucose $> 180$ mg/dL & Hyperglycemia (ICU target exceeded) \\
-glucose\_low & Glucose $< 70$ mg/dL & Hypoglycemia \\
-\midrule
-\multicolumn{3}{l}{\textbf{Hemoglobin}} \\
-hgb\_anemia & Hgb $< 10$ g/dL & Anemia \\
-hgb\_severe\_anemia & Hgb $< 7$ g/dL & Severe anemia (transfusion threshold) \\
-\midrule
-\multicolumn{3}{l}{\textbf{Platelets}} \\
-plt\_low & Plt $< 150$ K/uL & Thrombocytopenia (SOFA coag) \\
-plt\_severe & Plt $< 50$ K/uL & Severe thrombocytopenia \\
-\midrule
-\multicolumn{3}{l}{\textbf{Electrolytes}} \\
-k\_low & K$^+$ $< 3.5$ mEq/L & Hypokalemia \\
-k\_high & K$^+$ $> 5.0$ mEq/L & Hyperkalemia \\
-na\_low & Na$^+$ $< 135$ mEq/L & Hyponatremia \\
-na\_high & Na$^+$ $> 145$ mEq/L & Hypernatremia \\
-\midrule
-\multicolumn{3}{l}{\textbf{White Blood Cells}} \\
-wbc\_high & WBC $> 12$ K/uL & Leukocytosis (SIRS criterion) \\
-wbc\_low & WBC $< 4$ K/uL & Leukopenia (SIRS criterion) \\
-wbc\_abnormal & WBC $< 4$ or $> 12$ & Any WBC abnormality \\
-\bottomrule
-\end{longtable}
-
-\subsection{Variability and Complexity Factors}
+These variables are dropped because they exceed 25\% missing in the demo dataset:
 
 \begin{longtable}{L{4cm}L{3cm}L{7cm}}
 \toprule
-\textbf{Variable} & \textbf{Threshold} & \textbf{Clinical Meaning} \\
+\textbf{Variable Pattern} & \textbf{Missingness} & \textbf{Notes} \\
 \midrule
 \endhead
-hr\_unstable & HR SD $> 15$ & Heart rate variability (instability) \\
-temp\_unstable & Temp SD $> 0.5$ & Temperature variability \\
-high\_comorbidity & count $\geq 3$ & High comorbidity burden \\
-very\_high\_comorbidity & count $\geq 5$ & Very high comorbidity \\
-many\_diagnoses & n\_dx $> 10$ & Many diagnoses \\
-many\_procedures & n\_proc $> 5$ & Many procedures \\
-polypharmacy & n\_rx $> 20$ & Polypharmacy \\
-drg\_high\_mortality & DRG mort $\geq 3$ & High DRG mortality risk \\
-drg\_high\_severity & DRG sev $\geq 3$ & High DRG severity \\
+dbp\_* & $\sim$81\% & Diastolic BP aggregates \\
+map\_* & $\sim$58\% & Mean arterial pressure aggregates \\
+sbp\_* & $\sim$57\% & Systolic BP aggregates \\
+total\_input\_*, n\_input\_* & $\sim$45\% & Input volume data \\
+n\_positive\_spec*, n\_unique\_org* & $\sim$44\% & Microbiology details \\
+dod\_hosp & $\sim$37\% & Date of death (hospital) \\
+bilirubin\_* & $\sim$32\% & Bilirubin labs \\
+pao2\_*, pco2\_* & $\sim$29\% & Arterial blood gases \\
+edregtime, edouttime & $\sim$28\% & ED timestamps \\
+n\_blood\_cultures, n\_positive\_cult*, n\_organisms & $\sim$27\% & Culture counts \\
+ph\_* & $\sim$26\% & pH labs \\
+lactate\_* & $\sim$21\% & Lactate labs \\
+dod\_ssn & $\sim$19\% & SSN death date \\
 \bottomrule
 \end{longtable}
 
-\subsection{Existing Binary Indicators (Converted to Factors)}
+\textbf{Note}: These thresholds are calibrated for the demo dataset. For the full MIMIC-III dataset, consider retaining variables with lower missingness.
 
-The following variables were already 0/1 integers and are converted to factors:
+\subsection{Multi-Level Demographic Factors}
+
+\begin{longtable}{L{2.5cm}L{2.5cm}L{4cm}L{5cm}}
+\toprule
+\textbf{Variable} & \textbf{Type} & \textbf{Levels (Ordered)} & \textbf{Clinical Thresholds} \\
+\midrule
+\endhead
+age\_group & Factor & Adult, Elderly, Very Old & $<65$, $\geq65$, $\geq80$ years \\
+los\_group & Factor & Short, Prolonged, Extended & $<3$, $\geq3$, $\geq7$ days \\
+multiple\_icu\_stays & Binary Factor & 0, 1 & n\_icu\_stays $>1$ \\
+\bottomrule
+\end{longtable}
+
+\subsection{Multi-Level Vital Sign Factors}
+
+All thresholds based on SIRS criteria and standard clinical cutoffs. Each variable has 2--3 ordered levels.
+
+\begin{longtable}{L{2.5cm}L{5cm}L{6.5cm}}
+\toprule
+\textbf{Variable} & \textbf{Levels (Ordered)} & \textbf{Clinical Thresholds} \\
+\midrule
+\endhead
+\multicolumn{3}{l}{\textbf{Glasgow Coma Scale}} \\
+gcs\_status & Normal, Impaired, Severe Impairment & GCS $=15$, $<15$, $\leq8$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{Heart Rate}} \\
+hr\_status & Normal, Bradycardia, Tachycardia & 60--100, $<60$, $>100$ bpm \\
+hr\_unstable & 0, 1 (binary factor) & HR SD $>15$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{Respiratory Rate}} \\
+rr\_status & Normal, Tachypnea, Severe Tachypnea & $\leq20$, $>20$, $>30$ /min \\
+\midrule
+\multicolumn{3}{l}{\textbf{Oxygen Saturation}} \\
+spo2\_status & Normal, Hypoxia, Severe Hypoxia & $\geq95\%$, $<95\%$, $<90\%$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{Temperature}} \\
+temp\_status & Normal, Hypothermia, Fever & 36--38\textdegree C, $<36$\textdegree C, $>38$\textdegree C \\
+temp\_unstable & 0, 1 (binary factor) & Temp SD $>0.5$ \\
+\bottomrule
+\end{longtable}
+
+\subsection{Multi-Level Laboratory Factors}
+
+Thresholds based on SOFA criteria and standard reference ranges.
+
+\begin{longtable}{L{2.5cm}L{5cm}L{6.5cm}}
+\toprule
+\textbf{Variable} & \textbf{Levels (Ordered)} & \textbf{Clinical Thresholds} \\
+\midrule
+\endhead
+\multicolumn{3}{l}{\textbf{Renal Function}} \\
+bun\_status & Normal, High, Very High & $\leq20$, $>20$, $>40$ mg/dL \\
+creat\_status & Normal, Elevated, Dysfunction & $<1.2$, $\geq1.2$, $\geq2.0$ mg/dL \\
+\midrule
+\multicolumn{3}{l}{\textbf{Glucose}} \\
+glucose\_status & Normal, Hypoglycemia, Hyperglycemia & 70--180, $<70$, $>180$ mg/dL \\
+\midrule
+\multicolumn{3}{l}{\textbf{Hemoglobin}} \\
+hgb\_status & Normal, Anemia, Severe Anemia & $\geq10$, $<10$, $<7$ g/dL \\
+\midrule
+\multicolumn{3}{l}{\textbf{Platelets}} \\
+plt\_status & Normal, Thrombocytopenia, Severe Thrombocytopenia & $\geq150$, $<150$, $<50$ K/uL \\
+\midrule
+\multicolumn{3}{l}{\textbf{Electrolytes}} \\
+k\_status & Normal, Hypokalemia, Hyperkalemia & 3.5--5.0, $<3.5$, $>5.0$ mEq/L \\
+na\_status & Normal, Hyponatremia, Hypernatremia & 135--145, $<135$, $>145$ mEq/L \\
+\midrule
+\multicolumn{3}{l}{\textbf{White Blood Cells}} \\
+wbc\_status & Normal, Leukopenia, Leukocytosis & 4--12, $<4$, $>12$ K/uL \\
+\bottomrule
+\end{longtable}
+
+\subsection{Multi-Level Complexity Factors}
+
+\begin{longtable}{L{3.5cm}L{4.5cm}L{6cm}}
+\toprule
+\textbf{Variable} & \textbf{Levels (Ordered)} & \textbf{Clinical Thresholds} \\
+\midrule
+\endhead
+comorbidity\_level & Low/Moderate, High, Very High & $<3$, $\geq3$, $\geq5$ comorbidities \\
+complexity\_status & Standard, High Complexity & n\_rx $>20$ OR n\_dx $>10$ OR n\_proc $>5$ \\
+\bottomrule
+\end{longtable}
+
+\subsection{Binary Indicators (Converted to Factors)}
+
+The following 0/1 integer variables are converted to factors using \texttt{as.factor()}:
 
 \begin{itemize}[leftmargin=*, nosep]
     \item \textbf{ICD Comorbidities}: icd\_sepsis, icd\_heart\_failure, icd\_aki, icd\_ckd, icd\_resp\_failure, icd\_pneumonia, icd\_diabetes, icd\_liver\_disease, icd\_malignancy, icd\_stroke, icd\_mi, icd\_copd
-    \item \textbf{Interventions}: is\_ventilated, received\_dialysis, has\_central\_line, received\_transfusion, received\_vasopressors, is\_surgical
+    \item \textbf{Interventions}: is\_ventilated, received\_dialysis, has\_central\_line, received\_transfusion, is\_surgical
     \item \textbf{Medications}: on\_antibiotic, on\_anticoagulant, on\_insulin, on\_sedative
     \item \textbf{Cultures}: positive\_blood\_culture, any\_positive\_culture
     \item \textbf{Other}: callout\_requested
@@ -715,7 +911,7 @@ The following variables were already 0/1 integers and are converted to factors:
 
 \subsection{Categorical Variables (Multi-level Factors)}
 
-These remain as multi-level factors:
+These remain as multi-level factors with their original levels:
 
 \begin{longtable}{L{3cm}L{11cm}}
 \toprule
@@ -723,18 +919,161 @@ These remain as multi-level factors:
 \midrule
 \endhead
 admission\_type & ELECTIVE, EMERGENCY, URGENT \\
-marital\_status & SINGLE, MARRIED, DIVORCED, WIDOWED, etc. \\
-ethnicity & WHITE, BLACK, HISPANIC, ASIAN, etc. \\
-insurance & Medicare, Medicaid, Private, Government \\
+insurance & Medicare, Medicaid, Private, Government, Self Pay \\
 first\_careunit & MICU, SICU, CCU, CSRU, TSICU \\
-first\_service & MED, SURG, CMED, CSURG, etc. \\
+first\_service & MED, SURG, CMED, CSURG, NSURG, etc. \\
 gender & M, F \\
 \bottomrule
 \end{longtable}
 
+\subsection{Ethnicity Recoding}
+\label{sec:ethnicity}
+
+Ethnicity is recoded from text strings to numeric factor codes for consistency:
+
+\begin{longtable}{L{6cm}L{2cm}L{6cm}}
+\toprule
+\textbf{Original Value} & \textbf{Code} & \textbf{Category} \\
+\midrule
+\endhead
+WHITE & 1 & White \\
+BLACK/AFRICAN AMERICAN & 2 & Black \\
+ASIAN & 3 & Asian \\
+AMERICAN INDIAN/ALASKA NATIVE... & 4 & American Indian/Alaska Native \\
+HISPANIC OR LATINO, HISPANIC/LATINO - PUERTO RICAN & 5 & Hispanic/Latino \\
+OTHER & 6 & Other \\
+NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER & 7 & Pacific Islander \\
+UNKNOWN/NOT SPECIFIED, OTHER/UNKNOWN, UNABLE TO OBTAIN, NA & 0 & Unknown \\
+\bottomrule
+\end{longtable}
+
+Final factor levels: \texttt{c("0", "1", "2", "3", "4", "5", "6", "7")}
+
+\subsection{Variables Removed After Factorization}
+
+After creating the categorical factors, the \textbf{original continuous values} are removed to avoid multicollinearity:
+
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{Original vitals}: gcs\_sd\_val, gcs\_n\_obs, hr\_mean\_val, hr\_sd\_val, hr\_n\_obs, resp\_rate\_mean\_val, resp\_rate\_sd\_val, resp\_rate\_n\_obs, spo2\_mean\_val, spo2\_sd\_val, spo2\_n\_obs, temp\_c\_mean\_val, temp\_c\_sd\_val, temp\_c\_n\_obs
+    \item \textbf{Original labs}: bun\_mean\_val, bun\_n\_labs, creatinine\_mean\_val, creatinine\_n\_labs, glucose\_mean\_val, glucose\_n\_labs, hemoglobin\_mean\_val, hemoglobin\_n\_labs, platelets\_mean\_val, platelets\_n\_labs, potassium\_mean\_val, potassium\_n\_labs, sodium\_mean\_val, sodium\_n\_labs, wbc\_mean\_val, wbc\_n\_labs
+    \item \textbf{Scaled variables}: All variables starting with \texttt{scaled\_}
+\end{itemize}
+
+% ============================================================================
+\section{Final Cleaning and X/y Extraction (Section 17)}
+% ============================================================================
+
+Section 17 of \texttt{data-prep.R} performs final cleaning to produce analysis-ready matrices for BART modeling.
+
+\subsection{Excluded Variables}
+
+The following variables are explicitly excluded from the final predictor matrix \texttt{X}:
+
+\begin{longtable}{L{4cm}L{10cm}}
+\toprule
+\textbf{Variable Category} & \textbf{Variables Excluded} \\
+\midrule
+\endhead
+\multicolumn{2}{l}{\textbf{Identification Variables}} \\
+& subject\_id, hadm\_id, icustay\_id \\
+\midrule
+\multicolumn{2}{l}{\textbf{Outcome Variables (Leakage Prevention)}} \\
+& event\_status, hospital\_expire\_flag, time\_to\_event\_hours, time\_to\_event\_days \\
+\midrule
+\multicolumn{2}{l}{\textbf{Timestamp Variables}} \\
+& admittime, dischtime, deathtime, icu\_intime, icu\_outtime, end\_time \\
+\midrule
+\multicolumn{2}{l}{\textbf{High-Cardinality/Missing Variables}} \\
+& discharge\_location, expire\_flag, dob, dod, dod\_hosp, dod\_ssn, diagnosis, marital\_status, religion, language \\
+\midrule
+\multicolumn{2}{l}{\textbf{Exact Multicollinearity (Scaled Duplicates)}} \\
+& scaled\_age, scaled\_los\_icu, scaled\_n\_diagnoses, scaled\_n\_procedures, scaled\_n\_prescriptions, scaled\_comorbidity \\
+\midrule
+\multicolumn{2}{l}{\textbf{Structural Redundancy}} \\
+& total\_icu\_los (redundant with los\_icu) \\
+& comorbidity\_count (exact sum of icd\_* flags) \\
+& received\_vasopressors (redundant with vasopressor\_duration\_hrs) \\
+\midrule
+\multicolumn{2}{l}{\textbf{EHR Frequency Artifacts}} \\
+& All variables ending with \_n\_obs and \_n\_labs \\
+& total\_output\_ml, n\_output\_events, n\_distinct\_cpt, n\_unique\_drugs, n\_unique\_drug\_classes \\
+\bottomrule
+\end{longtable}
+
+\subsection{Character to Factor Conversion}
+
+All remaining character variables are converted to factors:
+
+\begin{verbatim}
+mutate_if(is.character, as.factor)
+\end{verbatim}
+
 \subsection{Missing Data Handling}
 
-For all factor variables, missing values are converted to an explicit ``unknown'' factor level using \texttt{fct\_na\_value\_to\_level()}.
+Complete case analysis is applied:
+
+\begin{verbatim}
+dat <- na.omit(dat)
+\end{verbatim}
+
+\textbf{Note}: This may result in sample size reduction. The script reports row counts before and after NA omission.
+
+\subsection{Final X/y and S/y\_S Extraction}
+\label{sec:exclusions}
+
+The target variables and predictor matrices are extracted in two steps:
+
+\textbf{Step 1: Static Matrix (X, y)}
+\begin{verbatim}
+y <- dat$icu_mortality           # Binary outcome vector (N elements)
+X <- as.data.frame(dat %>%
+       select(-icu_mortality,
+              -hadm_id))         # All remaining predictors (N x P)
+rownames(X) <- valid_hadm_ids    # Row names = admission IDs
+\end{verbatim}
+
+\textbf{Step 2: Time-Varying Matrix (S\_mat, y\_S)}
+\begin{verbatim}
+S <- person_period_df %>%
+  filter(hadm_id %in% valid_hadm_ids) %>%  # Match to cleaned cohort
+  select(-any_of(exclude)) %>%             # Same exclusions as X
+  # ... ethnicity recoding, na.omit() ...
+
+y_S <- S$y_it                    # Discrete-time outcome (sum T_i elements)
+S_mat <- as.data.frame(S %>%
+           select(-y_it,
+                  -icu_mortality,
+                  -hadm_id))     # Time-varying predictors
+\end{verbatim}
+
+\textbf{Key difference}: \texttt{S\_mat} retains the \texttt{period} variable (integer 1--7) for baseline hazard approximation, while \texttt{X} has no period column (static analysis).
+
+\subsection{Output Files}
+
+Five output files are saved to \texttt{data/rds/}:
+
+\begin{longtable}{L{4cm}L{10cm}}
+\toprule
+\textbf{File} & \textbf{Contents} \\
+\midrule
+\endhead
+ready\_df.rds & Full static baseline matrix (before final exclusions) \\
+longitudinal\_df.rds & Time-varying vital sign measurements \\
+person\_period\_df.rds & Discrete-time survival format (before final exclusions) \\
+\midrule
+\textbf{X\_y.rds} & \textbf{List: \{X, y\}} --- Analysis-ready static predictors + outcome \\
+\textbf{S\_y.rds} & \textbf{List: \{S, y\}} --- Analysis-ready time-varying predictors + discrete outcome \\
+\bottomrule
+\end{longtable}
+
+\textbf{Recommended loading} (via \texttt{load.R}):
+
+\begin{verbatim}
+source("load.R")
+# Automatically loads: X, y, S_mat, y_S
+# Use X/y for BART, logistic regression
+# Use S_mat/y_S for Polya-Gamma discrete-time models
+\end{verbatim}
 
 % ============================================================================
 \section{Preprocessing Rationale}
@@ -758,21 +1097,22 @@ Temperature harmonization: CareVue recorded both Celsius and Fahrenheit. We conv
 
 \subsection{Variable Scaling}
 
-Continuous predictors are standardized (mean=0, SD=1) to facilitate weakly informative priors:
+Continuous predictors are initially standardized (mean=0, SD=1) in \texttt{ready\_df}:
 
 \begin{verbatim}
 scaled_age = scale(age)[, 1]
 \end{verbatim}
 
-\textbf{Justification}: With priors like $\beta \sim N(0, 2.5)$, standardization ensures consistent interpretation across all variables.
+\textbf{However}: In Section 17, all \texttt{scaled\_*} variables are \textbf{removed} from the final \texttt{X} matrix to avoid multicollinearity with the original variables. If standardization is needed for modeling (e.g., Bayesian regression with weakly informative priors), it should be applied during model fitting.
 
 \subsection{Missing Data Defaults}
 
 \begin{itemize}[leftmargin=*, nosep]
     \item \textbf{Binary indicators}: Default to 0 (absence of code = condition not present)
-    \item \textbf{Count variables}: Default to 0
+    \item \textbf{Count variables}: Default to 0 (e.g., n\_diagnoses, n\_procedures)
     \item \textbf{DRG scores}: Default to 1 (lowest severity) --- conservative choice
-    \item \textbf{Lab/vital summaries}: Remain NA --- imputation strategy left to analysis phase
+    \item \textbf{Continuous vitals/labs}: Remain NA until factorization, then patients with missing values may be excluded via \texttt{na.omit()}
+    \item \textbf{High-missingness variables}: Dropped entirely if $>25\%$ missing (see Section 5.2)
 \end{itemize}
 
 % ============================================================================
@@ -802,51 +1142,61 @@ where $u_i \sim N(0, \sigma^2_u)$ (patient frailty) and $v_k \sim N(0, \sigma^2_
 
 \begin{enumerate}[leftmargin=*, nosep]
     \item \textbf{Exploratory}: Use \texttt{ready\_df} for descriptive statistics, univariate survival curves
-    \item \textbf{BART modeling}: Use discretized categorical variables (\texttt{*\_cat}) for clinically interpretable tree-based analysis
-    \item \textbf{Latent class discovery}: BART or Dirichlet process mixtures on \texttt{ready\_df} to identify heterogeneous patient strata
+    \item \textbf{BART modeling}: Use \texttt{X\_y.rds} directly --- contains pre-processed factors (e.g., *\_status, *\_group) for clinically interpretable tree-based analysis
+    \item \textbf{Latent class discovery}: BART or Dirichlet process mixtures on \texttt{X} to identify heterogeneous patient strata
     \item \textbf{Discrete-time survival}: Bayesian logistic regression on \texttt{person\_period\_df} with Polya-Gamma augmentation
     \item \textbf{Joint modeling}: Link vital trajectories (\texttt{longitudinal\_df}) with survival via shared random effects
 \end{enumerate}
 
 \subsection{BART Implementation Notes}
 
-When fitting BART with the \texttt{BART} package in R:
+When fitting BART with the \texttt{BART} package in R, use the pre-processed \texttt{X\_y.rds} file which has already:
 
 \begin{enumerate}[leftmargin=*, nosep]
-    \item \textbf{Exclude outcomes and IDs}: Remove \texttt{subject\_id}, \texttt{hadm\_id}, \texttt{icustay\_id}, \texttt{icu\_mortality}, \texttt{event\_status}, \texttt{hospital\_expire\_flag}, and all time-to-event variables
-    \item \textbf{Exclude timestamps}: Remove all \texttt{POSIXct} columns (\texttt{admittime}, \texttt{dischtime}, \texttt{deathtime}, \texttt{icu\_intime}, \texttt{icu\_outtime}, \texttt{end\_time})
-    \item \textbf{All factors}: All predictor variables in \texttt{ready\_df} are now factors (binary 0/1 or multi-level categorical)
-    \item \textbf{No continuous variables}: Continuous variables have been removed; use the binary factor versions
-    \item \textbf{Missing data}: The ``unknown'' factor level allows BART to learn from missingness patterns
+    \item \textbf{Excluded IDs and outcomes}: subject\_id, hadm\_id, icustay\_id, event\_status, hospital\_expire\_flag, time-to-event variables
+    \item \textbf{Excluded timestamps}: All POSIXct columns
+    \item \textbf{Excluded multicollinear variables}: Scaled versions, redundant aggregates
+    \item \textbf{Converted to factors}: All categorical and discretized variables
+    \item \textbf{Applied complete-case analysis}: NA rows removed
+    \item \textbf{Recoded ethnicity}: Consolidated to 8 levels (0--7)
 \end{enumerate}
 
-Example R code for BART preparation:
+\textbf{Key variables in final X matrix}:
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{Multi-level factors}: age\_group, los\_group, gcs\_status, hr\_status, rr\_status, spo2\_status, temp\_status, bun\_status, creat\_status, glucose\_status, hgb\_status, plt\_status, k\_status, na\_status, wbc\_status, comorbidity\_level, complexity\_status
+    \item \textbf{Binary factors}: hr\_unstable, temp\_unstable, multiple\_icu\_stays, all icd\_* flags, intervention indicators
+    \item \textbf{Categorical factors}: admission\_type, insurance, first\_careunit, first\_service, gender, ethnicity
+    \item \textbf{Numeric}: age, los\_icu, n\_diagnoses, n\_procedures, n\_prescriptions, drg\_mortality\_score, drg\_severity\_score, n\_vasopressor\_doses, vasopressor\_duration\_hrs, n\_service\_changes, n\_transfers, n\_callouts, gcs\_mean\_val
+\end{itemize}
+
+Example R code for BART:
 \begin{verbatim}
-exclude <- c("subject_id", "hadm_id", "icustay_id",
-             "icu_mortality", "event_status", "hospital_expire_flag",
-             "time_to_event_hours", "time_to_event_days",
-             "admittime", "dischtime", "deathtime",
-             "icu_intime", "icu_outtime", "end_time")
+# Load pre-processed data
+data <- readRDS("data/rds/X_y.rds")
+X <- data$X
+y <- data$y
 
-y <- as.numeric(as.character(ready_df$icu_mortality))
-X <- ready_df %>% select(-any_of(exclude))
-
-# Fit logistic BART
+# Fit logistic BART for binary outcome (icu_mortality)
+library(BART)
 bart_model <- lbart(x.train = X, y.train = y)
 \end{verbatim}
 
 \subsection{Prior Recommendations}
 
-For scaled continuous predictors:
+\textbf{Note}: The final \texttt{X} matrix primarily contains factor variables (both multi-level and binary). For any remaining numeric predictors (age, los\_icu, count variables), consider standardizing during model fitting.
+
+For numeric predictors (when standardized):
 \begin{align*}
 \beta_j &\sim \text{Normal}(0, 2.5) \\
 \sigma_u &\sim \text{Half-Cauchy}(0, 2.5)
 \end{align*}
 
-For period-specific intercepts (baseline hazard):
+For period-specific intercepts in discrete-time models (baseline hazard):
 \[
 \alpha_t \sim \text{Normal}(0, 2) \quad \text{or random walk prior}
 \]
+
+For BART models, use default priors --- BART's regularization priors are well-calibrated for most applications.
 
 % ============================================================================
 \section{Data Quality Notes}
