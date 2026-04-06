@@ -1,0 +1,35 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allison(1982)]{allison-discrete}
+Paul~D. Allison.
+\newblock Discrete-time methods for the analysis of event histories.
+\newblock \emph{Sociological Methodology}, 13:\penalty0 61--98, 1982.
+\newblock \doi{10.2307/270718}.
+
+\bibitem[Johnson et~al.(2016)Johnson, Pollard, and Mark]{PhysioNet-mimiciii-1.4}
+Alistair Johnson, Tom Pollard, and Roger Mark.
+\newblock {MIMIC-III Clinical Database}.
+\newblock \emph{{PhysioNet}}, September 2016.
+\newblock \doi{10.13026/C2XW26}.
+\newblock URL \url{https://doi.org/10.13026/C2XW26}.
+\newblock Version 1.4.
+
+\bibitem[Kalbfleisch and Prentice(2003)]{kalbfleisch2003statistical}
+John~D. Kalbfleisch and Ross~L. Prentice.
+\newblock \emph{The Statistical Analysis of Failure Time Data}.
+\newblock John Wiley \& Sons, Hoboken, N.J., 2nd edition, 2003.
+\newblock ISBN 978-0-471-36357-6.
+
+\bibitem[Polson et~al.(2013)Polson, Scott, and Windle]{polya-gamma}
+Nicholas~G. Polson, James~G. Scott, and Jesse Windle.
+\newblock Bayesian inference for logistic models using pólya–gamma latent variables.
+\newblock \emph{Journal of the American Statistical Association}, 108\penalty0 (504):\penalty0 1339--1349, 2013.
+\newblock \doi{10.1080/01621459.2013.829001}.
+\newblock URL \url{https://doi.org/10.1080/01621459.2013.829001}.
+
+\end{thebibliography}

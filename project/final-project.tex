@@ -1,0 +1,140 @@
+\documentclass[twoside,11pt]{article}
+\usepackage{amsmath}
+\usepackage{style}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% ── Table column types ────────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ── Row shading color ─────────────────────────────────────────────────────────
+\definecolor{rowgray}{gray}{0.93}
+
+\ShortHeadings{
+%% short title here
+Bayesian Discrete-Time Modeling
+}{
+% last name
+Kurth}
+\firstpageno{1}
+
+\begin{document}
+
+\title{	Bayesian Discrete-Time Survival Modeling via P\'olya-Gamma Augmentation: An Application to ICU Mortality\\
+\vspace{.1in}
+PHP2530			
+}
+
+\author{ Adam M. Kurth}
+
+\maketitle
+\date{4 }
+
+\section{Introduction} \label{sc:intro}
+
+Accurate mortality risk profiling in the Intensive Care Unit (ICU) is essential for clinical decision-making. Standard continuous-time approaches such as the Cox PH model are computationally infeasible on large-scale, electronic health records like MIMIC-III \citep{PhysioNet-mimiciii-1.4}, and their handling of censoring is often treated as an unexamined formality. The central question of this project is: \textit{under what conditions does the independent right-censoring assumption hold in ICU survival data, and what are the consequences when it is violated?} Patients are censored at hospital discharge—a process that is plausibly \textit{informative}, since patients who are discharged likely systematically differ from those who remain. Standard survival proceed assuming that censoring is non-informative, allowing for a convenient factorization of the likelihood (\citet{kalbfleisch2003statistical}, Section 2.4). We want to critically evaluate this assumption in the context of ICU mortality.
+
+% proceed as though censoring is non-informative, factorizing the likelihood into independent contributions from failures and censored observations \citep{kalbfleisch2003statistical}. This project takes that assumption seriously: we implement a fully Bayesian discrete-time survival model under the independent censoring assumption and use posterior predictive checks to assess where and how it breaks down.
+
+To achieve efficient posterior inference, we employ the P\'olya-Gamma data
+augmentation technique \citet{polya-gamma}, which renders the logistic
+likelihood conditionally Gaussian under conjugacy, permitting efficient Gibbs sampling. This framework aims use a principled format for evaluating survival censoring assumptions.
+ 
+\section{Data Structure and Notation} \label{sc:data}
+% database overview
+We utilize the MIMIC-III database ($N \approx 46,000$) \citep{PhysioNet-mimiciii-1.4}. We define ``time-zero'' as admission to the ICU. We define a static baseline covariate matrix, $\mathbf{X} \in \mathbb{R}^{N \times P}$, where $N$ is the number of unique ICU admissions and $P$ is the number of static baseline covariates. We define $t = 1,\dots,y_i$ to represent the discrete time intervals (days) for patient $i$ until we observe \(y_{i}\). We denote $T_i$ as the time until death for patient $i$ and assume that patients are right-censored at discharge. We observe $y_i = \min(T_i, C_i)$, where $C_i$ is the censoring time (discharge), and a failure indicator $\delta_i = \mathbb{I}(T_i \le C_i)$. The data is transformed into a ``person-period" format \citep{allison-discrete}. We define:
+\begin{itemize}[noitemsep]
+    \item $\mathbf{x}_i$: A vector of static baseline covariates (age, admission type, comorbidities).
+    \item $y_{i,t}$: A binary indicator where $y_{i,t} = 1$ if the patient dies in interval $t$, and $y_{i,t} = 0$ otherwise.
+\end{itemize}
+Crucially, if a patient is censored at time $C_i$, then $y_{i,C_i} = 0$ for all observed intervals. If they die at $y_i$, then $y_{i,T_i} = 1$.
+
+
+
+\section{Methodology} \label{sc:methods}
+Following Section 2.4 of \citet{kalbfleisch2003statistical}, the discrete-time hazard is the conditional probability $h_{i,t} = \Pr(T_i = t \mid T_i \ge t, \mathbf{x}_i)$. Under the assumption of independent right-censoring, the likelihood for patient $i$ is:
+\begin{equation}
+    \mathcal{L}_i(\boldsymbol{\theta}) 
+    = \prod_{t=1}^{y_i} h_{i,t}^{y_{i,t}} (1 - h_{i,t})^{1 - y_{i,t}} \qquad\text{and}\qquad
+    \mathcal{L}(\boldsymbol{\theta})  = \prod_{i=1}^N  \prod_{t=1}^{y_i} h_{i,t}^{y_{i,t}} (1 - h_{i,t})^{1 - y_{i,t}} 
+\end{equation}
+We model the hazard using a logistic link: $\eta_{i,t} = \text{logit}(h_{i,t}) = \alpha_t + \mathbf{x}_i^\top \boldsymbol{\beta} = \mathbf{s}_{i,t}^\top \boldsymbol{\theta}$. The full parameter vector \(\boldsymbol{\theta}  = (\boldsymbol{\alpha}^\top, \boldsymbol{\beta}^\top)^\top\), with stacked design vector \(\mathbf{s}_{i,t} = (\mathbf{d}_t^\top, \mathbf{x}_i^\top)^\top\) where \(\mathbf{d}_t\) is the indicator vector for time interval \(t\).  The first order log-odds of \(\alpha_t\) are modeled with a first-order random walk (RW) prior: $\alpha_t  \mid \alpha_{t-1}, \sigma^2 \sim \mathcal{N}(\alpha_{t-1}, \sigma^2)$  and \(\sigma \sim \mathrm{HalfCauchy}(0, 1)\) hyperprior. \(\alpha_t\) here reflects the neighboring time-intervals sharing similar baseline hazards and accounts for autocorrelation in different (non-independent) days in the ICU. While, \(\sigma\) is weakly informative, controlling the variability in \(\alpha_t\). Coeffiicents priors, \(\boldsymbol{\beta}\sim \mathcal{N}(\mathbf{0}, \tau^2 \mathbf{I})\) allow for regularization.
+
+
+\section{Computation: Pólya-Gamma Gibbs Sampler} \label{sc:comp}
+
+To bypass the computational challenges with high-dimensional MCMC, we utilize a clever data augmentation strategy allowing for conjugacy for logistic regression. Theorem 1 from \citet{polya-gamma}, states that the auxiliary variable \(\omega_{i,t} \sim PG(1,0)\), allows for conditional Gaussian posterior for regression coefficients \(\boldsymbol{\theta}\). 
+% The key identity is:
+% \begin{equation}
+%     \frac{(e^{\eta_{i,t}})^{y_{i,t}}}{1 + e^{\eta_{i,t}}}
+%     = \frac{1}{2} e^{\kappa_{i,t}\,\eta_{i,t}}
+%         \int_0^\infty \exp \left\{ -\frac{\omega_{i,t}\,\eta_{i,t}^2}{2}\right\}
+%       p(\omega_{i,t}) d\omega_{i,t},
+% \end{equation}
+% where $\kappa_{i,t} = y_{i,t} - 1/2$ and $\omega_{i,t} \sim \text{PG}(1, 0)$. The Gibbs sampler iteratively samples from the full conditionals:
+\begin{align}
+    \omega_{i,t} &\mid \boldsymbol{\theta} \sim \mathrm{PG}(1,\, \eta_{i,t}) 
+            \tag*{(Step 1: PG augmentation)}\\ 
+    \boldsymbol{\theta} \mid \tilde{\mathbf{y}}, \boldsymbol{\omega} &\sim \mathcal{N}(\boldsymbol{\mu}_\theta, \boldsymbol{\Sigma}_\theta) 
+            \tag*{(Step 2: Sample $\boldsymbol{\theta}$)}\\
+    \boldsymbol{\Sigma}_\theta = (\boldsymbol{\Sigma}_0^{-1} + \mathbf{S}^\top \Omega \mathbf{S})^{-1}; &\quad \boldsymbol{\mu}_\theta = \boldsymbol{\Sigma}_\theta (\boldsymbol{\Sigma}_0^{-1}\boldsymbol{\mu}_0 + \mathbf{S}^\top \boldsymbol{\kappa})
+\end{align}
+
+
+
+
+
+% \paragraph{Step 1 — Sample PG augmentations.} For each $(i,t)$ pair:
+% \[
+%     \omega_{i,t} \mid \boldsymbol{\theta}
+%     \sim \mathrm{PG}(1,\, \eta_{i,t}).
+% \]
+
+% \paragraph{Step 2 — Sample $\boldsymbol{\theta}$.}
+% Define working responses $\tilde{y}_{i,t} = \kappa_{i,t}/\omega_{i,t}$. The full
+% conditional is:
+% \begin{align}
+%     \boldsymbol{\theta} \mid \tilde{\mathbf{y}}, \boldsymbol{\omega}
+%     &\sim \mathcal{N}(\boldsymbol{\mu}_\theta, \boldsymbol{\Sigma}_\theta), \\
+%     \boldsymbol{\Sigma}_\theta
+%     = \bigl(\boldsymbol{\Sigma}_0^{-1} + \mathbf{S}^\top\Omega\mathbf{S}\bigr)^{-1},
+%     &\qquad
+%     \boldsymbol{\mu}_\theta
+%     = \boldsymbol{\Sigma}_\theta
+%       \bigl(\boldsymbol{\Sigma}_0^{-1}\boldsymbol{\mu}_0
+%             + \mathbf{S}^\top\boldsymbol{\kappa}\bigr),
+% \end{align}
+
+
+
+where $\mathbf{S}$ is the design matrix of covariates and time indicators,$\tilde{y}_{i,t} = \kappa_{i,t}/\omega_{i,t}$ is the working response, $\Omega$ is a diagonal matrix of PG variables.
+
+\section{Simulation Study/Data Analysis} \label{sc:data-analysis}
+
+% I will evaluate the model using Posterior Predictive Checks (PPC), \(\hat{R}\), and effective sample size (ESS) diagnostics. The PPCs will involve simulating new datasets from the posterior predictive distribution and comparing the predicted survival curves. We will compare against the Kaplan-Meier estimates from MIMIC-III to visually assess model fit. This will validate the model's independent censoring assumption; if the PPCs diverge from the empirical curves, it suggests the need for more complex censoring mechanisms, providing a clear path for discussion in the final paper. 
+
+Model assessment will proceed along two tracks. First, standard MCMC diagnostics (
+$\hat{R}$ and effective sample size (ESS)) will confirm sampler convergence. 
+Second, and more substantively, posterior predictive checks (PPCs) will be used to interrogate the independent censoring assumption directly. Predicted survival curves generated from the posterior predictive distribution will be compared against nonparametric Kaplan-Meier estimates (fit to same data). Systematic divergence
+between the two—particularly among subgroups defined by discharge disposition or
+length of stay—would constitute evidence that the censoring mechanism is
+informative, motivating sensitivity analyses or model extensions. 
+% This diagnostically-driven evaluation of the censoring assumption is the primary scientific contribution of the analysis.
+
+
+
+
+\appendix
+
+\newpage 
+\bibliography{references}
+
+\end{document}
