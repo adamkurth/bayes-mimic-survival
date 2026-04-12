@@ -5,24 +5,87 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \citation{PhysioNet-mimiciii-1.4}
 \citation{kalbfleisch2003statistical}
-\citation{polya-gamma}
-\citation{PhysioNet-mimiciii-1.4}
+\citation{rubin1976}
+\citation{tsiatis1975}
 \citation{allison-discrete}
+\citation{scharfstein1999}
+\citation{polya-gamma}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{sc:intro}{{1}{1}{}{section.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Data Structure and Notation}{1}{section.2}\protected@file@percent }
-\newlabel{sc:data}{{2}{1}{}{section.2}{}}
-\citation{kalbfleisch2003statistical}
-\citation{polya-gamma}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{2}{section.3}\protected@file@percent }
-\newlabel{sc:methods}{{3}{2}{}{section.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Computation: Pólya-Gamma Gibbs Sampler}{2}{section.4}\protected@file@percent }
-\newlabel{sc:comp}{{4}{2}{}{section.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Simulation Study/Data Analysis}{2}{section.5}\protected@file@percent }
-\newlabel{sc:data-analysis}{{5}{2}{}{section.5}{}}
+\citation{allison-discrete}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Data Structure, Person-Period Format, \& Notation}{2}{section.2}\protected@file@percent }
+\newlabel{sc:notation}{{2}{2}{}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Discretization}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Person-Period}{2}{section.2}\protected@file@percent }
+\citation{tsiatis1975}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Standard Likelihood \& Censoring Assumption}{3}{section.3}\protected@file@percent }
+\newlabel{sc:naive-likelihood}{{3}{3}{}{section.3}{}}
+\newlabel{eq:discrete-time-hazard}{{2}{3}{}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Full Likelihood}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{eq:full-lik}{{4}{3}{Full Likelihood}{equation.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Independent Censoring Assumption}{3}{subsection.3.2}\protected@file@percent }
+\newlabel{sc:indep-cens}{{3.2}{3}{Independent Censoring Assumption}{subsection.3.2}{}}
+\newlabel{assump:indep-cens}{{3.2}{3}{Independent Censoring Assumption}{subsection.3.2}{}}
+\citation{rubin1976}
+\citation{scharfstein1999}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Censoring Condition \& Operative Assumption}{4}{subsection.3.3}\protected@file@percent }
+\newlabel{sc:censoring-conditions}{{3.3}{4}{Censoring Condition \& Operative Assumption}{subsection.3.3}{}}
+\newlabel{assump:operative-cens}{{3.3}{4}{Censoring Condition \& Operative Assumption}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Consequences of Informative Censoring}{4}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Confounding Bias in Covariate Effects:}{4}{subsection.3.4}\protected@file@percent }
+\citation{vaupel1979,lancaster1979}
+\@writefile{toc}{\contentsline {paragraph}{Biased Hazard Estimation:}{5}{equation.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Corrections:}{5}{equation.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Logistic Hazard Model as Discrete-Time Transition Model}{6}{section.4}\protected@file@percent }
+\newlabel{sc:frailty}{{4}{6}{Consequences of Informative Censoring}{section.4}{}}
+\newlabel{eq:transition}{{10}{6}{Consequences of Informative Censoring}{equation.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Modeling Procedure, Frailty Extension}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{eq:obs-model}{{11}{6}{Modeling Procedure, Frailty Extension}{equation.11}{}}
+\newlabel{eq:link-frailty}{{12}{6}{Modeling Procedure, Frailty Extension}{equation.12}{}}
+\newlabel{eq:alpha1-prior}{{13}{6}{Modeling Procedure, Frailty Extension}{equation.13}{}}
+\newlabel{eq:rw-prior}{{14}{6}{Modeling Procedure, Frailty Extension}{equation.14}{}}
+\newlabel{eq:beta-prior}{{15}{6}{Modeling Procedure, Frailty Extension}{equation.15}{}}
+\newlabel{eq:frailty-prior}{{16}{6}{Modeling Procedure, Frailty Extension}{equation.16}{}}
+\newlabel{eq:sigma-b-prior}{{17}{6}{Modeling Procedure, Frailty Extension}{equation.17}{}}
+\newlabel{eq:sigma-alpha-prior}{{18}{6}{Modeling Procedure, Frailty Extension}{equation.18}{}}
+\@writefile{toc}{\contentsline {paragraph}{Rationale:}{6}{equation.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Connections to Bias (Appendix~\ref {app:biased-hazard}):}{7}{equation.18}\protected@file@percent }
+\newlabel{eq:frailty-indep-cens}{{19}{7}{Modeling Procedure, Frailty Extension}{equation.19}{}}
+\newlabel{eq:hazard-bias}{{20}{7}{Modeling Procedure, Frailty Extension}{equation.20}{}}
+\citation{tsiatis1975}
+\citation{scharfstein1999}
+\citation{daniels2008}
+\newlabel{subsec:identifiability}{{4.1}{8}{Modeling Procedure, Frailty Extension}{equation.20}{}}
+\@writefile{toc}{\contentsline {paragraph}{Identifiability.}{8}{equation.20}\protected@file@percent }
+\newlabel{subsec:implications}{{4.1}{8}{Modeling Procedure, Frailty Extension}{equation.20}{}}
+\@writefile{toc}{\contentsline {paragraph}{Modeling Implications.}{8}{equation.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Shared Frailty \& Unobserved Heterogeneity}{8}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Selection Model \& Exponential Tilting}{8}{subsection.4.3}\protected@file@percent }
+\citation{daniels2008}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Tilted Likelihood}{9}{subsection.4.4}\protected@file@percent }
+\newlabel{eq:tilted-hazard}{{22}{9}{Tilted Likelihood}{equation.22}{}}
+\newlabel{eq:odds-tilt}{{23}{9}{Tilted Likelihood}{equation.23}{}}
+\newlabel{eq:tilted-lik}{{24}{9}{Tilted Likelihood}{equation.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Protocol}{9}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Polya-Gamma Augmentation}{11}{section.5}\protected@file@percent }
+\newlabel{sc:pg-augmentation}{{5}{11}{Protocol}{section.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{11}{section.6}\protected@file@percent }
+\newlabel{sc:discussion}{{6}{11}{Protocol}{section.6}{}}
+\citation{scharfstein1999}
+\citation{scharfstein1999}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Semiparametric Estimation Equations under Informative Censoring}{12}{appendix.A}\protected@file@percent }
+\newlabel{app:scharfstein1999}{{A}{12}{Protocol}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Derivation of Biased Hazard under Informative Censoring}{13}{appendix.B}\protected@file@percent }
+\newlabel{app:biased-hazard}{{B}{13}{Protocol}{appendix.B}{}}
 \bibdata{references}
 \bibcite{allison-discrete}{{1}{1982}{{Allison}}{{}}}
-\bibcite{PhysioNet-mimiciii-1.4}{{2}{2016}{{Johnson et~al.}}{{Johnson, Pollard, and Mark}}}
-\bibcite{kalbfleisch2003statistical}{{3}{2003}{{Kalbfleisch and Prentice}}{{}}}
-\bibcite{polya-gamma}{{4}{2013}{{Polson et~al.}}{{Polson, Scott, and Windle}}}
-\gdef \@abspage@last{3}
+\bibcite{daniels2008}{{2}{2008}{{Daniels and Hogan}}{{}}}
+\bibcite{PhysioNet-mimiciii-1.4}{{3}{2016}{{Johnson et~al.}}{{Johnson, Pollard, and Mark}}}
+\bibcite{kalbfleisch2003statistical}{{4}{2003}{{Kalbfleisch and Prentice}}{{}}}
+\bibcite{lancaster1979}{{5}{1979}{{Lancaster}}{{}}}
+\bibcite{polya-gamma}{{6}{2013}{{Polson et~al.}}{{Polson, Scott, and Windle}}}
+\bibcite{rubin1976}{{7}{1976}{{Rubin}}{{}}}
+\bibcite{scharfstein1999}{{8}{1999}{{Scharfstein et~al.}}{{Scharfstein, Rotnitzky, and Robins}}}
+\bibcite{tsiatis1975}{{9}{1975}{{Tsiatis}}{{}}}
+\bibcite{vaupel1979}{{10}{1979}{{Vaupel et~al.}}{{Vaupel, Manton, and Stallard}}}
+\gdef \@abspage@last{14}

@@ -1,47 +1,3 @@
-@misc{ned2024mimiciii,
-  title={MIMIC-III Clinical Database (Open Access)},
-  author={Ned, Ihssane},
-  year={2024},
-  howpublished={\url{https://www.kaggle.com/datasets/ihssanened/mimic-iii-clinical-databaseopen-access}},
-  note={Accessed: 2024-03-26}
-}
-
-@article{sofa,
-	author = {Vincent, J. -L. and Moreno, R. and Takala, J. and Willatts, S. and De Mendon{\c c}a, A. and Bruining, H. and Reinhart, C. K. and Suter, P. M. and Thijs, L. G.},
-	doi = {10.1007/BF01709751},
-	isbn = {1432-1238},
-	journal = {Intensive Care Medicine},
-	number = {7},
-	pages = {707--710},
-	title = {The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure},
-	url = {https://doi.org/10.1007/BF01709751},
-	volume = {22},
-	year = {1996}
-}
-
-
-@article{apache,
-	title = {APACHE-acute physiology and chronic health evaluation: a physiologically based classification system},
-	author = {Knaus, William A. and Draper, Elizabeth A. and Wagner, Douglas P. and Zimmerman, Jack E.},
-	doi = {10.1097/00003246-198510000-00008},
-	journal = {Critical Care Medicine},
-	volume = {13},
-	number = {8},
-	pages = {591–597},
-	year = {1981}
-}
-
-
-@article{machine_learning,
-	author = {Britsch, Simone and Britsch, Markward and Lindner, Simon and Hahn, Leonie and Schneider-Lindner, Verena and Helbing, Thomas and Thiel, Manfred and Duerschmied, Daniel and Becher, Tobias},
-	journal = {Communications Medicine},
-	number = {1},
-	pages = {426},
-	title = {An interpretable machine learning algorithm enables dynamic 48-hour mortality prediction during an ICU stay},
-	volume = {5},
-	year = {2025}}
-
-
 @article{PhysioNet-mimiciii-1.4,
   author = {Johnson, Alistair and Pollard, Tom and Mark, Roger},
   title = {{MIMIC-III Clinical Database}},
@@ -68,30 +24,6 @@
 	eprint = {https://doi.org/10.1080/01621459.2013.829001}
 }
 
-@article{bart,
-  title={BART: Bayesian additive regression trees},
-  author={Chipman, Hugh A and George, Edward I and McCulloch, Robert E},
-  journal={The annals of applied statistics},
-  volume={4},
-  number={1},
-  pages={266--298},
-  year={2010},
-  publisher={Institute of Mathematical Statistics}
-}
-
-@article{bart-nonparametric,
- title={Nonparametric Machine Learning and Efficient Computation with Bayesian Additive Regression Trees: The BART R Package},
- volume={97},
- url={https://www.jstatsoft.org/index.php/jss/article/view/v097i01},
- doi={10.18637/jss.v097.i01},
- abstract={In this article, we introduce the BART R package which is an acronym for Bayesian additive regression trees. BART is a Bayesian nonparametric, machine learning, ensemble predictive modeling method for continuous, binary, categorical and time-to-event outcomes. Furthermore, BART is a tree-based, black-box method which fits the outcome to an arbitrary random function, f , of the covariates. The BART technique is relatively computationally efficient as compared to its competitors, but large sample sizes can be demanding. Therefore, the BART package includes efficient state-of-the-art implementations for continuous, binary, categorical and time-to-event outcomes that can take advantage of modern off-the-shelf hardware and software multi-threading technology. The BART package is written in C++ for both programmer and execution efficiency. The BART package takes advantage of multi-threading via forking as provided by the parallel package and OpenMP when available and supported by the platform. The ensemble of binary trees produced by a BART fit can be stored and re-used later via the R predict function. In addition to being an R package, the installed BART routines can be called directly from C++. The BART package provides the tools for your BART toolbox.},
- number={1},
- journal={Journal of Statistical Software},
- author={Sparapani, Rodney and Spanbauer, Charles and McCulloch, Robert},
- year={2021},
- pages={1–66}
-}
-
 @article{albert-chib,
  ISSN = {01621459, 1537274X},
  URL = {http://www.jstor.org/stable/2290350},
@@ -105,32 +37,6 @@
  urldate = {2026-03-28},
  volume = {88},
  year = {1993}
-}
-
-
-@article{charleson,
-  title={A new method of classifying prognostic comorbidity in longitudinal studies: development and validation},
-  author={Charlson, Mary E and Pompei, Peter and Ales, Kathy L and MacKenzie, C Ronald},
-  journal={Journal of chronic diseases},
-  volume={40},
-  number={5},
-  pages={373--383},
-  year={1987},
-  publisher={Elsevier},
-  doi={10.1016/0021-9681(87)90171-8},
-  pmid={3558716}
-}
-
-@article{elixhauser,
-	author = {Elixhauser, A and Steiner, C and Harris, D R and Coffey, R M},
-	title = {Comorbidity measures for use with administrative data},
-	journal = {Medical Care},
-	year = {1998},
-	volume = {36},
-	number = {1},
-	pages = {8--27},
-	doi = {10.1097/00005650-199801000-00004},
-	pmid = {9431328},
 }
 
 %% ═══════════════════════════════════════════════════════════════════════════
@@ -212,30 +118,6 @@
 	note = {ICU-specific analysis of missingness patterns; supports use of missingness indicators}
 }
 
-
-@article{bart-survival,
-  title = {Nonparametric survival analysis using {B}ayesian Additive Regression Trees ({BART})},
-  author = {Sparapani, Rodney A. and Logan, Brent R. and McCulloch, Robert E. and Laud, Purushottam W.},
-  journal = {Statistics in Medicine},
-  volume = {35},
-  number = {16},
-  pages = {2741--2753},
-  year = {2016},
-  doi = {10.1002/sim.6893},
-  note = {Extends BART to right-censored survival outcomes; foundational for BART survival modeling}
-}
-
-@book{little-rubin,
-  title = {Statistical Analysis with Missing Data},
-  author = {Little, Roderick J. A. and Rubin, Donald B.},
-  edition = {3rd},
-  year = {2019},
-  publisher = {Wiley},
-  address = {Hoboken, NJ},
-  isbn = {978-0470526798},
-  note = {Chapters 1--4 cover missing data mechanisms (MCAR, MAR, MNAR) and imputation theory}
-}
-
 @inbook{sirs,
   author    = {S. Baddam and B. Burns},
   title     = {Systemic Inflammatory Response Syndrome},
@@ -248,31 +130,9 @@
   url       = {https://www.ncbi.nlm.nih.gov/books/NBK547669/}
 }
 
-@article{singer1993time,
-  title={It's about time: Using discrete-time survival analysis to study duration and the timing of events},
-  author={Singer, Judith D and Willett, John B},
-  journal={Journal of Educational Statistics},
-  volume={18},
-  number={2},
-  pages={155--195},
-  year={1993},
-  publisher={Sage Publications Sage CA: Thousand Oaks, CA},
-  doi={10.2307/1165085},
-  url={https://doi.org/10.2307/1165085}
-}
-
-
-@inproceedings{NIPS2015_07a4e20a,
- author = {Linderman, Scott and Johnson, Matthew J and Adams, Ryan P},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {C. Cortes and N. Lawrence and D. Lee and M. Sugiyama and R. Garnett},
- pages = {},
- publisher = {Curran Associates, Inc.},
- title = {Dependent Multinomial Models Made Easy: Stick-Breaking with the Polya-gamma Augmentation},
- url = {https://proceedings.neurips.cc/paper_files/paper/2015/file/07a4e20a7bbeeb7a736682b26b16ebe8-Paper.pdf},
- volume = {28},
- year = {2015}
-}
+%% ═══════════════════════════════════════════════════════════════════════════
+%% METHODOLOGICAL REFERENCES FOR MODELING STRATEGIES
+%% ═══════════════════════════════════════════════════════════════════════════
 
 @book{kalbfleisch2003statistical,
   title={The Statistical Analysis of Failure Time Data},
@@ -285,13 +145,123 @@
 }
 
 
-@article{gelman2006prior,
-  title={Prior distributions for variance parameters in hierarchical models (comment on article by Browne and Draper)},
-  author={Gelman, Andrew},
-  journal={Bayesian Analysis},
-  volume={1},
-  number={3},
-  pages={515--534},
-  year={2006},
-  publisher={International Society for Bayesian Analysis}
+@article{lagakos1979general,
+  title={General Right Censoring and Its Impact on the Analysis of Survival Data},
+  author={Lagakos, S. W.},
+  ISSN = {0006341X, 15410420},
+   URL = {http://www.jstor.org/stable/2529941},
+  journal = {Biometrics},
+  number = {1},
+  pages = {139--156},
+  publisher = {[Wiley, International Biometric Society]},
+  title = {General Right Censoring and Its Impact on the Analysis of Survival Data},
+  urldate = {2026-04-06},
+  volume = {35},
+  year = {1979}
+}
+
+
+% --- Frailty / unobserved heterogeneity ---
+
+@book{hougaard2000,
+  author    = {Hougaard, Philip},
+  title     = {Analysis of Multivariate Survival Data},
+  publisher = {Springer},
+  year      = {2000},
+  address   = {New York},
+  doi       = {10.1007/978-1-4612-1304-8}
+}
+
+@article{vaupel1979,
+  author  = {Vaupel, James W. and Manton, Kenneth G. and Stallard, Eric},
+  title   = {The Impact of Heterogeneity in Individual Frailty on the
+             Dynamics of Mortality},
+  journal = {Demography},
+  volume  = {16},
+  number  = {3},
+  pages   = {439--454},
+  year    = {1979},
+  doi     = {10.2307/2061224}
+}
+
+@article{lancaster1979,
+  author  = {Lancaster, Tony},
+  title   = {Econometric Methods for the Duration of Unemployment},
+  journal = {Econometrica},
+  volume  = {47},
+  number  = {4},
+  pages   = {939--956},
+  year    = {1979},
+  doi     = {10.2307/1914140}
+}
+
+@book{ibrahim2001,
+  author    = {Ibrahim, Joseph G. and Chen, Ming-Hui and Sinha, Debajyoti},
+  title     = {Bayesian Survival Analysis},
+  publisher = {Springer},
+  year      = {2001},
+  address   = {New York},
+  doi       = {10.1007/978-1-4757-3447-8}
+}
+
+% --- Non-identifiability in competing risks ---
+
+@article{tsiatis1975,
+  author  = {Tsiatis, Anastasios},
+  title   = {A Nonidentifiability Aspect of the Problem of Competing
+             Risks},
+  journal = {Proceedings of the National Academy of Sciences},
+  volume  = {72},
+  number  = {1},
+  pages   = {20--22},
+  year    = {1975},
+  doi     = {10.1073/pnas.72.1.20}
+}
+
+% --- Missing data foundations ---
+
+@article{rubin1976,
+  author  = {Rubin, Donald B.},
+  title   = {Inference and Missing Data},
+  journal = {Biometrika},
+  volume  = {63},
+  number  = {3},
+  pages   = {581--592},
+  year    = {1976},
+  doi     = {10.1093/biomet/63.3.581}
+}
+
+@article{scharfstein1999,
+  author  = {Scharfstein, Daniel O. and Rotnitzky, Andrea and Robins, James M.},
+  title   = {Adjusting for Nonignorable Drop-Out Using Semiparametric
+             Nonresponse Models},
+  journal = {Journal of the American Statistical Association},
+  volume  = {94},
+  number  = {448},
+  pages   = {1096--1120},
+  year    = {1999},
+  doi     = {10.1080/01621459.1999.10473862}
+}
+
+@article{heitjan1991,
+  author  = {Heitjan, Daniel F. and Rubin, Donald B.},
+  title   = {Ignorability and Coarse Data},
+  journal = {The Annals of Statistics},
+  volume  = {19},
+  number  = {4},
+  pages   = {2244--2253},
+  year    = {1991},
+  doi     = {10.1214/aos/1176348396}
+}
+
+% --- Bayesian missing data / longitudinal dropout ---
+
+@book{daniels2008,
+  author    = {Daniels, Michael J. and Hogan, Joseph W.},
+  title     = {Missing Data in Longitudinal Studies: Strategies for
+               {B}ayesian Modeling and Sensitivity Analysis},
+  publisher = {Chapman \& Hall/CRC},
+  year      = {2008},
+  address   = {Boca Raton, FL},
+  isbn      = {978-1584886099}
 }

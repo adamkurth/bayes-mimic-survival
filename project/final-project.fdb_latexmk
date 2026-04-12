@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex final-project"] 1775491526.20217 "final-project.aux" "final-project.bbl" "final-project" 1775491526.46988 0
-  "./references.bib" 1775491397.23178 17099 8866e25eae1b9fccc4026d547b312363 ""
+["bibtex final-project"] 1776030079.29144 "final-project.aux" "final-project.bbl" "final-project" 1776030079.61639 0
+  "./references.bib" 1776028090.50027 14512 010aa1a921ae98bb1d76c018dcd81641 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "final-project.aux" 1775491526.41758 1552 8c81cbe66d6e10f7fdd98748d6ee28ad "pdflatex"
+  "final-project.aux" 1776030079.55746 7043 0dc1a18e1aea535d9c5beeb7c197815b "pdflatex"
   (generated)
   "final-project.bbl"
   "final-project.blg"
   (rewritten before read)
-["pdflatex"] 1775491526.21457 "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" "final-project.pdf" "final-project" 1775491526.46999 0
-  "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" 1775491499.24077 9910 a4fb6ab10251d94c5ecd01df0354a091 ""
+["pdflatex"] 1776030079.30583 "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" "final-project.pdf" "final-project" 1776030079.61653 0
+  "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" 1776030078.80314 48026 b14b328566fb6a825b5bdcc5a2114793 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1246382020 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1246382020 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -17,12 +17,15 @@
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib6.tfm" 1246382020 1516 a3bf6a5e7ec4401b1f52092dfaaed242 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib8.tfm" 1246382020 1528 dab402b9d3774ca98baa037071cee7ae ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
+  "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1246382020 924 9904cf1d39e9767e7a3622f2a125a565 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1246382020 908 2921f8a10601f252058503cc6570e581 ""
+  "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1246382020 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm" 1136768653 1116 4e6ba9d7914baa6482fd69f67d126380 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
+  "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm" 1136768653 1332 f817c21a1ba54560425663374f1b651a ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm" 1136768653 1344 8a0be4fe4d376203000810ad4dc81558 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx8.tfm" 1136768653 1332 1fde11373e221473104d6cc5993f046e ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm" 1136768653 1300 63a6111ee6274895728663cf4b4e7e81 ""
@@ -58,6 +61,8 @@
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1248133631 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
+  "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb" 1248133631 35479 892d27442ef9ef29ce1ee57aa0e8a665 ""
+  "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1248133631 31764 459c573c03a4949a528c2cc7f557e217 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty" 1576625341 40635 c40361e206be584d448876bba8a64a3b ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty" 1576016050 33961 6b5c75130e435b2bfdb9f480a09a39f9 ""
@@ -120,10 +125,10 @@
   "/Users/adamkurth/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk" 1772592557.10277 12644 db913e2d0d745aba65fce94cc1aeeebc ""
   "/Users/adamkurth/Library/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1775011749 2241888 a8810cc3e5a1785711d41ab7c088833b ""
   "/Users/adamkurth/Library/TinyTeX/texmf.cnf" 1761852889.88832 708 85fd07691b6294ba94c59dbc62380410 ""
-  "final-project.aux" 1775491526.41758 1552 8c81cbe66d6e10f7fdd98748d6ee28ad "pdflatex"
-  "final-project.bbl" 1775491526.21309 1541 dccbde89580c1860bc1f69d2e0fd2a30 "bibtex final-project"
-  "final-project.out" 1775491526.41795 832 a35fd04320c6df2bd928bf28234ac2b3 "pdflatex"
-  "final-project.tex" 1775491499.24077 9910 a4fb6ab10251d94c5ecd01df0354a091 ""
+  "final-project.aux" 1776030079.55746 7043 0dc1a18e1aea535d9c5beeb7c197815b "pdflatex"
+  "final-project.bbl" 1776030079.3038 3250 4f6ba49fe4f7bd44597d4dd0ed5136b0 "bibtex final-project"
+  "final-project.out" 1776030079.55806 3904 63b8ba645983c12e3d5f8810cccde9f4 "pdflatex"
+  "final-project.tex" 1776030078.80314 48026 b14b328566fb6a825b5bdcc5a2114793 ""
   "style.sty" 1775491498.05016 12804 d1e39c741aff082df602506bf46a8493 ""
   (generated)
   "final-project.aux"
