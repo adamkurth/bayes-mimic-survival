@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.31)  12 APR 2026 17:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.31)  13 APR 2026 21:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -353,73 +353,34 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 46.
  (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+) [1{/Users/adamkurth/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
-LaTeX Warning: Reference `sc:sensitivity' on page 1 undefined on input line 59.
-
-
-LaTeX Warning: Reference `sc:sensitivity' on page 1 undefined on input line 64.
-
-[1{/Users/adamkurth/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
-
-]
-
-LaTeX Warning: Reference `sc:sensitivity' on page 2 undefined on input line 85.
-
-
-Overfull \hbox (24.50946pt too wide) in paragraph at lines 85--86
- \OT1/cmr/bx/n/10.95 Dis-cretiza-tion[] \OT1/cmr/m/n/10.95 We par-ti-tion the con-tin-u-ous time into day-length in-ter-vals $[0\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 1)\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 [1\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 2)\OML/cmm/m/it/10.95 ; [] ; \OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 K \OMS/cmsy/m/n/10.95 ^^@
- []
-
-[2] [3]
-
-LaTeX Warning: Reference `sc:sensitivity' on page 4 undefined on input line 162.
-
-[4]
-
-LaTeX Warning: Reference `sc:sensitivity' on page 5 undefined on input line 201.
-
-[5] [6]
-
-LaTeX Warning: Reference `sc:sensitivity' on page 7 undefined on input line 276.
-
-[7]
-
-LaTeX Warning: Reference `sc:sensitivity' on page 8 undefined on input line 307.
-
-
-Underfull \vbox (badness 7203) has occurred while \output is active []
-
- [8] [9] [10] [11]
-Overfull \hbox (7.80408pt too wide) detected at line 412
+] [2] [3] [4] [5] [6] [7] [8] [9]
+Overfull \hbox (7.80408pt too wide) detected at line 370
 []
  []
 
-[12] [13] (./final-project.bbl) [14] (./final-project.aux)
+[10] [11] (./final-project.bbl) [12] (./final-project.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `final-project.out' has not changed.
-(rerunfilecheck)             Checksum: 63B8BA645983C12E3D5F8810CCCDE9F4;3904.
+(rerunfilecheck)             Checksum: 80E68F7AD1DB643A509DF506151AE5EC;3976.
  ) 
 Here is how much of TeX's memory you used:
- 11159 strings out of 469339
- 170175 string characters out of 5465414
- 610862 words of memory out of 5000000
- 39763 multiletter control sequences out of 15000+600000
+ 11156 strings out of 469339
+ 170135 string characters out of 5465414
+ 601327 words of memory out of 5000000
+ 39764 multiletter control sequences out of 15000+600000
  639400 words of font info for 83 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 87i,18n,93p,1690b,576s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,18n,93p,1684b,463s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </Users/adamkurth/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on final-project.pdf (14 pages, 298254 bytes).
+Output written on final-project.pdf (12 pages, 288765 bytes).
 PDF statistics:
- 379 PDF objects out of 1000 (max. 8388607)
- 313 compressed objects within 4 object streams
- 75 named destinations out of 1000 (max. 500000)
- 137 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 378 PDF objects out of 1000 (max. 8388607)
+ 314 compressed objects within 4 object streams
+ 71 named destinations out of 1000 (max. 500000)
+ 145 words of extra memory for PDF output out of 10000 (max. 10000000)
 

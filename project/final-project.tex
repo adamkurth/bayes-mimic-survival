@@ -79,50 +79,51 @@ Let $i = 1, \dots, N$ index unique ICU admissions from MIMIC-III. We define:
 \end{itemize}
 
 
+\paragraph{Discretization.}
+% PRIMARY ANALYSIS: 
+%   - WEEK-LENGTH INTERVALS (\(\Delta = 7\) days, \(K \approx 4 - 5\) intervals for 70-day follow-up)
+% SENSITIVITY ANALYSIS: 
+% 1. BI-WEEKLY INTERVALS (\(\Delta = 14\) days, \(K=5\)) AND 
+% 2. DAY-LENGTH INTERVALS (\(\Delta = 1\) day, \(K=70\))
+We partition continuous time into discrete intervals of width \(\Delta\):  The intervals are, \([0,\Delta), [\Delta, 2\Delta), \dots, [(K-1)\Delta, K\Delta)\) with \(t = 1, \dots, K\) indexing those intervals. The discrete time failure time is \(T_i = \lceil T_i / \Delta \rceil\) and similarly the discrete censoring time is \(C_i = \lceil C_i / \Delta \rceil\). Our primary analysis will use week-length intervals (\(\Delta = 7\) days), yielding \(K \approx 4 - 5\) intervals. To assess sensitivity to this choice, we will also explore bi-weekly intervals (\(\Delta = 14\) days, \(K=5\)) and day-length intervals (\(\Delta = 1\) day, \(K=70\)) in Section~\ref{sc:sensitivity}. The finer the discretization, the better the approximation to the underlying continuous-time process, but the larger the dataset and more parameters to estimate.
 
 
-\paragraph{Discretization}
-We partition the continuous time into day-length intervals \([0,1), [1,2), \dots, [K-1,K)\). Let \(t=1,\dots,K\) index these intervals. The discrete failure time is \(\tilde{T}_i = \lceil T_i \rceil\) and the discrete censoring time is \(\tilde{C}_i = \lceil C_i \rceil\). The observed data is then \((\tilde{y}_i, \delta_i, \bx_i)\) where \(\tilde{y}_i = \min(\tilde{T}_i, \tilde{C}_i)\). We assume that the discretization is fine enough that the probability of multiple events in the same interval is negligible; sensitivity of this choice will be explored in Section~\ref{sc:sensitivity}.
-
-
-\paragraph{Person-Period}
-The data is restructured into a ``person-period" format \citep{allison-discrete}, so that patient \(i\) contributes one row per interval \(t=1,\dots, y_i\), yielding the binary outcome: 
+\paragraph{Person-Period expansion.}
+The data is restructured into a ``person-period" format \citep{allison-discrete}, so that patient \(i\) contributes one row per interval \(t=1,\dots, \tilde{y}_i\), yielding the binary outcome: 
 
 \begin{equation}
-    y_{i,t} = \ind\left( T_i \in [t-1, t), \delta_i = 1\right)  
+    y_{i,t} = \ind\left( T_i \in [(t-1)\Delta, t\Delta), \delta_i = 1\right)  
         = \begin{cases}
             1 & \text{if patient $i$ dies in interval $t$} \\
             0 & \text{otherwise}
         \end{cases}
 \end{equation}
-If a patient is censored at time \(C_i\) they contribute \(y_{i,t} = 0\) for \(t=1,\dots, \tilde{C}_i\) and are then \textit{removed from the risk set} for \(t > \tilde{C}_i\). If they die at time \(T_i\), then \(y_{i,T_i} = 1\) and they are exit the risk set for \(t > T_i\). The total number of person-period rows is \(\mathcal{R} = \sum_{i=1}^N \tilde{y}_i\). 
-
+Censored pateints contribute \(y_{i,t} = 0\) for \(t=1,\dots, \tilde{C}_i\) and are removed from the risk set thereafter. Patients who die contribute \(y_{i,t} = 1\) for \(t=1,\dots, \tilde{T}_i\) and exit. The total number of persion-period rows is \(\mathcal{R} = \sum_{i=1}^N \tilde{y}_i\).
 
 % =============================================================================
 \section{Standard Likelihood \& Censoring Assumption} \label{sc:naive-likelihood}
 % =============================================================================
-Here I will introduce the standard likelihood and its impacts on inference under violations of independent censoring. When we introduce the model choice (Section~\ref{sc:frailty}) we will see that the logistic hazard model is a GLMM with Bernoulli outcome and logit link function, so the likelihood is the same as a standard logistic regression likelihood on the person-period data.
+Here, I will introduce the standard likelihood and assess the direct impacts under violations of the independent censoring assumption. This will motivate the need for the frailty model and sensitivity analysis extensions in Sections~\ref{sc:frailty}--\ref{sc:sensitivity}. 
 
-The discrete-time hazard as defined in (K\&P, Section~2.2), says that for previous intervals \(1, \dots, t-1\) the patient has survived (i.e., \(Y_{i,s} = 0\) for \(s < t\)), then the hazard at interval \(t\): 
+In (K\&P, Section~2.2), the discrete-time Bernoulli likelihood for patient \(i\) is:
 \begin{align} \label{eq:discrete-time-hazard}
     h_{i,t} 
-    &= \Pr(Y_{i,t} = 1 \mid Y_{i,t-1} = 0, \bx_i)  
-    = \Pr(T_i = t \mid T_i \ge t, \bx_i)
+    &= \Pr(Y_{i,t} = 1 \mid Y_{i,t-1} = 0, \bx_i)  = \Pr(T_i = t \mid T_i \ge t, \bx_i), \quad t = 1, \dots, K_i
 \end{align}
-and the corresponding survival function is the cumulative product: 
+for \(K_i\) being the last interval for which patient \(i\) is at risk (i.e., \(K_i = \tilde{y}_i\)). The corresponding survival function is: 
 \begin{equation}
-    S_{i,t} = \Pr(T_i > t \mid \bx_i) = \prod_{s=1}^t (1 - h_{i,s})
+    S_i(t) = \Pr(T_i > t \mid \bx_i) = \prod_{s=1}^t (1 - h_{i,s})
 \end{equation}
 
 
-\subsection{Full Likelihood}
-Given right-censoring, the likelihood contribution for patient \(i\), involves the joint density of \((y_i, \delta_i) \mid \bx_i\), which in principle depends on the failure and censoring processes. Let \(f_T(t \mid \bx_i)\) and \(f_C(c \mid \bx_i)\) denote the densities of \(T_i\) and \(C_i\) respectively, with corresponding survival functions \(S_T\) and \(S_C\). The full data likelihood is (K\&P, Section~3.2):
+\subsection{Full Likelihood.}
+Given right-censoring, the likelihood contribution for patient \(i\), involves the joint density of \((y_i, \delta_i)\) given \(\bx_i\), which in principle depends on the failure (parameters \(\boldsymbol{\theta}\)) and censoring processes (parameters \(\boldsymbol{\phi}\)). Let \(f_T, S_T,\) and \(f_C, S_C\) denote the densities and survival functions of \(T_i\) and \(C_i\). The full data likelihood is (K\&P, Section~3.2):
 \begin{equation}\label{eq:full-lik}
     \mathcal{L}_i^{\text{full}}(\boldsymbol{\theta}, \boldsymbol{\phi})
     = \bigl[f_T(y_i \mid \bx_i)\, S_C(y_i \mid \bx_i)\bigr]^{\delta_i}
       \bigl[S_T(y_i \mid \bx_i)\, f_C(y_i \mid \bx_i)\bigr]^{1 - \delta_i},
 \end{equation}
-where \(\boldsymbol{\theta}\) parameterizes the failure process and \(\boldsymbol{\phi}\) parameterizes the censoring process. Critically, this expression \textit{cannot} be seperated into independent parts \(\boldsymbol{\theta}\) (parameters of \(T_i\)) and \(\boldsymbol{\phi}\) (censoring parameters \(C_i\)), unless \(T_i \perp C_i \mid \bx_i\). Non-separability here reflects the fundamental identifiability problem established by \citet{tsiatis1975}, from observed \((y_i, \delta_i)_{i=1}^N\) the marginals of \(T_i\) and \(C_i\) are not identifiable without the conditional independence assumption. This is the largest reason why the sensitivity analysis is critical here.
+This expression cannot be seperated into independent parts of \(\boldsymbol{\theta}\) and \(\boldsymbol{\phi}\) unless failure and censoring processes are conditionally idependent (i.e. \(T_i \perp C_i \mid \bx_i\)). This non-separability reflects the fundamental identifiability problem established by \citet{tsiatis1975}: fron infinitely many joint distributions of \((T_i, C_i)\) that are consistent with the observed data \((y_i, \delta_i)\). 
 
 
 \subsection{Independent Censoring Assumption} \label{sc:indep-cens}
@@ -132,13 +133,13 @@ where \(\boldsymbol{\theta}\) parameterizes the failure process and \(\boldsymbo
   \begin{equation}
     T_i \perp C_i \;\mid\; \bx_i.
   \end{equation}
-  Equivalently, at any time $t$ in which patient $i$ is still under
+  Equivalently, at any time $t$ in which patient $i$ is under
   observation, knowing the exact censoring time $C_i$ provides no additional
   information about future survival beyond what $\bx_i$ already encodes.
 \end{assumption}
 
 \noindent
-Under Assumption~\ref{assump:indep-cens}, the full likelihood factors: 
+Under Assumption~\ref{assump:indep-cens}, the full likelihood \eqref{eq:full-lik} factors as: 
 \begin{align}
     \mathcal{L}_i^{\text{full}} (\boldsymbol{\theta}, \boldsymbol{\phi}) 
     &= \underbrace{ \left[ f_{T}(y_i \mid \bx_i) \right]^{\delta_i} 
@@ -148,60 +149,48 @@ Under Assumption~\ref{assump:indep-cens}, the full likelihood factors:
             \left[ f_{C}(y_i \mid \bx_i) \right]^{1 - \delta_i} 
             }_{\substack{\text{depends only on } \boldsymbol{\phi} \text{ (under Assumption~\ref{assump:indep-cens}) }}}
 \end{align} 
-so that inference about \(\boldsymbol{\theta}\) can be processed using the observed-data likelihood \(\mathcal{L}_i(\boldsymbol{\theta})\) without any reference to the censoring mechanism (K\&P, Equation 3.1). Rewriting this in the discrete-time person-period format: 
+so that inference about \(\boldsymbol{\theta}\) can be processed using the observed-data likelihood \(\mathcal{L}_i(\boldsymbol{\theta})\) without any reference to the censoring mechanism (K\&P, Equation 3.1). In discrete-time person-period form:
 \[
     \mathcal{L}(\boldsymbol{\theta}) 
-    = \prod_{i=1}^N \prod_{t=1}^{\tilde{y}_i} h_{i,t}^{y_{i,t}} (1 - h_{i,t})^{1 - y_{i,t}}
+    = \prod_{i=1}^N \prod_{t=1}^{K_i} h_{i,t}^{y_{i,t}} (1 - h_{i,t})^{1 - y_{i,t}}
 \]
 where each \((i,t)\) term is treated as an independent Bernoulli trial.
 
 \subsection{Censoring Condition \& Operative Assumption} \label{sc:censoring-conditions}
 
-Censoring assumptions can be understood through the taxonomy of missing data of \citet{rubin1976}. For censored patients, the failure time \(T_i\) is unobserved, so the nature of the censoring mechanism determines which class of missing data-mechanism applies. 
-
-Independent censoring (Assumption~\ref{assump:indep-cens}) corresponds to the Missing at Random (MAR) class of missing data mechanisms—conditional on the observed covariates \(\bx_i\), the censoring mechanism carries no information about the failure time \(T_i\), (i.e., \(C_i \perp T_i \mid \bx_i\)). However, since we only carry baseline covariates in \(\bx_i\), this is likely violated in the ICU context, since time-varying coviartes are likely to be very important indicators of patient health status, impacting both discharge decisions and mortality risk. Thus, the operative condition for MAR is likely violated, and the censoring mechanism is likely informative. The methodology of this project is motivated by this likely violation and the misspecification will be quantified in the frailty model (Section~\ref{sc:frailty}) and the sensitivity analysis (Section~\ref{sc:sensitivity}).
+Independent censoring (Assumption~\ref{assump:indep-cens}) corresponds to Missing at Random (MAR) in \citet{rubin1976}'s taxonomy of missing data. This means that conditional on \(\bx_i\), the censoring mechanism carries no information about \(T_i\). Since \(\bx_i\) contains only baseline measurements and MIMIC-III discharge decisions, are likely more reprepresentative using time-varying covarites, the MAR assumption is likely violated in the ICU context, and thus the censoring mechanism is likely informative to some degree. This motivates the operative censoring condition (Assumption~\ref{assump:operative-cens}), which is the working assumption that the MAR assumption is violated, and thus we will proceed with methods that account for the degree of informative censoring, such as the frailty model (Section~\ref{sc:frailty}) and the sensitivity analysis (Section~\ref{sc:sensitivity}).
 
 \begin{assumption}[][Operative Censoring Condition] \label{assump:operative-cens}
-    In our static covariate setting, MAR given \(\bx_i\) is the operative censoring requirement. Its plausibility requires that all variables driving both mortality risk and censoring mechanisms are captured in \(\bx_i\). However, time-varying information is likely critical to drive discharge decisions, and thus the censoring mechanism is likely informative. We will proceed under the assumption MAR assumption is violated, and work towards developing methods to account for this.
+    In our static covariate setting, MAR given only \(\bx_i\) is the operative censoring requirement. Because time-varying information is likely critical to drive discharge decisions, the censoring mechanism is likely informative (i.e., \(T_i \not\perp C_i \mid \bx_i\)). Thus, we will proceed under the assumption that the MAR assumption is violated, and work towards developing methods to account for this.
 \end{assumption}
 
 \subsection{Consequences of Informative Censoring}
-Given that censoring is assumed to be informative, we have some immediate results.
-
-\paragraph{Confounding Bias in Covariate Effects:}
-Covariate information that might predict early discharge and lower mortality risk (e.g., elective admission, lower comorbidity scores) will have their effects \(\boldsymbol{\beta}\) confounded by the informative censoring process. Thus, estimand derived in the standard likelihood will no longer represent the pure effect of \(\bx_i\) on mortality risk, but rather both the effect of \(\bx_i\) on the failure and censoring processes. \citet{scharfstein1999} formalizes this as a failure of the semiparametric estimation equations when MAR is violated, where the score function for \(\boldsymbol{\beta}\) is biased proportional to the dependence between \(T_i\) and \(C_i\) given \(\bx_i\). This is formalized in Appendix~\ref{app:scharfstein1999}, where the bias in the score function for \(\boldsymbol{\beta}\) under informative censoring can be expressed as:
-\begin{equation}
-    \text{Bias}(\alpha) \approx -\alpha \, \mathbb{E} \Big[ \Lambda_0(C_i \mid \bx_i) \, T_i \, S_\text{full}(\boldsymbol{\beta}) \Big]
-\end{equation}
-In the context of this project, the full-data score function is defined as Equation~\ref{eq:full-lik}. This bias is driven by \(\alpha\) (the severity of the MAR violation/selection) and the covariance (cumulative hazard) between the failure time \(T_i\) and the censoring \(\Lambda_0(C_i \mid \bx_i)\). Because \(\alpha\) cannot be identified from the observed data alone, standard estimation fails, motivating the need for alternative approaches such as sensitivity analyses or frailty models (as discussed in Section~\ref{sc:frailty}) to absorb this unobserved dependence. 
-
-% a mixture of the effect of \(\bx_i\) on both the failure and censoring processes. \citet{scharfstein1999} formalizes this as a failure of the semiparametric estimation equations when MAR is violated, where the score function for \(\boldsymbol{\beta}\) is biased proportional to the dependence between \(T_i\) and \(C_i\) given \(\bx_i\). % SAY MORE ABOUT THIS (*SHOW FULL DERIVATION IN APPENDIX*)
+When the independent censoring assumption fails, three consequences follow.
 
 
 
-\paragraph{Biased Hazard Estimation:}
-First, if the healthier patients are systematically discharged before sicker ones, the risk set (defined as all patients still in the ICU at time \(t\)) is formalized as \(\mathcal{R}_t = \{i: y_i \geq t\} = \{i: T_i \geq t, C_i \geq t\}\). This hazard is estimated from the data as: 
-\begin{equation}
+\paragraph{Biased Hazard Estimation.}
+First, if the healthier patients are systematically discharged before sicker ones, the risk set at time \(t\) is biased towards sicker patients, inflating the observed hazard \(\hat{h}_t\) relative to the true marginal hazard \(h_t^\ast\). The risk set at time \(t\) is \(\mathcal{R}_t = \{i: y_i \geq t\} = \{i: T_i \geq t, C_i \geq t\}\) and \(\mathcal{C}_t = \{i: C_i < t\}\). The bias is (Appendix~\ref{app:biased-hazard}):
+\begin{equation} \label{eq:bias-approx}
+    \hat{h}_t \approx h_t^\ast + \frac{\lambda_t \Delta_t }{1-\lambda_t} \quad \text{where} \quad
     \hat{h}_t = \frac{ \sum_{i \in \mathcal{R}_t} \ind(T_i = t) }{ |\mathcal{R}_t| }
 \end{equation}
+where \(\lambda_t = |\mathcal{C}_t|/|\mathcal{R}_t|\) is the proportion of surviving patients censored by time \(t\), and \(\Delta_t > 0\) is the hazard difference between the full survivor population and the censored subgroup. The bias is positive for all \(\lambda_t, \Delta_t > 0\) and increases as \(\lambda_t \to 1\) (i.e. more patients are discharged over time, shrinking the risk set), and is the discrete-time analogue of the frailty-induced selection bias in the continuous-time setting \citep{vaupel1979,lancaster1979}. See Appendix~\ref{app:biased-hazard} for a full derivation of the bias in the observed hazard under informative censoring.
 
-For this to estimate the true marginal hazard \(h_t^\ast = \Pr( T_i = t \mid T_i \ge t)\), the risk set \(\mathcal{R}_t\) must be a representative sample of all patients still at risk at time \(t\). But \(\mathcal{R}_t\) excludes those who are censored before \(t\) (\(i: C_i < t\)), and if those censored patients are systematically healthier, then the risk set is biased toward sicker, higher-risk patients—leading to \(\hat{h}_t > h_t^\ast\) for all \(t\). 
+Since the observed hazard being positively biased in each interval, this implies that the estimated survival function \(\hat{S}(t) = \prod_{s=1}^t (1 - \hat{h}_s)\) will compound this bias and be systematically lower than the true marginal survival \(S^\ast(t)\). This means that patients with long ICU stays (e.g., 10+ days) will have their survival estimates show a large discrepancy from the true marginal survival. This leads to a pessimistic empirical estimate of survival.
 
-To quantify this bias, let \(\lambda_t = |\mathcal{C}_t|/|\mathcal{R}_t|\) be the proportion of patients that have been censored by time \(t\) relative to the number of patients still in the ICU at time \(t\). Equivalently, \(\lambda_t = P(C_i < t \mid T_i \ge t)\) is empirical probability that a surviving patient has been censored by time \(t\), where these patients have mean hazard \(h^c_t = h^\ast_t - \Delta_t\), for lower \(\Delta_t > 0\) for healthier patients. The observed hazard is then a mixture:
-\begin{equation}
-    \hat{h}_t \approx h_t^\ast + \frac{\lambda_t \Delta_t }{1-\lambda_t} 
+
+\paragraph{Confounding Bias in Covariate Effects.}
+Covariate information that might predict early discharge and lower mortality risk (e.g., elective admission, lower comorbidity scores) will have their effects \(\boldsymbol{\beta}\) confounded by the informative censoring process. Thus, estimand derived in the standard likelihood will no longer represent the pure effect of \(\bx_i\) on mortality risk, but rather both the effect of \(\bx_i\) on the failure and censoring processes. \citet{scharfstein1999} formalizes this as a failure of the semiparametric estimation equations when MAR is violated, where the score function for \(\boldsymbol{\beta}\) is biased proportional to the dependence between \(T_i\) and \(C_i\) given \(\bx_i\). This is formalized in Appendix~\ref{app:scharfstein1999}, where the bias in the score function for \(\boldsymbol{\beta}\) under informative censoring can be expressed as:
+\begin{equation}  \label{eq:confounding-bias}
+    \text{Bias}(\alpha) \approx -\alpha \, \mathbb{E} \Big[ \Lambda_0(C_i \mid \bx_i) \, T_i \, S_\text{full}(\boldsymbol{\beta}) \Big]
 \end{equation}
-exceeding \(h_t^\ast\) for all \(\lambda_t, \Delta_t > 0\) bias increases as \(\lambda_t \to 1\) (more patients discharged over time, risk set shrinks), this is the discrete-time analogue in the frailty literature \citep{vaupel1979,lancaster1979}. See Appendix~\ref{app:biased-hazard} for a full derivation of the bias in the observed hazard under informative censoring.
-
-Since the observed hazard being positively biased in each interval, this implies that the estimated survival function \(\hat{S}_t = \prod_{s=1}^t (1 - \hat{h}_s)\) will be systematically lower than the marginal survival \(S^\ast_t\). This means that patients with long ICU stays (e.g., 10+ days) will have their survival estimates will show a large discrepancy. This leads to a pessimistic empirical esitimate of survival.
+In the context of this project, the full-data score (\(S_\text{full}(\boldsymbol{\beta})\)) is Equation~\ref{eq:full-lik}. This bias is driven by \(\alpha\) (the severity of the MAR violation/selection) and the covariance (cumulative hazard) between the failure time \(T_i\) and the censoring \(\Lambda_0(C_i \mid \bx_i)\). Because \(\alpha\) cannot be identified from the observed data alone, standard estimation fails.
 
 
+\paragraph{Corrections.}
+The consequences yield a upward systematic bias in observed hazards and a multiplicative bias in the score function for \(\boldsymbol{\beta}\), depending on severity of the MAR violation. First, the shared frailty model (Section~\ref{sc:frailty}) partially restores the risk-set representativeness by conditioning on unobserved heterogeneity \(b_i\), and the sensitivity analysis (Section~\ref{sc:sensitivity}) directly parameterizes the residual bias through \(\gamma\), allowing us to assess how large the MAR violation-effect would need to be before changing clinical conclusions.
 
-\paragraph{Corrections:}
-The two consequences give both an upward bias due to confounding and a pessimistic survival estimate due to the unrepresentative risk set, motivating two corrections. First, the shared frailty model (Section~\ref{sc:frailty}) introduces a patient-level random effect \(b_i\) that partially restores the representativeness of the risk set by conditioning on unobserved heterogeneity: patients who would otherwise be ``missing'' in \(\mathcal{R}_t\) due to discharge are accounted for in the frailty distribution. Second, because the frailty model imposes parametric structure on the dependence of \(T_i\) and \(C_i\), the exponential tilting sensivity analysis (Section~\ref{sc:sensitivity}) directly parameterizes the residual bias through \(\gamma\), allowing us to assess how large the MAR violation-effect would need to be before changing clinical conclusions.
-
-
-% It is important to recognize that the downstream PG sampler will yield exact posterior inference given the correctly specified model and prior. However, if the model is misspecified due to informative censoring, then the posterior inference will be exact under the misspecified model. To remedy this, we need to extend the model to account for informative censoring, which is the motivation for the frailty and sensitivity analysis extensions in Sections~\ref{sc:frailty}--\ref{sc:sensitivity}.
 
 
 % It is important to recognize that the PG sampler itself provides no
@@ -216,29 +205,12 @@ The two consequences give both an upward bias due to confounding and a pessimist
 
 
 
+\section{Logistic Hazard Model \& Frailty Extension} \label{sc:frailty}
 
+The persion-period formulation in Section~\ref{sc:notation} recasts the discrete-time survival hazard as a first-order Markov chain on the state space \(\{1,0\}\) where \(0\) denotes ``alive'' and \(1\) denotes ``dead'' (an absorbing state). At each interval \(t\), a patient who survives to that point (\(Y_{i,t-1} = 0\)) either transitons to death (\(Y_{i,t} = 1\)) or remains alive (\(Y_{i,t} = 0\)). Note that conditioning on \(Y_{i,t-1} = 0\), also conditions on all previous time intervals while also satisfying the Markov property. The discrete-time hazard \eqref{eq:discrete-time-hazard} is precisely the one-step transition probability, which can be modeled as a Bernoulli GLMM with a logistic link. 
 
-
-
-\section{Logistic Hazard Model as Discrete-Time Transition Model} \label{sc:frailty}
-
-The persion-period formulation in Section~\ref{sc:notation} recasts the discrete-time survival hazard as a first-order Markov chain on the state space \(\{1,0\}\) where \(0\) denotes ``alive'' and \(1\) denotes ``dead'' (an absorbing state). At each interval \(t\), a patient who survives to that point (\(Y_{i,t-1} = 0\)) either transitons to death (\(Y_{i,t} = 1\)) or remains alive (\(Y_{i,t} = 0\)). The discrete-time hazard is precisely the one-step transition probability:
-\begin{equation}\label{eq:transition}
-    h_{i,t}
-    = \Pr(Y_{i,t} = 1 \mid Y_{i,t-1} = 0,\, \bx_i, b_i).
-\end{equation}
-Because death is absorbing, conditioning on (\(Y_{i,t-1}=0\)) is equivalent to conditioning on $T_i \ge t$, recovering the standard hazard definition~\eqref{eq:discrete-time-hazard}. We add \(b_i\) as the ``frailty'' term, which will be introduced in the next section.
-
-The transition model perspective makes the connection to generalized linear mixed models (GLMM) with Bernoulli outcomes and logistic link functions more intuitive. Each patient contributes \(K_i = \tilde{y}_i\) repeated binary observations \(\mathbf{Y}_i = (Y_{i,1}, \dots, Y_{i,K_i})^\top\) one per interval at risk until either death or censoring. This forms cluster structure with \(\mathcal{R}_t = \sum_{i=1} K_i \) total person-period observations. Modeling the transtion probaiblity using a logistic link yields a standard Bernoulli GLMM which will serve as the basis for the frailty extension.
-
-\subsection{Modeling Procedure, Frailty Extension}
-The complete hierarchical model is as follows. First, we model the hazard via a logistic link. We model the hazard via a logistic link:
-% \begin{align} \label{eq:updated-hazard}
-%     h_{i,t} &= P(Y_{i,t} = 1 \mid Y_{i,t-1} = 0, \bx_i, b_i)\\
-%     \eta_{i,t} &= \mathrm{logit}(h_{i,t}) = \alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i\\ 
-%     h_{i,t} &= \mathrm{expit}(\alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i) = \frac{\exp(\alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i)}{1 + \exp(\alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i)}
-% \end{align}
-
+\subsection{Hierarchy Specification} \label{sc:hierarchy}
+We model the hazard via a logistic link augmented with patient-level Gaussian random effect (frailty) \(b_i\):
 \begin{align}
     Y_{i,t} \mid h_{i,t} &\sim \text{Bernoulli}(h_{i,t}), \quad t = 1, \dots, K_i,\; i = 1, \dots, N, \label{eq:obs-model} \\
     \text{logit}(h_{i,t}) &= \alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i, \label{eq:link-frailty}
@@ -257,88 +229,65 @@ with priors:
     \sigma_\alpha^2
     &\sim \text{Inv-Gamma}(a_\alpha, b_\alpha) \label{eq:sigma-alpha-prior}
 \end{alignat}
-\paragraph{Rationale:} The first order random-walk prior \eqref{eq:rw-prior} on vector \(\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_K)^\top\) encodes the belief that neighboring intervals have similar baseline log-odds of death, while the variance \(\sigma_\alpha^2\) controls the degree of smoothness. In matrix form, the joint prior on \(\boldsymbol{\alpha}\) has precision \(\boldsymbol{\Sigma}_\alpha^{-1} = \sigma_\alpha^{-2}\, \mathbf{D}^\top \mathbf{D}\), where \(\mathbf{D}\) is the \((K-1) \times K\) first-difference matrix. This difference matrix is shown to be:
-\[
-    \mathbf{D} = \begin{bmatrix}
-        -1 & 1 & 0 & \cdots & 0 \\
-        0 & -1 & 1 & \cdots & 0 \\
-        \vdots & \vdots & \vdots & \ddots & \vdots \\
-        0 & 0 & 0 & \cdots & -1 & 1
-    \end{bmatrix}
-\]
 
-As the risk set shrinks at later intervals, this prior borrows strength from adjacent time intervals, regularizing \(\alpha_t\) where data is sparse. 
+The first-order random walk prior on \(\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_K)^\top\) endosed the belief that neighboring intervals have similar baseline log-odds of death. In matrix form, the joint prior ha precision \(\boldsymbol{\Sigma}_\alpha^{-1} = \sigma_\alpha^{-2} \mathbf{D}^\top \mathbf{D}\) where \(\mathbf{D}\) is the \( (K-1) \times K \) first-difference matrix. As the risk set shrinks at later intervals, this prior borrows strength from adjacent time intervals, regularizing \(\alpha_t\) where data is sparse. The Inverse-Gamma (IG) hyperpriors are chosen for their conjugacy properties, allowing the P\'olya-Gamma augmentation scheme.  We set \(a_0 = b_0 = a_\alpha = b_\alpha = 0.01\) and \(\sigma_0^2 = \tau^2 = 10\) as weakly informative defaults. 
 
-The inverse-gamma priors on \(\sigma_b^2\) and \(\sigma_\alpha^2\) are chosen for their conjugacy properties, allowing the P\'olya-Gamma augmentation scheme, each admits a closed-form Gibbs update (Section~\ref{sc:pg-augmentation}), preserving the fully conjugate sampler structure. We set \(a_0 = b_0 = 0.01\) as weakly informative defaults; sensitivity to this choice is discussed in Section~\ref{subsec:identifiability}. We set \(\sigma_0^2 = 10\) and \(\tau^2 = 10\) as diffuse defaults for the remaining priors.
+Let \(\boldsymbol{\theta} = (\boldsymbol{\alpha}, \boldsymbol{\beta}) \in \mathbb{R}^{K + P}\) denote the combined fixed-effect vector, with joint prior \(\boldsymbol{\theta} \sim \mathcal{N}(\mathbf{0}, \Sigma_0)\) such that \(\Sigma_0 = \mathrm{blockdiag}(\Sigma_\alpha, \tau^2 \mathbf{I}_P)\) is a block-diagonal covariance matrix reflecting the temporal smoothing for \(\boldsymbol{\alpha}\) and independent regularization for \(\boldsymbol{\beta}\). Setting \(b_i = 0\) recovers the standard logistic hazard model, so comparing the two through posterior summaries of \(\sigma_b^2\) provides a direct diagnostic for unmeasured heterogeneity.
 
-Let \(\boldsymbol{\theta} = (\boldsymbol{\alpha}, \boldsymbol{\beta})^\top \in \mathbb{R}^{K + P}\) denote the combined fixed effects vector, and its joint prior \(\boldsymbol{\theta} \sim \mathcal{N}(\mathbf{0}, \Sigma_0)\) where \(\Sigma_0 = \mathrm{blockdiag}(\Sigma_\alpha, \tau^2 \mathbf{I}_P)\) is a block-diagonal covariance matrix reflecting the temporal smoothing for \(\boldsymbol{\alpha}\) and independent regularization for \(\boldsymbol{\beta}\). 
-
-The ``frailty'' term \(b_i\) captures unobserved heterogeneity of patient risk without adding time-varying covariates. Since this could be a major driver for discharge decisions and mortality risk, we are testing the hypothesis that by conditioning on both \(\bx_i, b_i\), the model can restore the conditional independence \(T_i \perp C_i \mid \bx_i, b_i\) that MAR requires. The frailty absorbs the residual dependence that \(\bx_i\) cannot capture. Whether this is sufficient is ultimately untestable, which is why the sensitivity analysis in Section~\ref{sc:sensitivity} remains essential.
-
-
-\paragraph{Connections to Bias (Appendix~\ref{app:biased-hazard}):} 
-By Assumption~\ref{assump:indep-cens}, \(T_i \perp C_i \mid \bx_i\), but the frailty model weakens this to:
+\subsection{Why Frailty Addresses Informative Censoring} \label{sc:why-frailty}
+The frailty term \(b_i\) captures the heterogeneity which may drive both discharge decisions and mortality risk. By codnitioning on the random effect, the model weakens the censoring requirement (Assumption~\ref{assump:indep-cens}) to:
 \begin{equation} \label{eq:frailty-indep-cens}
     T_i \perp C_i \;\mid\; \bx_i, b_i
 \end{equation}
-This changes the conditioning set to include the unobserved frailty term \(b_i\). If the dependence between \(T_i\) and \(C_i\) operates through the patient's latent health status (frailty), then conditioning on \(b_i\) absords this dependence and restores the validity of the MAR assumption and the likelihood factorization. 
+This strictly weaker condition, requires only that the augmeted covariate set \((\bx_i, b_i)\) renders censoring non-informative \citep[Chapter~7]{daniels2008}. Under \eqref{eq:frailty-indep-cens}, the conditional analogue of the bias term in \eqref{eq:bias-approx} vanishes, because both censored and uncensored subpopulations have the same conditional hazard distribution given \(\bx_i, b_i\). 
 
-This connects to the bias in the observed hazard under informative censoring. The hazard bias derived in Appendix~\ref{app:biased-hazard} is:
-\begin{equation}\label{eq:hazard-bias}
-    \hat{h}_t \approx h_t^\ast + \frac{\lambda_t \Delta_t }{1-\lambda_t} 
-\end{equation}
-where \(\Delta_t = h_t^\ast - h_t^c\) is the difference between true population hazard and censored hazard. This bias term arises from censored patients having systematically lower hazards \(h_t^c < h_t^\ast\), producing a positive differential \(\Delta_t > 0\). In the frailty model, this difference is attributable to the censored subgroup having different latent frailties. For healthier patients \(b_i < 0\) on average, producing \(h_t^c < h_t^\ast\) and thus \(\Delta_t > 0\), where the upward bias as derived in the appendix. Under \eqref{eq:hazard-bias}, both censored and uncensored populations have the same conditional hazard distribution given \(\bx_i, b_i\), so the bias term vanishes. The frailty model directly targets the mechanism identified in the appendix. 
-
-However, this only accounts for a positive differential, \(\Delta_t > 0\) for healthier patients. In the MIMIC-III context, this would be a large oversimplications. While the majority of patients are likely to improve over time (\(b_i < 0\), a subset might deteriorate and give a worse prognosis (\(b_i > 0\)).  Such patients, \(h_t^c > h_t^\ast\) locally, which contributes a negative \(\Delta_t\) and attenuates (or even reverses) this bias. In the limiting case where hospice discharge dominates, the observed hazard \(\hat{h}_t\) would underestimate the true hazard \(h_t^\ast\).
-
-
-% Since \(C_i \perp T_i \mid \bx_i, b_i\), the censored and uncensored populations at \(t\) have the conditional analogue of \(\Delta_t\) being zero, and the bias term \(\lambda_t \Delta_t / (1 - \lambda_t)\) vanishes. For sicker patients where discharge to hospice is assumed, the frailty is higher, \(b_i > 0\) reflecting worse unobserved health.  HOW WOULD THIS IMPACT THE BIAS?
-
+An important caveat is that the bias formula in \eqref{eq:bias-approx} assumes \(\Delta_t > 0\), meaning censored patients are healthier. In the ICU context, this is likely an oversimplification. While the majority of patients are likely to improve \(b_i < 0\), those who are discharged to hospice for example, might have a worse prognosis \(b_i > 0\). For these patients, \(h_t^c > h_t^\ast\) locally, attenuating or even reversing the bias. The frailty model handles this naturally by estimating \(b_i\) individually. But whether \eqref{eq:frailty-indep-cens} holds is ultimately untestable, which is why the sensitivity analysis in Section~\ref{sc:sensitivity} remains essential.
 
 
 \paragraph{Identifiability.} \label{subsec:identifiability}
-An identifiability consideration arises for patients with \(\tilde{y}_i = (1)\), that is, those observed for only one interval before death or censoring. Such patients contribute only one Bernoulli trial to the likelihood, providing essentially no information for estimating their individual \(b_i\)— the posterior is entirely determined by the prior. Though common in random effects models, this acts as a shrinkage prior for poorly identified \(b_i\) towards zero. The practical implications are twofold: first, report the effective number of patients contributing to the frailty distribution alongside posterior summaries of \(\sigma_b^2\) to contextualize the extent of regularization; second, the hyperprior \(\sigma_b^2\) dominates for these patients, so under conjugate full conditionals, \(\sigma_b^2 \mid \mathbf{e}_t \sim \mathrm{InvGamma}( N/2, \sum b_i^2/2)\) the large number of prior-dominated \(b_i \approx 0 \) will regularize \(\hat{\sigma}_b^2\) downward, potentially underestimating the true heterogeneity among patiens with longer stays. Sensitivity on \(a,b\) should be explored.
+The baseline hazard \(\alpha_t\) and frailties \(b_i\) are seperately identified by the temporal structure of the data. The random walk \(\alpha_t\) varies across intervals and \(b_i\) bu correlation across intervals within patient \(i\). However, patients observed for only one interval (\(K_i = 1\)) contribute no within-patient information and their posterior is entirely determined by the prior, shrinking \(b_i\) towards zero. 
 
-\paragraph{Modeling Implications.}\label{subsec:implications}
-The hazard bias derived in Appendix~\ref{app:biased-hazard} arises because censored patients have systematically lower hazards \(h_t^c < h_t^\ast\), producing a positive differential \(\Delta_t > 0\). In the frailty model, this difference is attributable to the censored subgroup having different latent frailties (\(b_i < 0\) on average for healthier patients), reflecting better unobserved health status. Since \(C_i \perp T_i \mid \bx_i, b_i\), the censored and uncensored populations at \(t\) have the conditional analogue of \(\Delta_t\) being zero, and the bias term \(\lambda_t \Delta_t / (1 - \lambda_t)\) vanishes. For sicker patients where discharge to hospice is assumed, the frailty is higher, \(b_i > 0\) reflecting worse unobserved health. HOW WOULD SICKER PATIENTS IMPACT THE BIAS?
+The practical implication of this is that the conjugate full conditional (derived in Section~\ref{sc:pg-augmentation}), the large number of prior-dominated frailties (\(b_i \approx 0\) for \(K_i = 1\) patients) pull \(\hat{\sigma}_b^2\) downwards, potentially underestimating heterogeneity among patients with longer stays. We recommend reporting the effective number of patients with \(K_i \geq 2\) alongside \(hat{\sigma}_b^2\) and examining sensitivity to \(a_0, b_0\).
 
+% An identifiability consideration arises for patients with \(\tilde{y}_i = (1)\), that is, those observed for only one interval before death or censoring. Such patients contribute only one Bernoulli trial to the likelihood, providing essentially no information for estimating their individual \(b_i\)— the posterior is entirely determined by the prior. Though common in random effects models, this acts as a shrinkage prior for poorly identified \(b_i\) towards zero. The practical implications are twofold: first, report the effective number of patients contributing to the frailty distribution alongside posterior summaries of \(\sigma_b^2\) to contextualize the extent of regularization; second, the hyperprior \(\sigma_b^2\) dominates for these patients, so under conjugate full conditionals, \(\sigma_b^2 \mid \mathbf{e}_t \sim \mathrm{InvGamma}( N/2, \sum b_i^2/2)\) the large number of prior-dominated \(b_i \approx 0 \) will regularize \(\hat{\sigma}_b^2\) downward, potentially underestimating the true heterogeneity among patiens with longer stays. Sensitivity on \(a,b\) should be explored.
 
-% residual concern
-Whether \eqref{eq:frailty-indep-cens} holds is ultimately untestable, for the same reason that the original assumption by \citet{tsiatis1975} is untestable. The joint distribution of \((T_i, C_i)\) is not identifiable from the observed data. A Gaussian frailty effect may not be flexible enough to capture all relevant heterogeneity. This motivates the sensitivity analysis in Section~\ref{sc:sensitivity}, which relaxes the conditional independence assumption without specifying a particular dependence structure.
-
-
-CONNECT APPENDIX~\ref{app:scharfstein1999} TO MODELING IMPLICATIONS
-
-
-\subsection{Shared Frailty \& Unobserved Heterogeneity}
-The frailty extension and sensitivity analysis addresses complementary aspects of informative censoring. The frailty \(b_i\) models the unobserved heterogeneity in a parametric manner, assuming \(\mathcal{N}(0, \sigma_b^2)\) and \(C_i \perp T_i \mid \bx_i, b_i\). If these assumptions hold, the random effect corrects the bias identified in Appendix~\ref{app:biased-hazard}. The nonparametric check indexes the departure from the possible frailty-adjusted censoring assumption without specifying a dependence structure. In practice, we fit the frailty model then sweep the sensitivity parameter \(\gamma\) to over a grid to assess whether residual informative censoring could change clinical conclusions — beyond what \(\bx_i, b_i\) can capture. 
-
-\subsection{Selection Model \& Exponential Tilting}
-
-Since the independent censoring assumption is untestable, we adopt a sensitivity analysis following \citet{scharfstein1999}, and Bayesian protocol of \citet{daniels2008}. Define the sensitivity parameter \(\gamma\) as the log-odds ratio of death at time \(T_i = t\) between patients censored at \(t\) and those not censored at \(t\) (under observation):
+%=============================================================================
+\subsection{Sensitivity Analysis for Informative Censoring} \label{sc:sensitivity}
+%==============================================================================
+The frailty model and sensitivity analysis address complementatry aspects of informative censoring. Frailty \(b_i\) models heterogenity \emph{parametrically}, assuming the Gaussian prior \eqref{eq:frailty-prior} and condition \eqref{eq:frailty-indep-cens}. The sensitivity analysis, on the other hand, \emph{nonparametrically} tests the robustness of \eqref{eq:frailty-indep-cens} without specifying a particular dependency structure. In practice, we fit the frailty logistic hazard then sweep the sensitivity parameter \(\gamma\) over a grid.
+ 
+\subsection{The Selection Model} \label{sc:selection-model}
+The sensitivity analysis following \citep{scharfstein1999} and Bayesian treatent from \citet{daniels2008}. Define \(\gamma\) as the log-odds ratio of death at time \(T_i = t\) between patients censored at \(t\) and those remaining under observation at \(t\):
 \begin{equation}
     \gamma = \log\left( \frac{\Pr( T_i = t \mid T_i \geq t, C_i = t, \bx_i, b_i)}{\Pr( T_i = t \mid T_i \geq t, C_i > t, \bx_i, b_i)} \right) 
 \end{equation}
-For \(\gamma = 0\), this corresponds to non-informative censoring, and \(\gamma < 0 \) means that censored patients have lower mortality risk, which would be expected in the ICU, where discharge reflects clinical improvement. Likwise, \(\gamma > 0\) means censored patients have higher mortality risk (discharge to hopice or palliative care). The parameter \(\gamma\) is not identified from observed data, so we will sweep it over a grid to assess how large the MAR violation-effect would need to be before changing clinical conclusions. Appendix~\ref{app:scharfstein1999} formalizes .... 
+\(\gamma = 0\) corresponds to non-informative censoring (MAR), \(\gamma < 0\) means censored patients have lower mortality risk (discharge reflects improvement), and \(\gamma > 0\) means censored patients have higher mortality risk (discharge reflects deterioration). Here, \(\gamma\) plays the role of the selection parameter \(\alpha\) in \eqref{eq:confounding-bias}, indexing the residual selection bias beyond what \(b_i\) captures. This is because the frailty model only accounts for selection bias that can be captured by a patient-level random effect, but there may be further selection bias that is not captured by \(b_i\) such as time-varying information. 
 
 
-DISCUSS THIS: when you run the frailty model on MIMIC-III, pay close attention to the identifiability issue your supplement flags. Patients with $y_i=1$ (observed for only one interval) contribute no information for estimating $b_i$ --- it's drawn entirely from its prior. This is fine and expected, but you should report the effective number of patients contributing to the frailty estimation and discuss how the prior $\sigma_b^2 \sim \text{InvGamma}(N/2, \sum b_i^2/2)$ regularizes these cases.
+% Since the independent censoring assumption is untestable, we adopt a sensitivity analysis following \citet{scharfstein1999}, and Bayesian protocol of \citet{daniels2008}. Define the sensitivity parameter \(\gamma\) as the log-odds ratio of death at time \(T_i = t\) between patients censored at \(t\) and those not censored at \(t\) (under observation):
+% \begin{equation}
+%     \gamma = \log\left( \frac{\Pr( T_i = t \mid T_i \geq t, C_i = t, \bx_i, b_i)}{\Pr( T_i = t \mid T_i \geq t, C_i > t, \bx_i, b_i)} \right) 
+% \end{equation}
+% For \(\gamma = 0\), this corresponds to non-informative censoring, and \(\gamma < 0 \) means that censored patients have lower mortality risk, which would be expected in the ICU, where discharge reflects clinical improvement. Likwise, \(\gamma > 0\) means censored patients have higher mortality risk (discharge to hopice or palliative care). The parameter \(\gamma\) is not identified from observed data, so we will sweep it over a grid to assess how large the MAR violation-effect would need to be before changing clinical conclusions. Appendix~\ref{app:scharfstein1999} formalizes .... 
 
+
+% DISCUSS THIS: when you run the frailty model on MIMIC-III, pay close attention to the identifiability issue your supplement flags. Patients with $y_i=1$ (observed for only one interval) contribute no information for estimating $b_i$ --- it's drawn entirely from its prior. This is fine and expected, but you should report the effective number of patients contributing to the frailty estimation and discuss how the prior $\sigma_b^2 \sim \text{InvGamma}(N/2, \sum b_i^2/2)$ regularizes these cases.
 
 
 \subsection{Tilted Likelihood}
-Under the selection model the hazard for censored observation at terminal time interval is adjusted by the exponential tilting factor:
+Under the selection model, the hazard for censored observations at its terminal interval is adjusted by the exponential tilting factor (analogous to \(\alpha\) in \eqref{eq:confounding-bias}):
 \begin{equation}\label{eq:tilted-hazard}
-    \mathrm{logit}(\tilde{h}_{i,t}) = \mathrm{logit}(h_{i,t}) + \gamma \cdot \ind(C_i = t, \delta_i = 0), \qquad \text{ where } \delta_i = \ind(T_i \le C_i)
+    \mathrm{logit}(\tilde{h}_{i,t}) = \mathrm{logit}(h_{i,t}) + \gamma \ind(C_i = t, \delta_i = 0), \qquad \text{ where } \delta_i = \ind(T_i \le C_i)
 \end{equation}
-In odds formulation:
-\begin{equation}\label{eq:odds-tilt}
-    \frac{\tilde{h}_{i,t}}{1 - \tilde{h}_{i,t}} = \frac{h_{i,t}}{1 - h_{i,t}} \cdot \exp\left( \gamma \right) \text{ if } C_i = t, \delta_i = 0
-\end{equation}
-The mortality odds are multipled by \(\exp(\gamma)\) at the censored interval and for uncensored, non-terminal intervals, \(\tilde{h}_{i,t} = h_{i,t}\). The tilted-likelihood is then:
+Equivalently, the mortality odds are multiplied by \(\exp(\gamma)\) at the censoring interval. For uncensored observations and non-terminal intervals, \(\tilde{h}_{i,t} = h_{i,t}\). Then the tilted likelihood is:
 \begin{equation} \label{eq:tilted-lik}
     \tilde{\mathcal{L}}(\boldsymbol{\theta}; \gamma) = \prod_{i=1}^N \prod_{t=1}^{K_i} \tilde{h}_{i,t}^{y_{i,t}} (1 - \tilde{h}_{i,t})^{1 - y_{i,t}}
 \end{equation}
+The tilted likelihood is a reweighting of the original likelihood, where the contribution of censored observations at their terminal interval is adjusted by \(\gamma\). This allows us to assess how sensitive our inferences are to departures from the MAR assumption by varying \(\gamma\) and observing how the posterior distributions of parameters and survival curves change.
+The mortality odds are:
+\begin{equation}\label{eq:odds-tilt}
+    \frac{ \tilde{h}_t }{ 1 - \tilde{h}_t } = \frac{ h_t }{ 1 - h_t } \cdot \exp(\gamma) \quad \text{if } C_i = t, \delta_i = 0
+\end{equation} 
 
 Since \(\gamma\) is fixed for each sweep and the censoring indicator \(\ind(C_i = t, \delta_i = 0)\) is observed, the tilt term \(o_{i,t} = \gamma \ind(C_i = t, \delta_i = 0)\) is a known offset for each person-period row. The tilted linear predictor is then:
 \begin{equation}
@@ -346,16 +295,25 @@ Since \(\gamma\) is fixed for each sweep and the censoring indicator \(\ind(C_i 
 \end{equation}
 The offset term does not affect conjugate structure of PG sampler, only shifts the posterior mean. 
 
+\subsection{Protocol.}
 
-\subsection{Protocol}
-Following \citet{daniels2008}: % WANT CHAPTER CITATION
+Following \citet{daniels2008}:
 \begin{enumerate}[noitemsep, topsep=0pt]
-    \item Fit the frailty model with \(\gamma = 0\), record posterior summaries of \(\boldsymbol{\beta},\sigma_b^2\),  and survival curve \(\hat{S}(t \mid \bx_i)\). 
-    \item Select a grid of \(\gamma\) values, e.g., \(\gamma \in \{-1.5, -1.0, -0.5, 0, 0.5, 1.0, 1.5\}\) where negative values correspond to clinically plausible directions (discharge reflects improvement), vice versa for positive values (discharge reflects deterioration).
-    \item For each \(\gamma\), refit tilted likelihood \eqref{eq:tilted-lik}. PG augmentation still applies, with offset modifying the working response. 
-    \item Report posterior survival curves and 95\% credible intervals for \(\hat{S}(t \mid \bx_i; \gamma)\) for each \(\gamma\)
-    \item Identify the ``tipping point'' \(\gamma^\ast\) where substantive conclusions reverses (e.g., survival benefit of elective versus emergency admission disappears). 
+    \item Fit the frailty model with $\gamma = 0$ and record posterior
+      summaries of $\boldsymbol{\beta}$, $\sigma_b^2$, and
+      $\hat{S}(t \mid \bx)$.
+    \item Select a grid
+      $\gamma \in \{-1.5, -1.0, -0.5, 0, 0.5, 1.0, 1.5\}$, where
+      negative values correspond to the clinically plausible
+      direction.
+    \item For each $\gamma$, refit using~\eqref{eq:tilted-lik} with
+      the PG sampler.
+    \item Report posterior survival curves and 95\% credible intervals
+      as a function of $\gamma$.
+    \item Identify the tipping point $\gamma^\ast$ at which a
+      substantive conclusion reverses sign.
 \end{enumerate}
+
 
 If conclusions are robust across the grid of \(\gamma\), the standard analysis assuming MAR is likely sufficient, despite the potential for informative censoring. If conclusions change at modest values of \(|\gamma|\), this quantifies the fragility of the findings. A large \(\gamma^\ast\) (relative to the standard model) indicates that \(b_i\) has absorbed much of the informative censoring, leaving results less sensitive to residual violations. Conversely, a small \(\gamma^\ast\) after frailty adjustment suggests that the Gaussian random effect is insufficient to capture relative heterogeneity, pointing to potential misspecification or residual confounding.
 
