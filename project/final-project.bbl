@@ -1,4 +1,4 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{15}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -16,6 +16,18 @@ Michael~J. Daniels and Joseph~W. Hogan.
 \newblock \emph{Missing Data in Longitudinal Studies: Strategies for {B}ayesian Modeling and Sensitivity Analysis}.
 \newblock Chapman \& Hall/CRC, Boca Raton, FL, 2008.
 \newblock ISBN 978-1584886099.
+
+\bibitem[Gelman(2006)]{gelman-prior-2006}
+Andrew Gelman.
+\newblock Prior distributions for variance parameters in hierarchical models (comment on article by {B}rowne and {D}raper).
+\newblock \emph{Bayesian Analysis}, 1\penalty0 (3):\penalty0 515--534, 2006.
+\newblock \doi{10.1214/06-BA117A}.
+
+\bibitem[Hoffman and Gelman(2014)]{hoffman-gelman-nuts}
+Matthew~D. Hoffman and Andrew Gelman.
+\newblock The {No-U-Turn} sampler: Adaptively setting path lengths in {H}amiltonian {M}onte {C}arlo.
+\newblock \emph{Journal of Machine Learning Research}, 15\penalty0 (47):\penalty0 1593--1623, 2014.
+\newblock URL \url{http://jmlr.org/papers/v15/hoffman14a.html}.
 
 \bibitem[Johnson et~al.(2016)Johnson, Pollard, and Mark]{PhysioNet-mimiciii-1.4}
 Alistair Johnson, Tom Pollard, and Roger Mark.
@@ -37,6 +49,13 @@ Tony Lancaster.
 \newblock \emph{Econometrica}, 47\penalty0 (4):\penalty0 939--956, 1979.
 \newblock \doi{10.2307/1914140}.
 
+\bibitem[Neal(2003)]{neal-funnel}
+Radford~M. Neal.
+\newblock Slice sampling.
+\newblock In \emph{The Annals of Statistics}, volume~31, pages 705--767. 2003.
+\newblock \doi{10.1214/aos/1056562461}.
+\newblock Section 6 introduces the ``funnel'' distribution illustrating hierarchical sampling difficulties.
+
 \bibitem[Polson et~al.(2013)Polson, Scott, and Windle]{polya-gamma}
 Nicholas~G. Polson, James~G. Scott, and Jesse Windle.
 \newblock Bayesian inference for logistic models using pólya–gamma latent variables.
@@ -55,6 +74,17 @@ Daniel~O. Scharfstein, Andrea Rotnitzky, and James~M. Robins.
 \newblock Adjusting for nonignorable drop-out using semiparametric nonresponse models.
 \newblock \emph{Journal of the American Statistical Association}, 94\penalty0 (448):\penalty0 1096--1120, 1999.
 \newblock \doi{10.1080/01621459.1999.10473862}.
+
+\bibitem[Simpson et~al.(2017)Simpson, Rue, Riebler, Martins, and S{\o}rbye]{simpson-pc-priors}
+Daniel~P. Simpson, H{\aa}vard Rue, Andrea Riebler, Thiago~G. Martins, and Sigrunn~H. S{\o}rbye.
+\newblock Penalising model component complexity: A principled, practical approach to constructing priors.
+\newblock \emph{Statistical Science}, 32\penalty0 (1):\penalty0 1--28, 2017.
+\newblock \doi{10.1214/16-STS576}.
+
+\bibitem[{Stan Development Team}(2024)]{stan-software}
+{Stan Development Team}.
+\newblock Stan modeling language users guide and reference manual, version 2.35, 2024.
+\newblock URL \url{https://mc-stan.org}.
 
 \bibitem[Tsiatis(1975)]{tsiatis1975}
 Anastasios Tsiatis.

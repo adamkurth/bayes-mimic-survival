@@ -3,44 +3,47 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: final-project.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-You've used 10 entries,
+Warning--can't use both volume and number fields in neal-funnel
+Warning--empty publisher in neal-funnel
+You've used 15 entries,
             2773 wiz_defined-function locations,
-            675 strings with 6625 characters,
-and the built_in function-call counts, 4430 in all, are:
-= -- 422
-> -- 202
-< -- 6
-+ -- 70
-- -- 60
-* -- 367
-:= -- 699
-add.period$ -- 43
-call.type$ -- 10
-change.case$ -- 49
-chr.to.int$ -- 10
-cite$ -- 20
-duplicate$ -- 203
-empty$ -- 378
-format.name$ -- 74
-if$ -- 916
+            711 strings with 7640 characters,
+and the built_in function-call counts, 6775 in all, are:
+= -- 650
+> -- 301
+< -- 12
++ -- 105
+- -- 90
+* -- 551
+:= -- 1048
+add.period$ -- 64
+call.type$ -- 15
+change.case$ -- 74
+chr.to.int$ -- 15
+cite$ -- 32
+duplicate$ -- 312
+empty$ -- 583
+format.name$ -- 111
+if$ -- 1417
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 12
-newline$ -- 71
-num.names$ -- 40
-pop$ -- 80
+missing$ -- 16
+newline$ -- 101
+num.names$ -- 60
+pop$ -- 127
 preamble$ -- 1
-purify$ -- 40
+purify$ -- 60
 quote$ -- 0
-skip$ -- 142
+skip$ -- 227
 stack$ -- 0
-substring$ -- 195
-swap$ -- 11
-text.length$ -- 0
+substring$ -- 309
+swap$ -- 27
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 100
-warning$ -- 0
-while$ -- 44
+type$ -- 155
+warning$ -- 2
+while$ -- 68
 width$ -- 0
-write$ -- 163
+write$ -- 238
+(There were 2 warnings)

@@ -109,12 +109,9 @@
 	number="1",
 	pages="e11605",
 	keywords="electronic health records; clinical laboratory tests; machine learning; hospital mortality",
-	abstract="Background: The data missing from patient profiles in intensive care units (ICUs) are substantial and unavoidable. However, this incompleteness is not always random or because of imperfections in the data collection process. Objective: This study aimed to investigate the potential hidden information in data missing from electronic health records (EHRs) in an ICU and examine whether the presence or missingness of a variable itself can convey information about the patient health status. Methods: Daily retrieval of laboratory test (LT) measurements from the Medical Information Mart for Intensive Care III database was set as our reference for defining complete patient profiles. Missingness indicators were introduced as a way of representing presence or absence of the LTs in a patient profile. Thereafter, various feature selection methods (filter and embedded feature selection methods) were used to examine the predictive power of missingness indicators. Finally, a set of well-known prediction models (logistic regression [LR], decision tree, and random forest) were used to evaluate whether the absence status itself of a variable recording can provide predictive power. We also examined the utility of missingness indicators in improving predictive performance when used with observed laboratory measurements as model input. The outcome of interest was in-hospital mortality and mortality at 30 days after ICU discharge. Results: Regardless of mortality type or ICU day, more than 40{\%} of the predictors selected by feature selection methods were missingness indicators. Notably, employing missingness indicators as the only predictors achieved reasonable mortality prediction on all days and for all mortality types (for instance, in 30-day mortality prediction with LR, we achieved area under the curve of the receiver operating characteristic [AUROC] of 0.6836{\textpm}0.012). Including indicators with observed measurements in the prediction models also improved the AUROC; the maximum improvement was 0.0426. Indicators also improved the AUROC for Simplified Acute Physiology Score II model---a well-known ICU severity of illness score---confirming the additive information of the indicators (AUROC of 0.8045{\textpm}0.0109 for 30-day mortality prediction for LR). Conclusions: Our study demonstrated that the presence or absence of LT measurements is informative and can be considered a potential predictor of in-hospital and 30-day mortality. The comparative analysis of prediction models also showed statistically significant prediction improvement when indicators were included. Moreover, missing data might reflect the opinions of examining clinicians. Therefore, the absence of measurements can be informative in ICUs and has predictive power beyond the measured data themselves. This initial case study shows promise for more in-depth analysis of missing data and its informativeness in ICUs. Future studies are needed to generalize these results. ",
 	issn="2291-9694",
 	doi="10.2196/11605",
 	url="http://medinform.jmir.org/2019/1/e11605/",
-	url="https://doi.org/10.2196/11605",
-	url="http://www.ncbi.nlm.nih.gov/pubmed/30622091",
 	note = {ICU-specific analysis of missingness patterns; supports use of missingness indicators}
 }
 
@@ -154,7 +151,6 @@
   number = {1},
   pages = {139--156},
   publisher = {[Wiley, International Biometric Society]},
-  title = {General Right Censoring and Its Impact on the Analysis of Survival Data},
   urldate = {2026-04-06},
   volume = {35},
   year = {1979}
@@ -264,4 +260,90 @@
   year      = {2008},
   address   = {Boca Raton, FL},
   isbn      = {978-1584886099}
+}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%% NEW REFERENCES (added for revised manuscript)
+%% ═══════════════════════════════════════════════════════════════════════════
+
+% --- Penalized complexity priors ---
+
+@article{simpson-pc-priors,
+  author  = {Simpson, Daniel P. and Rue, H{\aa}vard and Riebler, Andrea
+             and Martins, Thiago G. and S{\o}rbye, Sigrunn H.},
+  title   = {Penalising Model Component Complexity: A Principled,
+             Practical Approach to Constructing Priors},
+  journal = {Statistical Science},
+  volume  = {32},
+  number  = {1},
+  pages   = {1--28},
+  year    = {2017},
+  doi     = {10.1214/16-STS576}
+}
+
+% --- Stan software ---
+
+@misc{stan-software,
+  author = {{Stan Development Team}},
+  title  = {Stan Modeling Language Users Guide and Reference Manual,
+            Version 2.35},
+  year   = {2024},
+  url    = {https://mc-stan.org}
+}
+
+% --- NUTS / HMC ---
+
+@article{hoffman-gelman-nuts,
+  author  = {Hoffman, Matthew D. and Gelman, Andrew},
+  title   = {The {No-U-Turn} Sampler: Adaptively Setting Path Lengths
+             in {H}amiltonian {M}onte {C}arlo},
+  journal = {Journal of Machine Learning Research},
+  volume  = {15},
+  number  = {47},
+  pages   = {1593--1623},
+  year    = {2014},
+  url     = {http://jmlr.org/papers/v15/hoffman14a.html}
+}
+
+% --- LOO-CV / PSIS ---
+
+@article{vehtari-loo,
+  author  = {Vehtari, Aki and Gelman, Andrew and Gabry, Jonah},
+  title   = {Practical {B}ayesian Model Evaluation Using Leave-One-Out
+             Cross-Validation and {WAIC}},
+  journal = {Statistics and Computing},
+  volume  = {27},
+  number  = {5},
+  pages   = {1413--1432},
+  year    = {2017},
+  doi     = {10.1007/s11222-016-9696-4}
+}
+
+% --- Neal's funnel ---
+
+@incollection{neal-funnel,
+  author    = {Neal, Radford M.},
+  title     = {Slice Sampling},
+  booktitle = {The Annals of Statistics},
+  volume    = {31},
+  number    = {3},
+  pages     = {705--767},
+  year      = {2003},
+  doi       = {10.1214/aos/1056562461},
+  note      = {Section 6 introduces the ``funnel'' distribution illustrating
+               hierarchical sampling difficulties}
+}
+
+% --- Weakly informative priors ---
+
+@article{gelman-prior-2006,
+  author  = {Gelman, Andrew},
+  title   = {Prior Distributions for Variance Parameters in Hierarchical
+             Models (Comment on Article by {B}rowne and {D}raper)},
+  journal = {Bayesian Analysis},
+  volume  = {1},
+  number  = {3},
+  pages   = {515--534},
+  year    = {2006},
+  doi     = {10.1214/06-BA117A}
 }

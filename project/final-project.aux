@@ -8,15 +8,18 @@
 \citation{rubin1976}
 \citation{tsiatis1975}
 \citation{allison-discrete}
-\citation{scharfstein1999}
-\citation{polya-gamma}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{sc:intro}{{1}{1}{}{section.1}{}}
+\citation{scharfstein1999}
+\citation{stan-software,hoffman-gelman-nuts}
+\citation{polya-gamma}
 \citation{allison-discrete}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Data Structure, Person-Period Format, \& Notation}{2}{section.2}\protected@file@percent }
 \newlabel{sc:notation}{{2}{2}{}{section.2}{}}
 \@writefile{toc}{\contentsline {paragraph}{Discretization.}{2}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Person-Period expansion.}{2}{section.2}\protected@file@percent }
+\citation{kalbfleisch2003statistical}
+\citation{kalbfleisch2003statistical}
 \citation{tsiatis1975}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Standard Likelihood \& Censoring Assumption}{3}{section.3}\protected@file@percent }
 \newlabel{sc:naive-likelihood}{{3}{3}{}{section.3}{}}
@@ -38,55 +41,90 @@
 \@writefile{toc}{\contentsline {paragraph}{Confounding Bias in Covariate Effects.}{5}{equation.7}\protected@file@percent }
 \newlabel{eq:confounding-bias}{{8}{5}{Consequences of Informative Censoring}{equation.8}{}}
 \@writefile{toc}{\contentsline {paragraph}{Corrections.}{5}{equation.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Logistic Hazard Model \& Frailty Extension}{5}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Logistic Hazard Model}{5}{section.4}\protected@file@percent }
 \newlabel{sc:frailty}{{4}{5}{Consequences of Informative Censoring}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Hierarchy Specification}{5}{subsection.4.1}\protected@file@percent }
-\newlabel{sc:hierarchy}{{4.1}{5}{Hierarchy Specification}{subsection.4.1}{}}
-\newlabel{eq:obs-model}{{9}{5}{Hierarchy Specification}{equation.9}{}}
-\newlabel{eq:link-frailty}{{10}{5}{Hierarchy Specification}{equation.10}{}}
+\citation{gelman-prior-2006}
+\citation{simpson-pc-priors}
 \citation{daniels2008}
-\newlabel{eq:alpha1-prior}{{11}{6}{Hierarchy Specification}{equation.11}{}}
-\newlabel{eq:rw-prior}{{12}{6}{Hierarchy Specification}{equation.12}{}}
-\newlabel{eq:beta-prior}{{13}{6}{Hierarchy Specification}{equation.13}{}}
-\newlabel{eq:frailty-prior}{{14}{6}{Hierarchy Specification}{equation.14}{}}
-\newlabel{eq:sigma-b-prior}{{15}{6}{Hierarchy Specification}{equation.15}{}}
-\newlabel{eq:sigma-alpha-prior}{{16}{6}{Hierarchy Specification}{equation.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Why Frailty Addresses Informative Censoring}{6}{subsection.4.2}\protected@file@percent }
-\newlabel{sc:why-frailty}{{4.2}{6}{Why Frailty Addresses Informative Censoring}{subsection.4.2}{}}
-\newlabel{eq:frailty-indep-cens}{{17}{6}{Why Frailty Addresses Informative Censoring}{equation.17}{}}
-\newlabel{subsec:identifiability}{{4.2}{6}{Why Frailty Addresses Informative Censoring}{equation.17}{}}
-\@writefile{toc}{\contentsline {paragraph}{Identifiability.}{6}{equation.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Standard Model (Model A)}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sc:standard-model}{{4.1}{6}{Standard Model (Model A)}{subsection.4.1}{}}
+\newlabel{eq:obs-model}{{9}{6}{Standard Model (Model A)}{equation.9}{}}
+\newlabel{eq:link-standard}{{10}{6}{Standard Model (Model A)}{equation.10}{}}
+\newlabel{eq:alpha1-prior}{{11}{6}{Standard Model (Model A)}{equation.11}{}}
+\newlabel{eq:rw-prior}{{12}{6}{Standard Model (Model A)}{equation.12}{}}
+\newlabel{eq:sigma-alpha-prior}{{13}{6}{Standard Model (Model A)}{equation.13}{}}
+\newlabel{eq:beta-prior}{{14}{6}{Standard Model (Model A)}{equation.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Frailty Extension (Model B)}{6}{subsection.4.2}\protected@file@percent }
+\newlabel{sc:frailty}{{4.2}{6}{Frailty Extension (Model B)}{subsection.4.2}{}}
+\newlabel{eq:link-frailty}{{15}{6}{Frailty Extension (Model B)}{equation.15}{}}
+\newlabel{eq:frailty-prior}{{16}{6}{Frailty Extension (Model B)}{equation.16}{}}
+\newlabel{eq:sigma-b-prior}{{17}{6}{Frailty Extension (Model B)}{equation.17}{}}
 \citation{scharfstein1999}
 \citation{daniels2008}
+\@writefile{toc}{\contentsline {paragraph}{Why Frailty Addresses Informative Censoring.}{7}{equation.17}\protected@file@percent }
+\newlabel{eq:frailty-indep-cens}{{18}{7}{Frailty Extension (Model B)}{equation.18}{}}
+\@writefile{toc}{\contentsline {paragraph}{Identifiability Limitations.}{7}{equation.18}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Sensitivity Analysis for Informative Censoring}{7}{subsection.4.3}\protected@file@percent }
 \newlabel{sc:sensitivity}{{4.3}{7}{Sensitivity Analysis for Informative Censoring}{subsection.4.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4}The Selection Model}{7}{subsection.4.4}\protected@file@percent }
 \newlabel{sc:selection-model}{{4.4}{7}{The Selection Model}{subsection.4.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Tilted Likelihood}{7}{subsection.4.5}\protected@file@percent }
-\newlabel{eq:tilted-hazard}{{19}{7}{Tilted Likelihood}{equation.19}{}}
-\newlabel{eq:tilted-lik}{{20}{7}{Tilted Likelihood}{equation.20}{}}
 \citation{daniels2008}
-\newlabel{eq:odds-tilt}{{21}{8}{Tilted Likelihood}{equation.21}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Protocol.}{8}{subsection.4.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Polya-Gamma Augmentation}{9}{section.5}\protected@file@percent }
-\newlabel{sc:pg-augmentation}{{5}{9}{Protocol}{section.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{9}{section.6}\protected@file@percent }
-\newlabel{sc:discussion}{{6}{9}{Protocol}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Tilted Likelihood}{8}{subsection.4.5}\protected@file@percent }
+\newlabel{eq:tilted-hazard}{{20}{8}{Tilted Likelihood}{equation.20}{}}
+\newlabel{eq:tilted-lik}{{21}{8}{Tilted Likelihood}{equation.21}{}}
+\newlabel{eq:odds-tilt}{{22}{8}{Tilted Likelihood}{equation.22}{}}
+\citation{polya-gamma}
+\citation{neal-funnel}
+\citation{stan-software}
+\citation{hoffman-gelman-nuts}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Protocol.}{9}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Computation}{9}{section.5}\protected@file@percent }
+\newlabel{sc:computation}{{5}{9}{Protocol}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Hamiltonian Monte Carlo via Stan}{9}{subsection.5.1}\protected@file@percent }
+\newlabel{sc:stan}{{5.1}{9}{Hamiltonian Monte Carlo via Stan}{subsection.5.1}{}}
+\newlabel{eq:non-centered}{{24}{9}{Hamiltonian Monte Carlo via Stan}{equation.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Computational Comparison}{9}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Application to MIMIC-III}{10}{section.6}\protected@file@percent }
+\newlabel{sc:application}{{6}{10}{Computational Comparison}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{11}{section.7}\protected@file@percent }
+\newlabel{sc:discussion}{{7}{11}{Computational Comparison}{section.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Summary of Contributions.}{11}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{11}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future Work.}{11}{section.7}\protected@file@percent }
 \citation{scharfstein1999}
 \citation{scharfstein1999}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Semiparametric Estimation Equations under Informative Censoring}{10}{appendix.A}\protected@file@percent }
-\newlabel{app:scharfstein1999}{{A}{10}{Protocol}{appendix.A}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Derivation of Biased Hazard under Informative Censoring}{11}{appendix.B}\protected@file@percent }
-\newlabel{app:biased-hazard}{{B}{11}{Protocol}{appendix.B}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Semiparametric Estimation Equations under Informative Censoring}{12}{appendix.A}\protected@file@percent }
+\newlabel{app:scharfstein1999}{{A}{12}{Computational Comparison}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Derivation of Biased Hazard under Informative Censoring}{13}{appendix.B}\protected@file@percent }
+\newlabel{app:biased-hazard}{{B}{13}{Computational Comparison}{appendix.B}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Simulation Study: Proof of Concept}{13}{appendix.C}\protected@file@percent }
+\newlabel{app:simulation}{{C}{13}{Computational Comparison}{appendix.C}{}}
+\citation{neal-funnel}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.1}Data-Generating Process}{14}{subsection.C.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2}Key Findings}{14}{subsection.C.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Model A (standard) reliably converges.}{14}{subsection.C.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Model B (frailty) is weakly identifiable.}{14}{subsection.C.2}\protected@file@percent }
+\newlabel{fig:sensitivity}{{C.2}{14}{Key Findings}{subsection.C.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Sensitivity analysis is well-behaved.}{14}{subsection.C.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Discretization sensitivity.}{14}{figure.1}\protected@file@percent }
+\newlabel{fig:calibration}{{C.2}{14}{Key Findings}{figure.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Calibration under informative censoring.}{14}{figure.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Sensitivity analysis results showing posterior means and 95\% credible intervals for key covariate effects across a grid of \(\gamma \) values. Effects driven by observed covariates (e.g., age) remain stable, while those influenced by unobserved heterogeneity (e.g., sepsis) show sensitivity to informative censoring.}}{15}{figure.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Calibration plot for Model~A showing observed vs. predicted mortality across risk deciles. The systematic over-prediction in higher risk deciles confirms the presence of informative censoring bias, consistent with the theoretical bias formula.}}{16}{figure.2}\protected@file@percent }
 \bibdata{references}
 \bibcite{allison-discrete}{{1}{1982}{{Allison}}{{}}}
 \bibcite{daniels2008}{{2}{2008}{{Daniels and Hogan}}{{}}}
-\bibcite{PhysioNet-mimiciii-1.4}{{3}{2016}{{Johnson et~al.}}{{Johnson, Pollard, and Mark}}}
-\bibcite{kalbfleisch2003statistical}{{4}{2003}{{Kalbfleisch and Prentice}}{{}}}
-\bibcite{lancaster1979}{{5}{1979}{{Lancaster}}{{}}}
-\bibcite{polya-gamma}{{6}{2013}{{Polson et~al.}}{{Polson, Scott, and Windle}}}
-\bibcite{rubin1976}{{7}{1976}{{Rubin}}{{}}}
-\bibcite{scharfstein1999}{{8}{1999}{{Scharfstein et~al.}}{{Scharfstein, Rotnitzky, and Robins}}}
-\bibcite{tsiatis1975}{{9}{1975}{{Tsiatis}}{{}}}
-\bibcite{vaupel1979}{{10}{1979}{{Vaupel et~al.}}{{Vaupel, Manton, and Stallard}}}
-\gdef \@abspage@last{12}
+\bibcite{gelman-prior-2006}{{3}{2006}{{Gelman}}{{}}}
+\bibcite{hoffman-gelman-nuts}{{4}{2014}{{Hoffman and Gelman}}{{}}}
+\bibcite{PhysioNet-mimiciii-1.4}{{5}{2016}{{Johnson et~al.}}{{Johnson, Pollard, and Mark}}}
+\bibcite{kalbfleisch2003statistical}{{6}{2003}{{Kalbfleisch and Prentice}}{{}}}
+\bibcite{lancaster1979}{{7}{1979}{{Lancaster}}{{}}}
+\bibcite{neal-funnel}{{8}{2003}{{Neal}}{{}}}
+\bibcite{polya-gamma}{{9}{2013}{{Polson et~al.}}{{Polson, Scott, and Windle}}}
+\bibcite{rubin1976}{{10}{1976}{{Rubin}}{{}}}
+\bibcite{scharfstein1999}{{11}{1999}{{Scharfstein et~al.}}{{Scharfstein, Rotnitzky, and Robins}}}
+\bibcite{simpson-pc-priors}{{12}{2017}{{Simpson et~al.}}{{Simpson, Rue, Riebler, Martins, and S{\o }rbye}}}
+\bibcite{stan-software}{{13}{2024}{{Stan Development Team}}{{}}}
+\bibcite{tsiatis1975}{{14}{1975}{{Tsiatis}}{{}}}
+\bibcite{vaupel1979}{{15}{1979}{{Vaupel et~al.}}{{Vaupel, Manton, and Stallard}}}
+\gdef \@abspage@last{18}

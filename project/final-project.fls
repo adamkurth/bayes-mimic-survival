@@ -183,6 +183,16 @@ INPUT /Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmex
 INPUT /Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm
 INPUT /Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm
 INPUT /Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm
+INPUT ./plots/demo/stan_demo_sensitivity_all.pdf
+INPUT ./plots/demo/stan_demo_sensitivity_all.pdf
+INPUT ./plots/demo/stan_demo_sensitivity_all.pdf
+INPUT ./plots/demo/stan_demo_sensitivity_all.pdf
+INPUT ./plots/demo/stan_demo_sensitivity_all.pdf
+INPUT ./plots/demo/stan_demo_calibration.pdf
+INPUT ./plots/demo/stan_demo_calibration.pdf
+INPUT ./plots/demo/stan_demo_calibration.pdf
+INPUT ./plots/demo/stan_demo_calibration.pdf
+INPUT ./plots/demo/stan_demo_calibration.pdf
 INPUT ./final-project.bbl
 INPUT ./final-project.bbl
 INPUT final-project.bbl

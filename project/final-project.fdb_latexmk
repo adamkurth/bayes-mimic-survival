@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex final-project"] 1776128673.83604 "final-project.aux" "final-project.bbl" "final-project" 1776128674.14401 0
-  "./references.bib" 1776028090.50027 14512 010aa1a921ae98bb1d76c018dcd81641 ""
+["bibtex final-project"] 1776538706.19249 "final-project.aux" "final-project.bbl" "final-project" 1776538706.53658 0
+  "./references.bib" 1776536307.74102 14172 ae5cebddf1c0c91013ae24bd15156114 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "final-project.aux" 1776128674.08668 6977 ca29a854ea0eda994be9de1a4a4e4ee8 "pdflatex"
+  "final-project.aux" 1776538706.47388 10656 4765f5a823e447ec600f6ebbca546c32 "pdflatex"
   (generated)
   "final-project.bbl"
   "final-project.blg"
   (rewritten before read)
-["pdflatex"] 1776128673.849 "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" "final-project.pdf" "final-project" 1776128674.14413 0
-  "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" 1776128673.36329 43263 809c083a914e4bc1fb931d9035e9f123 ""
+["pdflatex"] 1776538706.2073 "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" "final-project.pdf" "final-project" 1776538706.5367 0
+  "/Users/adamkurth/Documents/RStudio/bayes-mimic-survival/project/final-project.tex" 1776538705.66209 48308 555cacda39dcb43e763d1221760e174a ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1246382020 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1246382020 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -125,10 +125,12 @@
   "/Users/adamkurth/Library/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk" 1772592557.10277 12644 db913e2d0d745aba65fce94cc1aeeebc ""
   "/Users/adamkurth/Library/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1775011749 2241888 a8810cc3e5a1785711d41ab7c088833b ""
   "/Users/adamkurth/Library/TinyTeX/texmf.cnf" 1761852889.88832 708 85fd07691b6294ba94c59dbc62380410 ""
-  "final-project.aux" 1776128674.08668 6977 ca29a854ea0eda994be9de1a4a4e4ee8 "pdflatex"
-  "final-project.bbl" 1776128673.84749 3250 4f6ba49fe4f7bd44597d4dd0ed5136b0 "bibtex final-project"
-  "final-project.out" 1776128674.08726 3976 80e68f7ad1db643a509df506151ae5ec "pdflatex"
-  "final-project.tex" 1776128673.36329 43263 809c083a914e4bc1fb931d9035e9f123 ""
+  "final-project.aux" 1776538706.47388 10656 4765f5a823e447ec600f6ebbca546c32 "pdflatex"
+  "final-project.bbl" 1776538706.20552 4828 17a3f090e18128a68e68daa12738c8eb "bibtex final-project"
+  "final-project.out" 1776538706.47474 4843 0acf7e3e2b41b5c860545e0c0ae4cdea "pdflatex"
+  "final-project.tex" 1776538705.66209 48308 555cacda39dcb43e763d1221760e174a ""
+  "plots/demo/stan_demo_calibration.pdf" 1776531850.59519 6439 2a63a2e1fc23c0cf3a10ddd9b3564a23 ""
+  "plots/demo/stan_demo_sensitivity_all.pdf" 1776531850.60066 14058 f5c4d6e8459bcb01957f7f5a319a017c ""
   "style.sty" 1775491498.05016 12804 d1e39c741aff082df602506bf46a8493 ""
   (generated)
   "final-project.aux"
