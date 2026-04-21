@@ -1,24 +1,65 @@
 .DS_Store
-
+.Rhistory
+.RData
 .gitignore
 .github/
+*.Rproj.user/
+
+# ============================================================================
+# CRITICAL: MIMIC-III Data Files (33GB+ total - DO NOT COMMIT)
+# ============================================================================
 data/mimic-iii-clinical-database-demo-1.4/
 data/physionet.org/
-final-instructions/
-proposal-template/
 
+# Individual MIMIC CSV files (if somehow added individually)
+data/**/*.csv
+data/**/*.csv.gz
+data/**/*.rds
+
+# ============================================================================
+# Stan/Model Output Files (7.3GB+ total)
+# ============================================================================
+output/
+output/mimic/*.RData
+output/mimic/*.csv
+output/mimic/*-*.csv
 demo/results/*.RData
+demo/results/*.csv
 
+# ============================================================================
+# Reference PDFs (large academic books - 55MB total)
+# ============================================================================
+ref/*.pdf
+
+# ============================================================================
+# LaTeX Auxiliary & Temporary Files
+# ============================================================================
 project/*.aux
 project/*.log
 project/*.out
 project/*.synctex.gz
 project/final-project.synctex.gz
-
-all-tex
+project/final-project.fdb_latexmk
+project/final-project.fls
+all-tex/
 all-tex/data-dict-tex/
-project/instructions/
 temp/
+project/final_paper_instructions-2.pdf
 
-consider.md
-ref.md
+# ============================================================================
+# Proposal Directory
+# ============================================================================
+proposal/
+
+# ============================================================================
+# Stan Compilation Artifacts
+# ============================================================================
+*.o
+*.so
+*.stan.exe
+
+# ============================================================================
+# Miscellaneous
+# ============================================================================
+.Rproj.user
+*~

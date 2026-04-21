@@ -291,6 +291,13 @@
   url    = {https://mc-stan.org}
 }
 
+@manual{cmdstan_guide,
+  title = {CmdStan User's Guide, Version 2.34},
+  author = {{Stan Development Team}},
+  year = {2024},
+  url = {https://mc-stan.org/docs/cmdstan-guide/variational_config.html#variational-algorithms}
+}
+
 % --- NUTS / HMC ---
 
 @article{hoffman-gelman-nuts,
@@ -321,17 +328,16 @@
 
 % --- Neal's funnel ---
 
-@incollection{neal-funnel,
+@article{neal-funnel,
   author    = {Neal, Radford M.},
   title     = {Slice Sampling},
-  booktitle = {The Annals of Statistics},
+  journal   = {The Annals of Statistics},
   volume    = {31},
   number    = {3},
   pages     = {705--767},
   year      = {2003},
   doi       = {10.1214/aos/1056562461},
-  note      = {Section 6 introduces the ``funnel'' distribution illustrating
-               hierarchical sampling difficulties}
+  note      = {Section 6 introduces the ``funnel'' distribution illustrating hierarchical sampling difficulties}
 }
 
 % --- Weakly informative priors ---

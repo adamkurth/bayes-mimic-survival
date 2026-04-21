@@ -3,47 +3,46 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: final-project.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-Warning--can't use both volume and number fields in neal-funnel
-Warning--empty publisher in neal-funnel
-You've used 15 entries,
+Warning--I didn't find a database entry for "cmdstanr"
+You've used 14 entries,
             2773 wiz_defined-function locations,
-            711 strings with 7640 characters,
-and the built_in function-call counts, 6775 in all, are:
-= -- 650
-> -- 301
-< -- 12
-+ -- 105
-- -- 90
-* -- 551
-:= -- 1048
-add.period$ -- 64
-call.type$ -- 15
-change.case$ -- 74
-chr.to.int$ -- 15
-cite$ -- 32
-duplicate$ -- 312
-empty$ -- 583
-format.name$ -- 111
-if$ -- 1417
-int.to.chr$ -- 1
+            701 strings with 7480 characters,
+and the built_in function-call counts, 5987 in all, are:
+= -- 569
+> -- 271
+< -- 10
++ -- 96
+- -- 81
+* -- 484
+:= -- 942
+add.period$ -- 58
+call.type$ -- 14
+change.case$ -- 67
+chr.to.int$ -- 13
+cite$ -- 28
+duplicate$ -- 275
+empty$ -- 514
+format.name$ -- 101
+if$ -- 1238
+int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 16
-newline$ -- 101
-num.names$ -- 60
-pop$ -- 127
+missing$ -- 14
+newline$ -- 94
+num.names$ -- 56
+pop$ -- 115
 preamble$ -- 1
-purify$ -- 60
+purify$ -- 55
 quote$ -- 0
-skip$ -- 227
+skip$ -- 197
 stack$ -- 0
-substring$ -- 309
-swap$ -- 27
-text.length$ -- 2
+substring$ -- 250
+swap$ -- 18
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 155
-warning$ -- 2
-while$ -- 68
+type$ -- 144
+warning$ -- 0
+while$ -- 60
 width$ -- 0
-write$ -- 238
-(There were 2 warnings)
+write$ -- 219
+(There was 1 warning)

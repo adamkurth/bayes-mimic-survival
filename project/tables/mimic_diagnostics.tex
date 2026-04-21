@@ -1,0 +1,33 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{MCMC diagnostics for covariate effects ($\hat{\beta}$) under both models. $\hat{R}$ values below 1.01 and ESS above 400 indicate reliable convergence. Model~B additionally estimates $\sigma_b$ (frailty SD). All chains: 0 divergent transitions.}
+\label{tab:diagnostics}
+\begin{tabular}{l rrrrr rrrrr}
+\toprule
+ & \multicolumn{5}{c}{\textbf{Model A (Standard)}} & \multicolumn{5}{c}{\textbf{Model B (Frailty)}} \\
+\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+\textbf{Parameter} & Mean & SD & $\hat{R}$ & ESS$_b$ & ESS$_t$ & Mean & SD & $\hat{R}$ & ESS$_b$ & ESS$_t$ \\
+\midrule
+$\sigma_b$ & --- & --- & --- & --- & --- & 1.378 & 0.133 & 1.027 & 97 & 139 \\
+\midrule
+\rowcolor{rowgray} age (std) & 0.757 & 0.0257 & 1.001 & 5894 & 4831 & 0.921 & 0.0424 & 1.013 & 211 & 360 \\
+male & -0.092 & 0.0276 & 1.000 & 5256 & 4550 & -0.119 & 0.0365 & 1.001 & 4463 & 4066 \\
+\rowcolor{rowgray} emergency & 0.902 & 0.0560 & 1.004 & 878 & 2268 & 1.074 & 0.0721 & 1.007 & 381 & 914 \\
+icd\_sepsis & 0.502 & 0.0346 & 1.000 & 5462 & 3994 & 0.704 & 0.0554 & 1.011 & 283 & 752 \\
+\rowcolor{rowgray} icd\_hf & -0.099 & 0.0322 & 1.001 & 5469 & 3551 & -0.131 & 0.0417 & 1.000 & 5186 & 4970 \\
+icd\_resp & 0.202 & 0.0346 & 1.001 & 4925 & 4173 & 0.263 & 0.0458 & 1.001 & 2284 & 4286 \\
+\rowcolor{rowgray} icd\_aki & 0.193 & 0.0318 & 1.001 & 6031 & 4112 & 0.245 & 0.0420 & 1.001 & 1845 & 3678 \\
+gcs\_impaired & 0.614 & 0.0394 & 1.001 & 3584 & 4368 & 0.718 & 0.0507 & 1.004 & 530 & 869 \\
+\rowcolor{rowgray} vasopressor & -0.063 & 0.0346 & 1.001 & 5472 & 4179 & -0.035 & 0.0471 & 1.000 & 4713 & 4584 \\
+icd\_pneumonia & -0.353 & 0.0343 & 1.000 & 5950 & 4312 & -0.493 & 0.0499 & 1.005 & 547 & 787 \\
+\rowcolor{rowgray} icd\_diabetes & -0.139 & 0.0322 & 1.000 & 7363 & 4324 & -0.188 & 0.0414 & 1.000 & 3297 & 4729 \\
+icd\_liver & 0.436 & 0.0476 & 1.000 & 5946 & 4321 & 0.515 & 0.0651 & 1.001 & 2273 & 4281 \\
+\rowcolor{rowgray} icd\_malignancy & 0.661 & 0.0339 & 1.000 & 5393 & 4400 & 0.852 & 0.0540 & 1.008 & 294 & 605 \\
+icd\_copd & -0.044 & 0.0382 & 1.001 & 7041 & 4039 & -0.068 & 0.0508 & 1.000 & 5386 & 4469 \\
+\rowcolor{rowgray} is\_ventilated & 0.964 & 0.0357 & 1.001 & 4520 & 3842 & 1.250 & 0.0666 & 1.015 & 162 & 240 \\
+received\_dialysis & 0.046 & 0.0474 & 1.001 & 6644 & 4486 & 0.044 & 0.0621 & 1.000 & 5174 & 5341 \\
+\rowcolor{rowgray} positive\_blood\_cx & -0.286 & 0.0379 & 1.000 & 7050 & 4530 & -0.406 & 0.0532 & 1.005 & 761 & 1815 \\
+\bottomrule
+\end{tabular}
+\end{table}

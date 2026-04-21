@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Posterior mean covariate effects (log-odds ratio for daily hazard) under Model~A and Model~B. Difference column shows the attenuation correction from including frailty.}
+\label{tab:beta-comparison}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Covariate} & \textbf{Model A} & \textbf{Model B} & \textbf{Difference} \\
+\midrule
+\rowcolor{rowgray} age (std) & 0.757 & 0.921 & +0.163 \\
+male & $-$0.092 & $-$0.119 & $-$0.027 \\
+\rowcolor{rowgray} emergency & 0.902 & 1.074 & +0.172 \\
+icd\_sepsis & 0.502 & 0.704 & +0.202 \\
+\rowcolor{rowgray} icd\_hf & $-$0.099 & $-$0.131 & $-$0.031 \\
+icd\_resp & 0.202 & 0.263 & +0.061 \\
+\rowcolor{rowgray} icd\_aki & 0.193 & 0.245 & +0.051 \\
+gcs\_impaired & 0.614 & 0.718 & +0.104 \\
+\rowcolor{rowgray} vasopressor & $-$0.063 & $-$0.035 & +0.028 \\
+icd\_pneumonia & $-$0.353 & $-$0.493 & $-$0.140 \\
+\rowcolor{rowgray} icd\_diabetes & $-$0.139 & $-$0.188 & $-$0.049 \\
+icd\_liver & 0.436 & 0.515 & +0.079 \\
+\rowcolor{rowgray} icd\_malignancy & 0.661 & 0.852 & +0.190 \\
+icd\_copd & $-$0.044 & $-$0.068 & $-$0.025 \\
+\rowcolor{rowgray} is\_ventilated & 0.964 & 1.250 & +0.286 \\
+received\_dialysis & 0.046 & 0.044 & $-$0.002 \\
+\rowcolor{rowgray} positive\_blood\_cx & $-$0.286 & $-$0.406 & $-$0.120 \\
+\bottomrule
+\end{tabular}
+\end{table}

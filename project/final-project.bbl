@@ -1,4 +1,4 @@
-\begin{thebibliography}{15}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -43,16 +43,10 @@ John~D. Kalbfleisch and Ross~L. Prentice.
 \newblock John Wiley \& Sons, Hoboken, N.J., 2nd edition, 2003.
 \newblock ISBN 978-0-471-36357-6.
 
-\bibitem[Lancaster(1979)]{lancaster1979}
-Tony Lancaster.
-\newblock Econometric methods for the duration of unemployment.
-\newblock \emph{Econometrica}, 47\penalty0 (4):\penalty0 939--956, 1979.
-\newblock \doi{10.2307/1914140}.
-
 \bibitem[Neal(2003)]{neal-funnel}
 Radford~M. Neal.
 \newblock Slice sampling.
-\newblock In \emph{The Annals of Statistics}, volume~31, pages 705--767. 2003.
+\newblock \emph{The Annals of Statistics}, 31\penalty0 (3):\penalty0 705--767, 2003.
 \newblock \doi{10.1214/aos/1056562461}.
 \newblock Section 6 introduces the ``funnel'' distribution illustrating hierarchical sampling difficulties.
 
@@ -81,9 +75,14 @@ Daniel~P. Simpson, H{\aa}vard Rue, Andrea Riebler, Thiago~G. Martins, and Sigrun
 \newblock \emph{Statistical Science}, 32\penalty0 (1):\penalty0 1--28, 2017.
 \newblock \doi{10.1214/16-STS576}.
 
-\bibitem[{Stan Development Team}(2024)]{stan-software}
+\bibitem[{Stan Development Team}(2024{\natexlab{a}})]{cmdstan_guide}
 {Stan Development Team}.
-\newblock Stan modeling language users guide and reference manual, version 2.35, 2024.
+\newblock \emph{CmdStan User's Guide, Version 2.34}, 2024{\natexlab{a}}.
+\newblock URL \url{https://mc-stan.org/docs/cmdstan-guide/variational_config.html#variational-algorithms}.
+
+\bibitem[{Stan Development Team}(2024{\natexlab{b}})]{stan-software}
+{Stan Development Team}.
+\newblock Stan modeling language users guide and reference manual, version 2.35, 2024{\natexlab{b}}.
 \newblock URL \url{https://mc-stan.org}.
 
 \bibitem[Tsiatis(1975)]{tsiatis1975}
@@ -91,11 +90,5 @@ Anastasios Tsiatis.
 \newblock A nonidentifiability aspect of the problem of competing risks.
 \newblock \emph{Proceedings of the National Academy of Sciences}, 72\penalty0 (1):\penalty0 20--22, 1975.
 \newblock \doi{10.1073/pnas.72.1.20}.
-
-\bibitem[Vaupel et~al.(1979)Vaupel, Manton, and Stallard]{vaupel1979}
-James~W. Vaupel, Kenneth~G. Manton, and Eric Stallard.
-\newblock The impact of heterogeneity in individual frailty on the dynamics of mortality.
-\newblock \emph{Demography}, 16\penalty0 (3):\penalty0 439--454, 1979.
-\newblock \doi{10.2307/2061224}.
 
 \end{thebibliography}
