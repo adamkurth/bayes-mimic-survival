@@ -5,125 +5,124 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \citation{kalbfleisch2003statistical}
 \citation{tsiatis1975}
+\citation{allison-discrete}
 \citation{scharfstein1999}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{sc:intro}{{1}{1}{}{section.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Data Structure \& Structure}{1}{section.2}\protected@file@percent }
-\newlabel{sc:notation}{{2}{1}{}{section.2}{}}
 \citation{allison-discrete}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Data Structure \& Notation}{2}{section.2}\protected@file@percent }
+\newlabel{sc:notation}{{2}{2}{}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}MIMIC-III Cohort}{2}{subsection.2.1}\protected@file@percent }
+\newlabel{sc:cohort}{{2.1}{2}{MIMIC-III Cohort}{subsection.2.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Discretization.}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Person-period expansion.}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Covariate Matrix}{2}{subsection.2.2}\protected@file@percent }
+\newlabel{sc:covariates}{{2.2}{2}{Covariate Matrix}{subsection.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Censoring Pattern}{2}{subsection.2.3}\protected@file@percent }
+\newlabel{sc:censoring-pattern}{{2.3}{2}{Censoring Pattern}{subsection.2.3}{}}
+\citation{rubin1976,oganisian}
 \citation{kalbfleisch2003statistical}
-\citation{rubin1976}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.0.1}Discretization.}{2}{subsubsection.2.0.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.0.2}Person-Period expansion.}{2}{subsubsection.2.0.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{2}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Standard Likelihood \& Censoring Assumption}{2}{subsection.3.1}\protected@file@percent }
-\newlabel{sc:naive-likelihood}{{3.1}{2}{Standard Likelihood \& Censoring Assumption}{subsection.3.1}{}}
-\newlabel{eq:full-lik}{{1}{2}{Standard Likelihood \& Censoring Assumption}{equation.1}{}}
-\newlabel{assump:indep-cens}{{3.1}{2}{Standard Likelihood \& Censoring Assumption}{equation.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf  {(a)}~Histogram stratified by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. \textbf  {(b)}~Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap illustrates that the risk set depletes primarily through discharge, especially in the first week.}}{3}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:censoring-pattern}{{1}{3}{Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf {(a)}~Histogram stratified by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. \textbf {(b)}~Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap illustrates that the risk set depletes primarily through discharge, especially in the first week}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Selection Factorization}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{eq:selection-factorization}{{1}{3}{Selection Factorization}{equation.1}{}}
 \citation{scharfstein1999}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Consequences of Informative Censoring}{3}{subsection.3.2}\protected@file@percent }
-\newlabel{eq:bias-approx}{{2}{3}{Consequences of Informative Censoring}{equation.2}{}}
-\newlabel{eq:confounding-bias}{{3}{3}{Consequences of Informative Censoring}{equation.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Logistic Hazard Model}{3}{subsection.3.3}\protected@file@percent }
-\newlabel{sc:model}{{3.3}{3}{Logistic Hazard Model}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Standard Likelihood \& Censoring Assumption}{4}{subsection.3.2}\protected@file@percent }
+\newlabel{sc:naive-likelihood}{{3.2}{4}{Standard Likelihood \& Censoring Assumption}{subsection.3.2}{}}
+\newlabel{eq:full-lik}{{2}{4}{Standard Likelihood \& Censoring Assumption}{equation.2}{}}
+\newlabel{assump:indep-cens}{{3.2}{4}{Standard Likelihood \& Censoring Assumption}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Consequences of Informative Censoring}{4}{subsection.3.3}\protected@file@percent }
+\newlabel{sc:consequences}{{3.3}{4}{Consequences of Informative Censoring}{subsection.3.3}{}}
+\newlabel{eq:bias-approx}{{3}{4}{Consequences of Informative Censoring}{equation.3}{}}
+\newlabel{eq:confounding-bias}{{4}{4}{Consequences of Informative Censoring}{equation.4}{}}
 \citation{gelman-prior-2006}
 \citation{simpson-pc-priors}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Standard Model (Model A)}{4}{subsection.3.4}\protected@file@percent }
-\newlabel{sc:standard-model}{{3.4}{4}{Standard Model (Model A)}{subsection.3.4}{}}
-\newlabel{eq:obs-model}{{4}{4}{Standard Model (Model A)}{equation.4}{}}
-\newlabel{eq:link-standard}{{5}{4}{Standard Model (Model A)}{equation.5}{}}
-\newlabel{eq:alpha1-prior}{{6}{4}{Standard Model (Model A)}{equation.6}{}}
-\newlabel{eq:rw-prior}{{7}{4}{Standard Model (Model A)}{equation.7}{}}
-\newlabel{eq:sigma-alpha-prior}{{8}{4}{Standard Model (Model A)}{equation.8}{}}
-\newlabel{eq:beta-prior}{{9}{4}{Standard Model (Model A)}{equation.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Frailty Extension (Model B)}{4}{subsection.3.5}\protected@file@percent }
-\newlabel{sc:frailty}{{3.5}{4}{Frailty Extension (Model B)}{subsection.3.5}{}}
-\newlabel{eq:link-frailty}{{10}{4}{Frailty Extension (Model B)}{equation.10}{}}
-\newlabel{eq:frailty-prior}{{11}{4}{Frailty Extension (Model B)}{equation.11}{}}
-\newlabel{eq:sigma-b-prior}{{12}{4}{Frailty Extension (Model B)}{equation.12}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}Justification \& Limitations.}{4}{subsubsection.3.5.1}\protected@file@percent }
-\newlabel{subsec:justification}{{3.5.1}{4}{Justification \& Limitations}{subsubsection.3.5.1}{}}
+\citation{daniels2008}
 \citation{scharfstein1999}
 \citation{daniels2008}
-\newlabel{eq:frailty-indep-cens}{{13}{5}{Justification \& Limitations}{equation.13}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Sensitivity Analysis via Exponential Tilting}{5}{subsection.3.6}\protected@file@percent }
-\newlabel{sc:sensitivity}{{3.6}{5}{Sensitivity Analysis via Exponential Tilting}{subsection.3.6}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.1}Tilted Hazard \& Likelihood.}{5}{subsubsection.3.6.1}\protected@file@percent }
-\newlabel{eq:tilted-hazard}{{15}{5}{Tilted Hazard \& Likelihood}{equation.15}{}}
-\citation{daniels2008}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Logistic Hazard Model}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{sc:model}{{3.4}{5}{Logistic Hazard Model}{subsection.3.4}{}}
+\newlabel{sc:standard-model}{{3.4}{5}{Logistic Hazard Model}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Standard Model (Model A)}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{eq:obs-model}{{5}{5}{Logistic Hazard Model}{equation.5}{}}
+\newlabel{eq:link-standard}{{6}{5}{Logistic Hazard Model}{equation.6}{}}
+\newlabel{eq:alpha1-prior}{{7}{5}{Logistic Hazard Model}{equation.7}{}}
+\newlabel{eq:rw-prior}{{8}{5}{Logistic Hazard Model}{equation.8}{}}
+\newlabel{eq:sigma-alpha-prior}{{9}{5}{Logistic Hazard Model}{equation.9}{}}
+\newlabel{eq:beta-prior}{{10}{5}{Logistic Hazard Model}{equation.10}{}}
+\newlabel{sc:frailty}{{3.4}{5}{Logistic Hazard Model}{equation.10}{}}
+\@writefile{toc}{\contentsline {paragraph}{Frailty Extension (Model B)}{5}{equation.10}\protected@file@percent }
+\newlabel{eq:link-frailty}{{11}{5}{Logistic Hazard Model}{equation.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Sensitivity Analysis via Exponential Tilting}{5}{subsection.3.5}\protected@file@percent }
+\newlabel{sc:sensitivity}{{3.5}{5}{Sensitivity Analysis via Exponential Tilting}{subsection.3.5}{}}
+\citation{oganisian}
+\newlabel{eq:tilted-hazard}{{13}{6}{Sensitivity Analysis via Exponential Tilting}{equation.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{MNAR model.}{6}{equation.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Computation}{6}{section.4}\protected@file@percent }
+\newlabel{sc:computation}{{4}{6}{Sensitivity Analysis via Exponential Tilting}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Joint Posterior}{6}{subsection.4.1}\protected@file@percent }
+\citation{polya-gamma}
 \citation{polya-gamma}
 \citation{neal-funnel}
 \citation{stan-software}
 \citation{hoffman-gelman-nuts}
-\citation{cmdstanr}
-\newlabel{eq:tilted-lik}{{16}{6}{Tilted Hazard \& Likelihood}{equation.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Protocol.}{6}{subsection.3.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Computation}{6}{section.4}\protected@file@percent }
-\newlabel{sc:computation}{{4}{6}{Protocol}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Hamiltonian Monte Carlo via Stan}{6}{subsection.4.1}\protected@file@percent }
-\newlabel{sc:stan}{{4.1}{6}{Hamiltonian Monte Carlo via Stan}{subsection.4.1}{}}
-\citation{cmdstan_guide}
-\citation{PhysioNet-mimiciii-1.4}
+\citation{cmdstan}
+\citation{cmdstan}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Sampling Strategy}{7}{subsection.4.2}\protected@file@percent }
+\newlabel{sc:sampling}{{4.2}{7}{Sampling Strategy}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}HMC via Stan}{7}{subsection.4.3}\protected@file@percent }
+\newlabel{sc:stan}{{4.3}{7}{HMC via Stan}{subsection.4.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Data Analysis: Application to MIMIC-III}{7}{section.5}\protected@file@percent }
-\newlabel{sc:application}{{5}{7}{Hamiltonian Monte Carlo via Stan}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Cohort \& Data Structure}{7}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Covariate Matrix}{7}{subsection.5.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort (\(N = 57,694 ; \Delta = 1\) day, \(K=30\)). \textbf  {(a)} Histogram stratifed by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. The mode of 4--6 days reflect the typical short ICU stay; deaths are concentrated in the first two weeks. \textbf  {(b)} Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap between cumulative rates illustrates that the risk set depletes primarily through discharge, especially in the first week. }}{8}{figure.1}\protected@file@percent }
-\newlabel{fig:censoring-pattern}{{1}{8}{Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort (\(N = 57,694 ; \Delta = 1\) day, \(K=30\)). \textbf {(a)} Histogram stratifed by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. The mode of 4--6 days reflect the typical short ICU stay; deaths are concentrated in the first two weeks. \textbf {(b)} Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap between cumulative rates illustrates that the risk set depletes primarily through discharge, especially in the first week}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Censoring Pattern and Risk Set}{8}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Analysis}{8}{subsection.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Results}{9}{subsection.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.1}Model A (Standard Logistic Hazard).}{9}{subsubsection.5.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.2}Model B (Frailty).}{9}{subsubsection.5.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.3}Interpretation.}{9}{subsubsection.5.5.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Posterior mean covariate effects (log-odds ratio for daily hazard) under Model~A and Model~B. Difference column shows the attenuation correction from including frailty.}}{10}{table.1}\protected@file@percent }
-\newlabel{tab:beta-comparison}{{1}{10}{Posterior mean covariate effects (log-odds ratio for daily hazard) under Model~A and Model~B. Difference column shows the attenuation correction from including frailty}{table.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces MCMC diagnostics for covariate effects ($\hat  {\beta }$) under both models. $\hat  {R}$ values below 1.01 and ESS above 400 indicate reliable convergence. Model~B additionally estimates $\sigma _b$ (frailty SD). All chains: 0 divergent transitions.}}{11}{table.2}\protected@file@percent }
-\newlabel{tab:diagnostics}{{2}{11}{MCMC diagnostics for covariate effects ($\hat {\beta }$) under both models. $\hat {R}$ values below 1.01 and ESS above 400 indicate reliable convergence. Model~B additionally estimates $\sigma _b$ (frailty SD). All chains: 0 divergent transitions}{table.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Six-panel overview of the MIMIC-III analysis. \textbf  {(a)} Estimated baseline hazard $h(t) = \text  {logit}^{-1}(\alpha _t)$ with 95\% CrI, showing an early peak followed by plateau. \textbf  {(b)} Trace of log-posterior confirming convergence. \textbf  {(c)} Forest plot of all 17 covariate effects with 95\% CrI. \textbf  {(d)} Model~A vs.\ B coefficient comparison; all points lie above the diagonal, confirming uniform attenuation correction. \textbf  {(e--f)} Sensitivity of emergency and sepsis effects to $\gamma $; both remain well above zero across the grid.}}{12}{figure.2}\protected@file@percent }
-\newlabel{fig:overview}{{2}{12}{Six-panel overview of the MIMIC-III analysis. \textbf {(a)} Estimated baseline hazard $h(t) = \text {logit}^{-1}(\alpha _t)$ with 95\% CrI, showing an early peak followed by plateau. \textbf {(b)} Trace of log-posterior confirming convergence. \textbf {(c)} Forest plot of all 17 covariate effects with 95\% CrI. \textbf {(d)} Model~A vs.\ B coefficient comparison; all points lie above the diagonal, confirming uniform attenuation correction. \textbf {(e--f)} Sensitivity of emergency and sepsis effects to $\gamma $; both remain well above zero across the grid}{figure.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{12}{section.6}\protected@file@percent }
-\newlabel{sc:discussion}{{6}{12}{Interpretation}{section.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Sensitivity analysis for all 17 covariates. Posterior mean and 95\% CrI as a function of $\gamma $ (departure from MAR). Grey horizontal line indicates null effect. Of 17 covariates, 14 never cross zero for $\gamma \in [-1.5, 1.5]$. Only vasopressor, COPD, and dialysis have tipping points at $\gamma ^\ast = -1.5$.}}{13}{figure.3}\protected@file@percent }
-\newlabel{fig:sensitivity}{{3}{13}{Sensitivity analysis for all 17 covariates. Posterior mean and 95\% CrI as a function of $\gamma $ (departure from MAR). Grey horizontal line indicates null effect. Of 17 covariates, 14 never cross zero for $\gamma \in [-1.5, 1.5]$. Only vasopressor, COPD, and dialysis have tipping points at $\gamma ^\ast = -1.5$}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.0.1}Summary of Contributions.}{13}{subsubsection.6.0.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.0.2}Limitations.}{13}{subsubsection.6.0.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.0.3}Future Work.}{13}{subsubsection.6.0.3}\protected@file@percent }
-\citation{scharfstein1999}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Derivation of Biased Hazard under Informative Censoring}{14}{appendix.A}\protected@file@percent }
-\newlabel{app:biased-hazard}{{A}{14}{Future Work}{appendix.A}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Semiparametric Estimation Equations under Informative Censoring}{14}{appendix.B}\protected@file@percent }
-\newlabel{app:scharfstein1999}{{B}{14}{Future Work}{appendix.B}{}}
-\citation{scharfstein1999}
-\@writefile{toc}{\contentsline {section}{\numberline {C}Simulation Study}{15}{appendix.C}\protected@file@percent }
-\newlabel{app:simulation}{{C}{15}{Future Work}{appendix.C}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {D}MIMIC-III Cohort Description}{16}{appendix.D}\protected@file@percent }
-\newlabel{app:cohort}{{D}{16}{Future Work}{appendix.D}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Baseline characteristics of the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph  {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph  {Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables.}}{17}{table.3}\protected@file@percent }
-\newlabel{tab:cohort}{{3}{17}{Baseline characteristics of the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph {Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Summary of the discrete-time data structure within the 30-day observation window ($\Delta = 1$ days, $K = 30$ intervals). Clinically censored patients are those discharged alive before 30 days; administratively censored patients survived the full window.}}{18}{table.4}\protected@file@percent }
-\newlabel{tab:data-structure}{{4}{18}{Summary of the discrete-time data structure within the 30-day observation window ($\Delta = 1$ days, $K = 30$ intervals). Clinically censored patients are those discharged alive before 30 days; administratively censored patients survived the full window}{table.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Covariates in the design matrix $\mathbf  {X}$ ($P = 17$). The first nine covariates (above the rule) correspond to the simulation study; the remaining eight are additional clinical predictors. All variables except age are binary (0/1). ICD-9 codes shown in parentheses.}}{19}{table.5}\protected@file@percent }
-\newlabel{tab:covariates}{{5}{19}{Covariates in the design matrix $\mathbf {X}$ ($P = 17$). The first nine covariates (above the rule) correspond to the simulation study; the remaining eight are additional clinical predictors. All variables except age are binary (0/1). ICD-9 codes shown in parentheses}{table.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Risk set composition across discrete-time intervals ($\Delta = 1$ days). \emph  {Censored} here denotes patients discharged alive during each interval. The censoring proportion among exits quantifies the rate at which the informative censoring mechanism depletes the risk set---the empirical pattern interrogated by the sensitivity parameter $\gamma $ in Section~\ref {sc:sensitivity}.}}{19}{table.6}\protected@file@percent }
-\newlabel{tab:censoring-pattern}{{6}{19}{Risk set composition across discrete-time intervals ($\Delta = 1$ days). \emph {Censored} here denotes patients discharged alive during each interval. The censoring proportion among exits quantifies the rate at which the informative censoring mechanism depletes the risk set---the empirical pattern interrogated by the sensitivity parameter $\gamma $ in Section~\ref {sc:sensitivity}}{table.6}{}}
+\newlabel{sc:application}{{5}{7}{HMC via Stan}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Summary Statistics}{7}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}MCMC Convergence}{8}{subsection.5.2}\protected@file@percent }
+\newlabel{sc:convergence}{{5.2}{8}{MCMC Convergence}{subsection.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Results}{8}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Model A (Standard Logistic Hazard).}{8}{subsection.5.3}\protected@file@percent }
+\newlabel{fig:baseline-hazard}{{2a}{9}{Estimated baseline hazard $h_0(t) = \text {logit}^{-1}(\alpha _t)$ under Model~A with 95\% credible interval. The hazard peaks on day~1 and declines through the first week. Widening bands after day~20 reflect the shrinking risk set}{figure.caption.2}{}}
+\newlabel{sub@fig:baseline-hazard}{{a}{9}{Estimated baseline hazard $h_0(t) = \text {logit}^{-1}(\alpha _t)$ under Model~A with 95\% credible interval. The hazard peaks on day~1 and declines through the first week. Widening bands after day~20 reflect the shrinking risk set}{figure.caption.2}{}}
+\newlabel{fig:calibration}{{2b}{9}{Risk-decile calibration for Model~A. Points above the diagonal indicate over-prediction, consistent with~\eqref {eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients}{figure.caption.2}{}}
+\newlabel{sub@fig:calibration}{{b}{9}{Risk-decile calibration for Model~A. Points above the diagonal indicate over-prediction, consistent with~\eqref {eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients}{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Model~A diagnostics: \textbf  {(a)}~estimated baseline hazard over time and \textbf  {(b)}~risk-decile calibration.}}{9}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:modelA-diagnostics}{{2}{9}{Model~A diagnostics: \textbf {(a)}~estimated baseline hazard over time and \textbf {(b)}~risk-decile calibration}{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Population-averaged survival $S(t)$ under MAR and MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival under $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Wider priors produce both larger shifts and wider posterior spread.}}{9}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:survival}{{3}{9}{Population-averaged survival $S(t)$ under MAR and MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival under $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Wider priors produce both larger shifts and wider posterior spread}{figure.caption.3}{}}
+\citation{daniels2008}
+\@writefile{toc}{\contentsline {paragraph}{Model B (Frailty as Comparator).}{10}{figure.caption.3}\protected@file@percent }
+\newlabel{sec:mnar-results}{{5.3}{10}{Results}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{MNAR Sensitivity Analysis.}{10}{figure.caption.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Conclusions.}{10}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:mnar-gamma}{{4a}{11}{Posterior density of $\gamma $ under three prior widths $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal {N}(0, \sigma _\gamma ^2)$ priors. The vertical dashed line at $\gamma = 0$ marks MAR. All posteriors are decisively negative}{figure.caption.4}{}}
+\newlabel{sub@fig:mnar-gamma}{{a}{11}{Posterior density of $\gamma $ under three prior widths $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal {N}(0, \sigma _\gamma ^2)$ priors. The vertical dashed line at $\gamma = 0$ marks MAR. All posteriors are decisively negative}{figure.caption.4}{}}
+\newlabel{fig:emergency}{{4b}{11}{Posterior density of $\beta _{\text {emergency}}$ under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma _\gamma = 2$, yet remains decisively positive}{figure.caption.4}{}}
+\newlabel{sub@fig:emergency}{{b}{11}{Posterior density of $\beta _{\text {emergency}}$ under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma _\gamma = 2$, yet remains decisively positive}{figure.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces MNAR sensitivity analysis: \textbf  {(a)}~inferred selection parameter $\gamma $ across prior widths, and \textbf  {(b)}~resulting attenuation of the emergency admission covariate effect.}}{11}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:mnar-sensitivity}{{4}{11}{MNAR sensitivity analysis: \textbf {(a)}~inferred selection parameter $\gamma $ across prior widths, and \textbf {(b)}~resulting attenuation of the emergency admission covariate effect}{figure.caption.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Posterior summary of $\gamma $ under three prior widths $\sigma _\gamma $.}}{11}{table.caption.5}\protected@file@percent }
+\newlabel{tab:mnar-gamma}{{1}{11}{Posterior summary of $\gamma $ under three prior widths $\sigma _\gamma $}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{11}{section.6}\protected@file@percent }
+\newlabel{sc:discussion}{{6}{11}{Results}{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta $) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat  {R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma _b$).}}{12}{table.caption.6}\protected@file@percent }
+\newlabel{tab:master_results}{{2}{12}{Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta $) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat {R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma _b$)}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{12}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future work.}{12}{section.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Baseline characteristics and covariate definitions ($\mathbf  {X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph  {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph  {Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables.}}{13}{table.caption.7}\protected@file@percent }
+\newlabel{tab:cohort}{{3}{13}{Baseline characteristics and covariate definitions ($\mathbf {X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph {Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables}{table.caption.7}{}}
 \bibdata{references}
 \bibcite{allison-discrete}{{1}{1982}{{Allison}}{{}}}
 \bibcite{daniels2008}{{2}{2008}{{Daniels and Hogan}}{{}}}
 \bibcite{gelman-prior-2006}{{3}{2006}{{Gelman}}{{}}}
 \bibcite{hoffman-gelman-nuts}{{4}{2014}{{Hoffman and Gelman}}{{}}}
-\bibcite{PhysioNet-mimiciii-1.4}{{5}{2016}{{Johnson et~al.}}{{Johnson, Pollard, and Mark}}}
-\bibcite{kalbfleisch2003statistical}{{6}{2003}{{Kalbfleisch and Prentice}}{{}}}
-\bibcite{neal-funnel}{{7}{2003}{{Neal}}{{}}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Posterior mean covariate effects (log-odds ratio for daily hazard) under Model~A and Model~B. Difference column shows the attenuation correction from including frailty.}}{20}{table.7}\protected@file@percent }
-\newlabel{tab:beta-comparison}{{7}{20}{Posterior mean covariate effects (log-odds ratio for daily hazard) under Model~A and Model~B. Difference column shows the attenuation correction from including frailty}{table.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces MCMC diagnostics for covariate effects ($\hat  {\beta }$) under both models. $\hat  {R}$ values below 1.01 and ESS above 400 indicate reliable convergence. Model~B additionally estimates $\sigma _b$ (frailty SD). All chains: 0 divergent transitions.}}{21}{table.8}\protected@file@percent }
-\newlabel{tab:diagnostics}{{8}{21}{MCMC diagnostics for covariate effects ($\hat {\beta }$) under both models. $\hat {R}$ values below 1.01 and ESS above 400 indicate reliable convergence. Model~B additionally estimates $\sigma _b$ (frailty SD). All chains: 0 divergent transitions}{table.8}{}}
+\bibcite{kalbfleisch2003statistical}{{5}{2003}{{Kalbfleisch and Prentice}}{{}}}
+\bibcite{neal-funnel}{{6}{2003}{{Neal}}{{}}}
+\bibcite{oganisian}{{7}{2026}{{Oganisian}}{{}}}
 \bibcite{polya-gamma}{{8}{2013}{{Polson et~al.}}{{Polson, Scott, and Windle}}}
 \bibcite{rubin1976}{{9}{1976}{{Rubin}}{{}}}
 \bibcite{scharfstein1999}{{10}{1999}{{Scharfstein et~al.}}{{Scharfstein, Rotnitzky, and Robins}}}
 \bibcite{simpson-pc-priors}{{11}{2017}{{Simpson et~al.}}{{Simpson, Rue, Riebler, Martins, and S{\o }rbye}}}
-\bibcite{cmdstan_guide}{{12}{2024{a}}{{Stan Development Team}}{{}}}
+\bibcite{cmdstan}{{12}{2024{a}}{{Stan Development Team}}{{}}}
 \bibcite{stan-software}{{13}{2024{b}}{{Stan Development Team}}{{}}}
 \bibcite{tsiatis1975}{{14}{1975}{{Tsiatis}}{{}}}
-\gdef \@abspage@last{22}
+\gdef \@abspage@last{15}

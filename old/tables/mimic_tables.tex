@@ -9,16 +9,16 @@
 \small
 \caption{Baseline characteristics of the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph{Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph{Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm$ SD or median [IQR] for continuous variables.}
 \label{tab:cohort}
-\begin{tabular}{l C{2.4cm} C{2.0cm} C{2.2cm} C{2.0cm}}
+\begin{tabular}{l C{2.4cm} C{2.2cm} C{2.4cm} C{2.4cm}}
 \toprule
  & \textbf{Overall} & \textbf{Died} & \textbf{Discharged} & \textbf{Survived} \\
  & (N=57,694) & (n=5,443) & (n=49,660) & (n=2,591) \\
 \midrule
 \multicolumn{5}{l}{\textit{Demographics}} \\[2pt]
-Age, years (mean $\pm$ SD) & 55.1 $\pm$ 27.3 & 69.8 $\pm$ 17.2 & 54.2 $\pm$ 27.3 & 40.2 $\pm$ 31.1 \\
-Male sex & 32,248 (55.9\%) & 2,906 (53.4\%) & 27,869 (56.1\%) & 1,473 (56.9\%) \\
-Emergency admission & 41,580 (72.1\%) & 5,081 (93.3\%) & 34,969 (70.4\%) & 1,530 (59.1\%) \\
-Follow-up, days (median [IQR]) & 5.9 [3.5, 10.6] & 4.5 [1.6, 9.8] & 5.7 [3.6, 9.6] & 42.0 [35.0, 57.3] \\
+\quad  Age, years (mean $\pm$ SD) & 55.1 $\pm$ 27.3 & 69.8 $\pm$ 17.2 & 54.2 $\pm$ 27.3 & 40.2 $\pm$ 31.1 \\
+\quad Male sex & 32,248 (55.9\%) & 2,906 (53.4\%) & 27,869 (56.1\%) & 1,473 (56.9\%) \\
+\quad Emergency admission & 41,580 (72.1\%) & 5,081 (93.3\%) & 34,969 (70.4\%) & 1,530 (59.1\%) \\
+\quad Follow-up, days (median [IQR]) & 5.9 [3.5, 10.6] & 4.5 [1.6, 9.8] & 5.7 [3.6, 9.6] & 42.0 [35.0, 57.3] \\
 \midrule
 \multicolumn{5}{l}{\textit{Comorbidities (ICD-9)}} \\[2pt]
 \quad Sepsis & 6,320 (11.0\%) & 1,777 (32.6\%) & 3,878 (7.8\%) & 665 (25.7\%) \\
@@ -76,7 +76,7 @@ Unique admissions ($N$) & 57,694 \\
 \begin{table}[htbp]
 \centering
 \small
-\caption{Covariates in the design matrix $\mathbf{X}$ ($P = 17$). The first nine covariates (above the rule) correspond to the simulation study; the remaining eight are additional clinical predictors. All variables except age are binary (0/1). ICD-9 codes shown in parentheses.}
+\caption{Covariates in the design matrix $\mathbf{X}$ ($P = 17$). All variables except age are binary (0/1). ICD-9 codes shown in parentheses.}
 \label{tab:covariates}
 \begin{tabular}{r l l r}
 \toprule
@@ -91,7 +91,6 @@ Unique admissions ($N$) & 57,694 \\
 7 & \texttt{icd\_aki} & Acute kidney injury (584.x) & 19.7\% \\
 8 & \texttt{gcs\_impaired} & GCS $\leq 12$ & 52.3\% \\
 9 & \texttt{vasopressor} & Any vasopressor & 11.8\% \\
-\midrule
 10 & \texttt{icd\_pneumonia} & Pneumonia (480--486) & 12.7\% \\
 11 & \texttt{icd\_diabetes} & Diabetes (250.x) & 24.1\% \\
 12 & \texttt{icd\_liver} & Liver disease (571.x) & 5.1\% \\
@@ -104,32 +103,32 @@ Unique admissions ($N$) & 57,694 \\
 \end{tabular}
 \end{table}
 
-% --- Table 4: Censoring Pattern ---
-\begin{table}[htbp]
-\centering
-\small
-\caption{Risk set composition across discrete-time intervals ($\Delta = 1$ days). \emph{Censored} here denotes patients discharged alive during each interval. The censoring proportion among exits quantifies the rate at which the informative censoring mechanism depletes the risk set---the empirical pattern interrogated by the sensitivity parameter $\gamma$ in Section~\ref{sc:sensitivity}.}
-\label{tab:censoring-pattern}
-\begin{tabular}{r r r r r r}
-\toprule
-Interval & Days & At Risk & Events & Discharged & \% Disch. \\
-\midrule
-1 & 1--1 & 57,694 & 994 & 1,484 & 59.9\% \\
-2 & 2--2 & 55,216 & 659 & 3,274 & 83.2\% \\
-3 & 3--3 & 51,283 & 515 & 5,377 & 91.3\% \\
-4 & 4--4 & 45,391 & 387 & 5,195 & 93.1\% \\
-5 & 5--5 & 39,809 & 363 & 6,148 & 94.4\% \\
-10 & 10--10 & 17,486 & 161 & 1,998 & 92.5\% \\
-15 & 15--15 & 9,738 & 109 & 887 & 89.1\% \\
-20 & 20--20 & 6,039 & 41 & 446 & 91.6\% \\
-25 & 25--25 & 4,001 & 34 & 266 & 88.7\% \\
-\addlinespace
-30 & 30--30 & 2,765 & 12 & 2,753 & 99.6\% \\
-\midrule
-\textbf{Total} & 1--30 & --- & 5,443 & 52,251 & --- \\
-\bottomrule
-\end{tabular}
-\end{table}
+% % --- Table 4: Censoring Pattern ---
+% \begin{table}[htbp]
+% \centering
+% \small
+% \caption{Risk set composition across discrete-time intervals ($\Delta = 1$ days). \emph{Censored} here denotes patients discharged alive during each interval. The censoring proportion among exits quantifies the rate at which the informative censoring mechanism depletes the risk set---the empirical pattern interrogated by the sensitivity parameter $\gamma$ in Section~\ref{sc:sensitivity}.}
+% \label{tab:censoring-pattern}
+% \begin{tabular}{r r r r r r}
+% \toprule
+% Interval & Days & At Risk & Events & Discharged & \% Disch. \\
+% \midrule
+% 1 & 1--1 & 57,694 & 994 & 1,484 & 59.9\% \\
+% 2 & 2--2 & 55,216 & 659 & 3,274 & 83.2\% \\
+% 3 & 3--3 & 51,283 & 515 & 5,377 & 91.3\% \\
+% 4 & 4--4 & 45,391 & 387 & 5,195 & 93.1\% \\
+% 5 & 5--5 & 39,809 & 363 & 6,148 & 94.4\% \\
+% 10 & 10--10 & 17,486 & 161 & 1,998 & 92.5\% \\
+% 15 & 15--15 & 9,738 & 109 & 887 & 89.1\% \\
+% 20 & 20--20 & 6,039 & 41 & 446 & 91.6\% \\
+% 25 & 25--25 & 4,001 & 34 & 266 & 88.7\% \\
+% \addlinespace
+% 30 & 30--30 & 2,765 & 12 & 2,753 & 99.6\% \\
+% \midrule
+% \textbf{Total} & 1--30 & --- & 5,443 & 52,251 & --- \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
 
 % --- Table 5: Beta Comparison (main text) ---
 \begin{table}[t]

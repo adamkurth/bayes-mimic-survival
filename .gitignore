@@ -38,6 +38,7 @@ project/*.aux
 project/*.log
 project/*.out
 project/*.synctex.gz
+project/*.synctex(busy)
 project/final-project.synctex.gz
 project/final-project.fdb_latexmk
 project/final-project.fls
@@ -46,6 +47,12 @@ all-tex/data-dict-tex/
 temp/
 project/final_paper_instructions-2.pdf
 
+supplement/*.aux
+supplement/*.fdb_latexmk
+supplement/*.fls
+supplement/*.log
+supplement/*.out
+supplement/*.synctex.gz
 # ============================================================================
 # Proposal Directory
 # ============================================================================

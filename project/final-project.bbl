@@ -29,14 +29,6 @@ Matthew~D. Hoffman and Andrew Gelman.
 \newblock \emph{Journal of Machine Learning Research}, 15\penalty0 (47):\penalty0 1593--1623, 2014.
 \newblock URL \url{http://jmlr.org/papers/v15/hoffman14a.html}.
 
-\bibitem[Johnson et~al.(2016)Johnson, Pollard, and Mark]{PhysioNet-mimiciii-1.4}
-Alistair Johnson, Tom Pollard, and Roger Mark.
-\newblock {MIMIC-III Clinical Database}.
-\newblock \emph{{PhysioNet}}, September 2016.
-\newblock \doi{10.13026/C2XW26}.
-\newblock URL \url{https://doi.org/10.13026/C2XW26}.
-\newblock Version 1.4.
-
 \bibitem[Kalbfleisch and Prentice(2003)]{kalbfleisch2003statistical}
 John~D. Kalbfleisch and Ross~L. Prentice.
 \newblock \emph{The Statistical Analysis of Failure Time Data}.
@@ -49,6 +41,11 @@ Radford~M. Neal.
 \newblock \emph{The Annals of Statistics}, 31\penalty0 (3):\penalty0 705--767, 2003.
 \newblock \doi{10.1214/aos/1056562461}.
 \newblock Section 6 introduces the ``funnel'' distribution illustrating hierarchical sampling difficulties.
+
+\bibitem[Oganisian(2026)]{oganisian}
+Arman Oganisian.
+\newblock Lecture notes on {Bayesian Statistical Methods}.
+\newblock PHP2630 Bayesian Statistical Methods, Spring 2026, April 2026.
 
 \bibitem[Polson et~al.(2013)Polson, Scott, and Windle]{polya-gamma}
 Nicholas~G. Polson, James~G. Scott, and Jesse Windle.
@@ -75,7 +72,7 @@ Daniel~P. Simpson, H{\aa}vard Rue, Andrea Riebler, Thiago~G. Martins, and Sigrun
 \newblock \emph{Statistical Science}, 32\penalty0 (1):\penalty0 1--28, 2017.
 \newblock \doi{10.1214/16-STS576}.
 
-\bibitem[{Stan Development Team}(2024{\natexlab{a}})]{cmdstan_guide}
+\bibitem[{Stan Development Team}(2024{\natexlab{a}})]{cmdstan}
 {Stan Development Team}.
 \newblock \emph{CmdStan User's Guide, Version 2.34}, 2024{\natexlab{a}}.
 \newblock URL \url{https://mc-stan.org/docs/cmdstan-guide/variational_config.html#variational-algorithms}.

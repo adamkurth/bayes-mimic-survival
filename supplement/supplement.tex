@@ -1,0 +1,120 @@
+\documentclass[twoside,11pt]{article}
+\usepackage{amsmath}
+\usepackage{style}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{natbib} % Added so \citet compiles properly
+
+% Math notation shortcuts used throughout the manuscript
+\newcommand{\ind}{\mathbb{I}}
+\newcommand{\bx}{\mathbf{x}}
+
+% Custom assumption environment
+\newenvironment{assumption}[1][]{\vspace{0.5em}\noindent\textbf{Assumption#1:} \itshape}{\vspace{0.5em}}
+
+% ── Table column types ────────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% ── Row shading color ─────────────────────────────────────────────────────────
+\definecolor{rowgray}{gray}{0.93}
+
+\ShortHeadings{
+%% short title here
+Supplementary Material: Bayesian Discrete-Time Modeling
+}{
+% last name
+Kurth}
+\firstpageno{1}
+
+\begin{document}
+
+\title{Supplementary Material: Bayesian Discrete-Time Survival Modeling with Sensitivity Analysis for Informative Censoring: An Application to ICU Mortality\\
+\vspace{.1in}
+PHP2530
+}
+
+\author{Adam M. Kurth}
+\date{4}
+
+\maketitle
+
+\section{Derivation of Biased Hazard under Informative Censoring} \label{app:biased-hazard}
+At time $t$ the full population of survivors decomposes into the risk set $\mathcal{R}_t = \{i: T_i \geq t, C_i \geq t\}$ and the censored set $\mathcal{C}_t = \{i: T_i \geq t, C_i < t\}$. The true marginal hazard $h^\ast_t = \mathbb{E}[h_{i,t} \mid T_i \geq t]$ and observed hazard $\hat{h}_t = \mathbb{E}[h_{i,t} \mid i \in \mathcal{R}_t]$ are related by:
+\begin{align*}
+    h^\ast_t &= \Pr(T_i = t \mid T_i \geq t)
+            = \mathbb{E}(h_{i,t} \mid T_i \geq t)\\
+    \hat{h}_t &= \Pr(T_i = t \mid T_i \geq t, C_i \geq t)
+            = \mathbb{E}(h_{i,t} \mid T_i \geq t, C_i \geq t)
+            = \mathbb{E}(h_{i,t} \mid i \in \mathcal{R}_t)
+\end{align*}
+\noindent
+Let $\lambda_t = \Pr(C_i < T_i \mid T_i \geq t) = |\mathcal{C}_t|/|\mathcal{R}_t|$ be the proportion of survivors censored at $t$ relative to the risk set, and $h^c_t = \mathbb{E}(h_{i,t} \mid i \in \mathcal{C}_t)$ be the mean hazard among those censored by $t$. Then:
+\begin{align*}
+    h^\ast_t &= (1-\lambda_t) \underbrace{
+            \mathbb{E}(h_{i,t} \mid i \in \mathcal{R}_t)
+        }_{\hat{h}_t}
+        + \lambda_t \underbrace{
+            \mathbb{E}(h_{i,t} \mid i \in \mathcal{C}_t)
+        }_{h^c_t} \\
+    &= (1 - \lambda_t) \hat{h}_t + \lambda_t h^c_t \\
+    \implies   \hat{h}_t &= \frac{h^\ast_t - \lambda_t h^c_t}{1 - \lambda_t}
+\end{align*}
+Defining $\Delta_t := h^\ast_t - h^c_t$ and rearranging: $\hat{h}_t = h^\ast_t + \lambda_t \Delta_t / (1 - \lambda_t)$. The bias is:
+\begin{alignat}{1}
+    \hat{h}_t &= \frac{h^\ast_t - \lambda_t (h^\ast_t - \Delta_t)}{1 - \lambda_t} \nonumber \\
+             &= \frac{h^\ast_t - \lambda_t h^\ast_t + \lambda_t \Delta_t}{1 - \lambda_t} \nonumber \\
+             &= h^\ast_t + \frac{\lambda_t \Delta_t}{1 - \lambda_t} \nonumber \\
+\therefore \mathrm{Bias}(\hat{h}_t) &= \hat{h}_t - h^\ast_t = \frac{\lambda_t \Delta_t}{1 - \lambda_t} > 0 \label{eq:bias-formula}
+\end{alignat}
+The bias is positive whenever $\lambda_t, \Delta_t > 0$, meaning healthier patients are censored earlier and the overestimation compounds in $\hat{S}_t = \prod_{s=1}^t (1 - \hat{h}_s)$. When $\Delta_t < 0$ the bias is negative, meaning sicker patients are censored earlier (e.g., hospice discharges), though this is not the norm in the ICU data (see Figure~\ref{fig:censoring-pattern}).
+
+\section{Semiparametric Estimation Equations under Informative Censoring} \label{app:scharfstein1999}
+
+Reiterating a key result from \citet{scharfstein1999}: censoring-induced confounding bias is a failure of the semiparametric estimation equations (score) for $\boldsymbol{\beta}$ when the MAR assumption is violated. When the probability of censoring depends on the unobserved outcome ($T_i$), the standard score functions used to estimate $\boldsymbol{\beta}$ are biased proportional to the dependence between $T_i$ and $C_i$ given $\bx_i$.
+
+Let $\Delta_i = \ind(T_i \le C_i)$ be the observation indicator. Under MAR, the probability of being observed depends only on $\bx_i$: $\pi(\bx_i; \alpha = 0) = \Pr(\Delta_i = 1 \mid \bx_i)$. When MAR is violated, the true probability depends on both $T_i$ and $\bx_i$: $\pi(T_i, \bx_i; \alpha) = \Pr(\Delta_i = 1 \mid T_i, \bx_i)$, where $\alpha$ is a non-identifiable selection parameter indexing the severity of the MAR violation.
+
+In standard parametric estimation, the expectation of the score at the true $\boldsymbol{\beta}_0$ equals zero. Under informative censoring this no longer holds. Taking the expectation under the MNAR distribution:
+\begin{align*}
+    \mathrm{Bias}(\alpha)
+    &= \mathbb{E} \left[ \frac{ \Delta_i }{\pi(\bx_i; 0)} S_\text{full}(\boldsymbol{\beta}_0) \right]
+    = \mathbb{E} \left[ \mathbb{E} \left[ \frac{ \Delta_i  }{\pi(\bx_i; 0)} S_\text{full} (\boldsymbol{\beta}_0) \bigg| T_i, \bx_i \right] \right] \\
+    &= \mathbb{E} \left[ \frac{\pi(T_i, \bx_i; \alpha)}{\pi(\bx_i; 0)} S_\text{full}(\boldsymbol{\beta}_0) \right]
+\end{align*}
+where $S_\text{full}(\boldsymbol{\beta})$ is the full-data score function. Following \citet{scharfstein1999}, specifying the conditional hazard of censoring as $\lambda_C(t \mid \bx_i, T_i) = \lambda_0(t \mid \bx_i)\exp(\alpha T_i)$, the survival function of censoring at $T_i$ is $\pi(T_i, \bx_i; \alpha) = \exp\{ - \exp(\alpha T_i) \Lambda_0(T_i \mid \bx_i) \}$ where $\Lambda_0$ is the cumulative baseline hazard of censoring, while under MAR $\pi(\bx_i; 0) = \exp\{ - \Lambda_0(T_i \mid \bx_i) \}$. The ratio is:
+\begin{align*}
+    \frac{\pi(T_i, \bx_i; \alpha)}{\pi(\bx_i; 0)}
+    &= \frac{\exp\{ - \exp(\alpha T_i) \Lambda_0(T_i \mid \bx_i) \}}{\exp\{ - \Lambda_0(T_i \mid \bx_i) \}} \\
+    &\approx \frac{\exp\{ - (1 + \alpha T_i) \Lambda_0(T_i \mid \bx_i) \}}{\exp\{ - \Lambda_0(T_i \mid \bx_i) \}}
+     = \exp\{ - \alpha T_i \Lambda_0(T_i \mid \bx_i) \}
+\end{align*}
+where $e^{\alpha T_i} \approx 1 + \alpha T_i$ for small $\alpha$. A first-order Taylor expansion yields:
+\begin{equation}
+    \frac{\pi(T_i, \bx_i; \alpha)}{\pi(\bx_i; 0)} \approx 1 - \alpha T_i \Lambda_0(T_i \mid \bx_i)
+\end{equation}
+Substituting back gives the explicit bias approximation:
+\begin{equation} \label{eq:bias-approx}
+    \text{Bias}(\alpha) \approx -\alpha \, \mathbb{E} \Big[ \Lambda_0(T_i \mid \bx_i) \, T_i \, S_\text{full}(\boldsymbol{\beta}) \Big]
+\end{equation}
+The bias in estimating $\boldsymbol{\beta}$ is driven by $\alpha$ (the severity of the MAR violation) and the covariance between failure time $T_i$ and cumulative censoring hazard $\Lambda_0(T_i \mid \bx_i)$. Because $\alpha$ cannot be identified from observed data alone, standard estimation fails, motivating the sensitivity analysis and frailty approaches in Sections~\ref{sc:sensitivity} and~\ref{sc:frailty}.
+
+\section{Simulation Study} \label{app:simulation}
+We validate the methodology with synthetic ICU data ($N \in \{300, 500\}$, $K_{\max} = 90$, $\Delta \in \{1, 3, 7, 14\}$) where informative censoring is known: $\text{logit}(h^c_{i,t}) = -2.5 - 0.3\log(t) - 0.8 b_i$, so healthier patients (lower $b_i$) have higher discharge probability ($\sigma_{b,\text{true}} = 0.6$). Key findings: (i)~Model~A reliably converges with zero divergences and ESS $> 5,000$ across all configurations. (ii)~Model~B's $\sigma_b$ is weakly identified: ESS $\approx 80$--150, $\hat{R} \approx 1.03$--1.08, and 95\% CrI spanning [0.016, 1.660] with truth 0.600. LOO-CV (not implemented in the main analysis due to computational constraints) never favors Model~B. (iii)~The sensitivity analysis converges cleanly across $\gamma \in [-2, 2]$ and correctly distinguishes robust from fragile covariate effects. (iv)~Model~A calibration shows systematic over-prediction consistent with~\eqref{eq:bias-approx}.
+
+\begin{thebibliography}{9}
+\bibitem[Scharfstein et al.(1999)]{scharfstein1999}
+Scharfstein, D. O., Rotnitzky, A., \& Robins, J. M. (1999).
+Adjusting for nonignorable drop-out using semiparametric nonresponse models.
+\textit{Journal of the American Statistical Association}, 94(448), 1096-1120.
+\end{thebibliography}
+
+\end{document}

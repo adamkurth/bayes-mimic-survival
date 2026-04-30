@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.31)  21 APR 2026 01:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.23)  30 APR 2026 17:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -311,161 +311,187 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 \enitdp@description=\count321
 ) (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
+) (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count322
+\float@exts=\toks27
+\float@box=\box63
+\@float@everytoks=\toks28
+\@floatcapt=\box64
+) (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+ (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+ (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen185
+\captionmargin=\dimen186
+\caption@leftmargin=\dimen187
+\caption@rightmargin=\dimen188
+\caption@width=\dimen189
+\caption@indent=\dimen190
+\caption@parindent=\dimen191
+\caption@hangindent=\dimen192
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+Package caption Info: \@makecaption = \long macro:#1#2-> \vskip 10pt \setbox \@tempboxa \hbox {#1: #2} \ifdim \wd \@tempboxa >\hsize \begin {list}{#1:}{ \settowidth {\labelwidth }{#1:} \setlength {\leftmargin }{\labelwidth } \addtolength {\leftmargin }{\labelsep } }\item #2 \end {list}\par \else \hbox to\hsize {\hfil \box \@tempboxa \hfil } \fi  on input line 1175.
+)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+\c@caption@flags=\count323
+\c@continuedfloat=\count324
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: longtable package is loaded.
+(/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+))
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count325
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count326
 ) (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count322
-) (./final-project.aux
-
-LaTeX Warning: Label `tab:beta-comparison' multiply defined.
-
-
-LaTeX Warning: Label `tab:diagnostics' multiply defined.
-
-)
+\l__color_backend_stack_int=\count327
+) (./final-project.aux)
 \openout1 = `final-project.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
  (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 36.
+Package hyperref Info: Link coloring OFF on input line 37.
  (./final-project.out) (./final-project.out)
 \@outlinefile=\write3
 \openout3 = `final-project.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 48.
  (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 48.
  (/Users/adamkurth/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1{/Users/adamkurth/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
-]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 92.
-
-
-Overfull \hbox (64.74222pt too wide) in paragraph at lines 94--95
-\OT1/cmr/m/n/10.95 We par-ti-tion con-tin-u-ous time into dis-crete in-ter-vals of width $^^A$: The in-ter-vals are $[0\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 ^^A)\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 [^^A\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 2^^A)\OML/cmm/m/it/10.95 ; [] ; \OT1/cmr/m/n/10.95 [(\OML/cmm/m/it/10.95 K \OMS/cmsy/m/n/10.95 ^^@
- []
-
-[2] [3] [4] [5]
-
-Package natbib Warning: Citation `cmdstanr' on page 6 undefined on input line 307.
-
-[6]
-
-LaTeX Warning: Reference `app:application' on page 7 undefined on input line 317.
-
-
-Underfull \vbox (badness 3058) has occurred while \output is active []
-
- [7]
-<plots/mimic_followup.pdf, id=290, 722.7pt x 252.945pt>
-File: plots/mimic_followup.pdf Graphic file (type pdf)
-<use plots/mimic_followup.pdf>
-Package pdftex.def Info: plots/mimic_followup.pdf  used on input line 332.
+] [2]
+<../plots/mimic/mimic_followup.pdf, id=140, 722.7pt x 252.945pt>
+File: ../plots/mimic/mimic_followup.pdf Graphic file (type pdf)
+<use ../plots/mimic/mimic_followup.pdf>
+Package pdftex.def Info: ../plots/mimic/mimic_followup.pdf  used on input line 85.
 (pdftex.def)             Requested size: 433.62pt x 151.76816pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8 <./plots/mimic_followup.pdf>] (./tables/mimic_beta_comparison.tex) (./tables/mimic_diagnostics.tex)
-<plots/main/mimic_overview.pdf, id=313, 867.24pt x 867.24pt>
-File: plots/main/mimic_overview.pdf Graphic file (type pdf)
-<use plots/main/mimic_overview.pdf>
-Package pdftex.def Info: plots/main/mimic_overview.pdf  used on input line 363.
-(pdftex.def)             Requested size: 433.62pt x 433.61894pt.
-<plots/main/mimic_sensitivity_all.pdf, id=314, 867.24pt x 722.7pt>
-File: plots/main/mimic_sensitivity_all.pdf Graphic file (type pdf)
-<use plots/main/mimic_sensitivity_all.pdf>
-Package pdftex.def Info: plots/main/mimic_sensitivity_all.pdf  used on input line 371.
-(pdftex.def)             Requested size: 433.62pt x 361.3491pt.
-
-Underfull \vbox (badness 2608) has occurred while \output is active []
-
- [9] [10] [11]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 398.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12 <./plots/main/mimic_overview.pdf>] [13 <./plots/main/mimic_sensitivity_all.pdf>]
-Overfull \hbox (7.80408pt too wide) detected at line 461
+ [3 <../plots/mimic/mimic_followup.pdf>] [4] [5]
+Overfull \hbox (18.91766pt too wide) detected at line 193
 []
  []
 
-[14] [15] (./tables/mimic_tables.tex
-Overfull \hbox (9.74036pt too wide) in paragraph at lines 12--42
+[6]
+Overfull \hbox (3.1779pt too wide) in paragraph at lines 207--208
+\OT1/cmr/m/n/10.95 We ini-tially de-vel-oped a P^^Solya-Gamma (PG) Gibbs sam-pler ([]Pol-son et al.[], []2013[]) for Model A,
+ []
+
+[7]
+<../plots/mimic/mimic_baseline_hazard.pdf, id=258, 578.16pt x 361.35pt>
+File: ../plots/mimic/mimic_baseline_hazard.pdf Graphic file (type pdf)
+<use ../plots/mimic/mimic_baseline_hazard.pdf>
+Package pdftex.def Info: ../plots/mimic/mimic_baseline_hazard.pdf  used on input line 240.
+(pdftex.def)             Requested size: 208.13574pt x 130.08038pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 241--241
+[]\OT1/cmr/m/n/10 (a) |Es-ti-mated base-line haz-ard $\OML/cmm/m/it/10 h[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+<../plots/mimic/mimic_calibration.pdf, id=259, 433.62pt x 433.62pt>
+File: ../plots/mimic/mimic_calibration.pdf Graphic file (type pdf)
+<use ../plots/mimic/mimic_calibration.pdf>
+Package pdftex.def Info: ../plots/mimic/mimic_calibration.pdf  used on input line 247.
+(pdftex.def)             Requested size: 208.13574pt x 208.13524pt.
+
+Overfull \hbox (1.20415pt too wide) in paragraph at lines 234--253
+[]\OT1/cmr/m/n/10.95 Table []2[] re-ports all pos-te-rior co-vari-ate ef-fects (log-odds for daily mor-tal-ity). The strongest
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8]
+<../plots/mimic/mimic_survival.pdf, id=269, 650.43pt x 433.62pt>
+File: ../plots/mimic/mimic_survival.pdf Graphic file (type pdf)
+<use ../plots/mimic/mimic_survival.pdf>
+Package pdftex.def Info: ../plots/mimic/mimic_survival.pdf  used on input line 258.
+(pdftex.def)             Requested size: 303.53267pt x 202.35902pt.
+ [9 <../plots/mimic/mimic_baseline_hazard.pdf> <../plots/mimic/mimic_calibration.pdf> <../plots/mimic/mimic_survival.pdf>] [10]
+<../plots/mimic/mimic_mnar_gamma_posterior.pdf, id=322, 578.16pt x 361.35pt>
+File: ../plots/mimic/mimic_mnar_gamma_posterior.pdf Graphic file (type pdf)
+<use ../plots/mimic/mimic_mnar_gamma_posterior.pdf>
+Package pdftex.def Info: ../plots/mimic/mimic_mnar_gamma_posterior.pdf  used on input line 293.
+(pdftex.def)             Requested size: 208.13574pt x 130.08038pt.
+<../plots/mimic/mimic_mnar_emergency.pdf, id=323, 650.43pt x 433.62pt>
+File: ../plots/mimic/mimic_mnar_emergency.pdf Graphic file (type pdf)
+<use ../plots/mimic/mimic_mnar_emergency.pdf>
+Package pdftex.def Info: ../plots/mimic/mimic_mnar_emergency.pdf  used on input line 300.
+(pdftex.def)             Requested size: 208.13574pt x 138.75461pt.
+ [11 <../plots/mimic/mimic_mnar_gamma_posterior.pdf> <../plots/mimic/mimic_mnar_emergency.pdf>] [12]
+Overfull \hbox (34.39114pt too wide) in paragraph at lines 385--417
  [][] 
  []
 
-) [16] [17] [18] [19] (./final-project.bbl [20] [21]
-Underfull \hbox (badness 10000) in paragraph at lines 79--82
+[13] (./final-project.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 76--79
 []\OT1/cmr/m/n/10.95 Stan De-vel-op-ment Team.  \OT1/cmr/m/it/10.95 Cmd-Stan User's Guide, Ver-sion 2.34\OT1/cmr/m/n/10.95 , 2024a.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--82
+Underfull \hbox (badness 10000) in paragraph at lines 76--79
 \OT1/cmr/m/n/10.95 URL []$\OT1/cmtt/m/n/10.95 https : / / mc-[]stan . org / docs / cmdstan-[]guide / variational _ config . html #
  []
 
-)
-
-Package natbib Warning: There were undefined citations.
-
-[22] (./final-project.aux)
+) [14] [15] (./final-project.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `final-project.out' has not changed.
-(rerunfilecheck)             Checksum: C89EAFE5611F79A289B035D4C1B6804E;6124.
+(rerunfilecheck)             Checksum: D5E4399B2C5211BF9DFED4854AAAF7C4;3208.
  ) 
 Here is how much of TeX's memory you used:
- 11291 strings out of 469339
- 172945 string characters out of 5465414
- 645908 words of memory out of 5000000
- 39849 multiletter control sequences out of 15000+600000
- 643399 words of font info for 99 fonts, out of 8000000 for 9000
+ 12781 strings out of 469339
+ 202522 string characters out of 5465414
+ 641646 words of memory out of 5000000
+ 41364 multiletter control sequences out of 15000+600000
+ 643097 words of font info for 98 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 87i,15n,93p,1611b,574s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on final-project.pdf (22 pages, 413122 bytes).
+ 87i,19n,93p,1365b,624s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></Users/adamkurth/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on final-project.pdf (15 pages, 564339 bytes).
 PDF statistics:
- 540 PDF objects out of 1000 (max. 8388607)
- 462 compressed objects within 5 object streams
- 106 named destinations out of 1000 (max. 500000)
- 280 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 510 PDF objects out of 1000 (max. 8388607)
+ 423 compressed objects within 5 object streams
+ 74 named destinations out of 1000 (max. 500000)
+ 191 words of extra memory for PDF output out of 10000 (max. 10000000)
 

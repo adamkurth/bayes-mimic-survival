@@ -1,256 +1,22 @@
-@article{PhysioNet-mimiciii-1.4,
-  author = {Johnson, Alistair and Pollard, Tom and Mark, Roger},
-  title = {{MIMIC-III Clinical Database}},
-  journal = {{PhysioNet}},
-  year = {2016},
-  month = sep,
-  note = {Version 1.4},
-  doi = {10.13026/C2XW26},
-  url = {https://doi.org/10.13026/C2XW26}
-}
-
-
-@article{polya-gamma,
-	author = {Nicholas G. Polson and James G. Scott and Jesse Windle},
-	title = {Bayesian Inference for Logistic Models Using Pólya–Gamma Latent Variables},
-	journal = {Journal of the American Statistical Association},
-	volume = {108},
-	number = {504},
-	pages = {1339--1349},
-	year = {2013},
-	publisher = {Taylor \& Francis},
-	doi = {10.1080/01621459.2013.829001},
-	URL = {https://doi.org/10.1080/01621459.2013.829001},
-	eprint = {https://doi.org/10.1080/01621459.2013.829001}
-}
-
-@article{albert-chib,
- ISSN = {01621459, 1537274X},
- URL = {http://www.jstor.org/stable/2290350},
- abstract = {A vast literature in statistics, biometrics, and econometrics is concerned with the analysis of binary and polychotomous response data. The classical approach fits a categorical response regression model using maximum likelihood, and inferences about the model are based on the associated asymptotic theory. The accuracy of classical confidence statements is questionable for small sample sizes. In this article, exact Bayesian methods for modeling categorical response data are developed using the idea of data augmentation. The general approach can be summarized as follows. The probit regression model for binary outcomes is seen to have an underlying normal regression structure on latent continuous data. Values of the latent data can be simulated from suitable truncated normal distributions. If the latent data are known, then the posterior distribution of the parameters can be computed using standard results for normal linear models. Draws from this posterior are used to sample new latent data, and the process is iterated with Gibbs sampling. This data augmentation approach provides a general framework for analyzing binary regression models. It leads to the same simplification achieved earlier for censored regression models. Under the proposed framework, the class of probit regression models can be enlarged by using mixtures of normal distributions to model the latent data. In this normal mixture class, one can investigate the sensitivity of the parameter estimates to the choice of "link function," which relates the linear regression estimate to the fitted probabilities. In addition, this approach allows one to easily fit Bayesian hierarchical models. One specific model considered here reflects the belief that the vector of regression coefficients lies on a smaller dimension linear subspace. The methods can also be generalized to multinomial response models with $J > 2$ categories. In the ordered multinomial model, the J categories are ordered and a model is written linking the cumulative response probabilities with the linear regression structure. In the unordered multinomial model, the latent variables have a multivariate normal distribution with unknown variance-covariance matrix. For both multinomial models, the data augmentation method combined with Gibbs sampling is outlined. This approach is especially attractive for the multivariate probit model, where calculating the likelihood can be difficult.},
- author = {James H. Albert and Siddhartha Chib},
- journal = {Journal of the American Statistical Association},
- number = {422},
- pages = {669--679},
- publisher = {[American Statistical Association, Taylor & Francis, Ltd.]},
- title = {Bayesian Analysis of Binary and Polychotomous Response Data},
- urldate = {2026-03-28},
- volume = {88},
- year = {1993}
-}
-
-%% ═══════════════════════════════════════════════════════════════════════════
-%% METHODOLOGICAL REFERENCES FOR DATA PREPROCESSING
-%% ═══════════════════════════════════════════════════════════════════════════
-
-@book{singer-willett,
-  title = {Applied Longitudinal Data Analysis: Modeling Change and Event Occurrence},
-  author = {Singer, Judith D. and Willett, John B.},
-  year = {2003},
-  publisher = {Oxford University Press},
-  address = {New York},
-  isbn = {978-0195152968},
-  note = {Chapters 10--14 cover discrete-time survival analysis and person-period data structure}
-}
-
 @article{allison-discrete,
-  title = {Discrete-Time Methods for the Analysis of Event Histories},
-  author = {Allison, Paul D.},
-  journal = {Sociological Methodology},
-  volume = {13},
-  pages = {61--98},
-  year = {1982},
+  title     = {Discrete-Time Methods for the Analysis of Event Histories},
+  author    = {Allison, Paul D.},
+  journal   = {Sociological Methodology},
+  volume    = {13},
+  pages     = {61--98},
+  year      = {1982},
   publisher = {JSTOR},
-  doi = {10.2307/270718}
-}
-
-@article{mimic-iii-scientific-data,
-  title = {{MIMIC-III}, a freely accessible critical care database},
-  author = {Johnson, Alistair E. W. and Pollard, Tom J. and Shen, Lu and Lehman, Li-wei H. and Feng, Mengling and Ghassemi, Mohammad and Moody, Benjamin and Szolovits, Peter and Celi, Leo Anthony and Mark, Roger G.},
-  journal = {Scientific Data},
-  volume = {3},
-  pages = {160035},
-  year = {2016},
-  doi = {10.1038/sdata.2016.35},
-  note = {Primary reference for MIMIC-III database structure and preprocessing conventions}
-}
-
-@article{mimic-benchmarks,
-  title = {Multitask learning and benchmarking with clinical time series data},
-  author = {Harutyunyan, Hrayr and Khachatrian, Hrant and Kale, David C. and Ver Steeg, Greg and Galstyan, Aram},
-  journal = {Scientific Data},
-  volume = {6},
-  number = {1},
-  pages = {96},
-  year = {2019},
-  doi = {10.1038/s41597-019-0103-9},
-  note = {Establishes 24-hour and 48-hour aggregation windows as standard for MIMIC-III ICU prediction tasks}
-}
-
-@article{informative-missingness-ehr,
-  title = {Biases in electronic health record data due to processes within the healthcare system: retrospective observational study},
-  author = {Agniel, Denis and Kohane, Isaac S. and Weber, Griffin M.},
-  journal = {BMJ},
-  volume = {361},
-  pages = {k1479},
-  year = {2018},
-  doi = {10.1136/bmj.k1479},
-  note = {Demonstrates that missingness in EHR data is informative and should be modeled explicitly}
-}
-
-@article{missingness-icu,
-	author="Sharafoddini, Anis and Dubin, Joel A and Maslove, David M and Lee, Joon",
-	title="A New Insight Into Missing Data in Intensive Care Unit Patient Profiles: Observational Study",
-	journal="JMIR Med Inform",
-	year="2019",
-	month="Jan",
-	day="08",
-	volume="7",
-	number="1",
-	pages="e11605",
-	keywords="electronic health records; clinical laboratory tests; machine learning; hospital mortality",
-	issn="2291-9694",
-	doi="10.2196/11605",
-	url="http://medinform.jmir.org/2019/1/e11605/",
-	note = {ICU-specific analysis of missingness patterns; supports use of missingness indicators}
-}
-
-@inbook{sirs,
-  author    = {S. Baddam and B. Burns},
-  title     = {Systemic Inflammatory Response Syndrome},
-  booktitle = {StatPearls [Internet]},
-  year      = {2026},
-  month     = {Jan},
-  publisher = {StatPearls Publishing},
-  address   = {Treasure Island (FL)},
-  note      = {Updated 2025 Jun 20},
-  url       = {https://www.ncbi.nlm.nih.gov/books/NBK547669/}
-}
-
-%% ═══════════════════════════════════════════════════════════════════════════
-%% METHODOLOGICAL REFERENCES FOR MODELING STRATEGIES
-%% ═══════════════════════════════════════════════════════════════════════════
-
-@book{kalbfleisch2003statistical,
-  title={The Statistical Analysis of Failure Time Data},
-  author={Kalbfleisch, John D. and Prentice, Ross L.},
-  year={2003},
-  edition={2nd},
-  publisher={John Wiley \& Sons},
-  address={Hoboken, N.J.},
-  isbn={978-0-471-36357-6}
+  doi       = {10.2307/270718}
 }
 
 
-@article{lagakos1979general,
-  title={General Right Censoring and Its Impact on the Analysis of Survival Data},
-  author={Lagakos, S. W.},
-  ISSN = {0006341X, 15410420},
-   URL = {http://www.jstor.org/stable/2529941},
-  journal = {Biometrics},
-  number = {1},
-  pages = {139--156},
-  publisher = {[Wiley, International Biometric Society]},
-  urldate = {2026-04-06},
-  volume = {35},
-  year = {1979}
+@manual{cmdstan,
+  title  = {CmdStan User's Guide, Version 2.34},
+  author = {{Stan Development Team}},
+  year   = {2024},
+  url    = {https://mc-stan.org/docs/cmdstan-guide/variational_config.html#variational-algorithms}
 }
 
-
-% --- Frailty / unobserved heterogeneity ---
-
-@book{hougaard2000,
-  author    = {Hougaard, Philip},
-  title     = {Analysis of Multivariate Survival Data},
-  publisher = {Springer},
-  year      = {2000},
-  address   = {New York},
-  doi       = {10.1007/978-1-4612-1304-8}
-}
-
-@article{vaupel1979,
-  author  = {Vaupel, James W. and Manton, Kenneth G. and Stallard, Eric},
-  title   = {The Impact of Heterogeneity in Individual Frailty on the
-             Dynamics of Mortality},
-  journal = {Demography},
-  volume  = {16},
-  number  = {3},
-  pages   = {439--454},
-  year    = {1979},
-  doi     = {10.2307/2061224}
-}
-
-@article{lancaster1979,
-  author  = {Lancaster, Tony},
-  title   = {Econometric Methods for the Duration of Unemployment},
-  journal = {Econometrica},
-  volume  = {47},
-  number  = {4},
-  pages   = {939--956},
-  year    = {1979},
-  doi     = {10.2307/1914140}
-}
-
-@book{ibrahim2001,
-  author    = {Ibrahim, Joseph G. and Chen, Ming-Hui and Sinha, Debajyoti},
-  title     = {Bayesian Survival Analysis},
-  publisher = {Springer},
-  year      = {2001},
-  address   = {New York},
-  doi       = {10.1007/978-1-4757-3447-8}
-}
-
-% --- Non-identifiability in competing risks ---
-
-@article{tsiatis1975,
-  author  = {Tsiatis, Anastasios},
-  title   = {A Nonidentifiability Aspect of the Problem of Competing
-             Risks},
-  journal = {Proceedings of the National Academy of Sciences},
-  volume  = {72},
-  number  = {1},
-  pages   = {20--22},
-  year    = {1975},
-  doi     = {10.1073/pnas.72.1.20}
-}
-
-% --- Missing data foundations ---
-
-@article{rubin1976,
-  author  = {Rubin, Donald B.},
-  title   = {Inference and Missing Data},
-  journal = {Biometrika},
-  volume  = {63},
-  number  = {3},
-  pages   = {581--592},
-  year    = {1976},
-  doi     = {10.1093/biomet/63.3.581}
-}
-
-@article{scharfstein1999,
-  author  = {Scharfstein, Daniel O. and Rotnitzky, Andrea and Robins, James M.},
-  title   = {Adjusting for Nonignorable Drop-Out Using Semiparametric
-             Nonresponse Models},
-  journal = {Journal of the American Statistical Association},
-  volume  = {94},
-  number  = {448},
-  pages   = {1096--1120},
-  year    = {1999},
-  doi     = {10.1080/01621459.1999.10473862}
-}
-
-@article{heitjan1991,
-  author  = {Heitjan, Daniel F. and Rubin, Donald B.},
-  title   = {Ignorability and Coarse Data},
-  journal = {The Annals of Statistics},
-  volume  = {19},
-  number  = {4},
-  pages   = {2244--2253},
-  year    = {1991},
-  doi     = {10.1214/aos/1176348396}
-}
-
-% --- Bayesian missing data / longitudinal dropout ---
 
 @book{daniels2008,
   author    = {Daniels, Michael J. and Hogan, Joseph W.},
@@ -263,42 +29,20 @@
 }
 
 %% ═══════════════════════════════════════════════════════════════════════════
-%% NEW REFERENCES (added for revised manuscript)
+%% METHODOLOGICAL REFERENCES FOR DATA PREPROCESSING
 %% ═══════════════════════════════════════════════════════════════════════════
 
-% --- Penalized complexity priors ---
-
-@article{simpson-pc-priors,
-  author  = {Simpson, Daniel P. and Rue, H{\aa}vard and Riebler, Andrea
-             and Martins, Thiago G. and S{\o}rbye, Sigrunn H.},
-  title   = {Penalising Model Component Complexity: A Principled,
-             Practical Approach to Constructing Priors},
-  journal = {Statistical Science},
-  volume  = {32},
-  number  = {1},
-  pages   = {1--28},
-  year    = {2017},
-  doi     = {10.1214/16-STS576}
+@article{gelman-prior-2006,
+  author  = {Gelman, Andrew},
+  title   = {Prior Distributions for Variance Parameters in Hierarchical
+             Models (Comment on Article by {B}rowne and {D}raper)},
+  journal = {Bayesian Analysis},
+  volume  = {1},
+  number  = {3},
+  pages   = {515--534},
+  year    = {2006},
+  doi     = {10.1214/06-BA117A}
 }
-
-% --- Stan software ---
-
-@misc{stan-software,
-  author = {{Stan Development Team}},
-  title  = {Stan Modeling Language Users Guide and Reference Manual,
-            Version 2.35},
-  year   = {2024},
-  url    = {https://mc-stan.org}
-}
-
-@manual{cmdstan_guide,
-  title = {CmdStan User's Guide, Version 2.34},
-  author = {{Stan Development Team}},
-  year = {2024},
-  url = {https://mc-stan.org/docs/cmdstan-guide/variational_config.html#variational-algorithms}
-}
-
-% --- NUTS / HMC ---
 
 @article{hoffman-gelman-nuts,
   author  = {Hoffman, Matthew D. and Gelman, Andrew},
@@ -312,44 +56,197 @@
   url     = {http://jmlr.org/papers/v15/hoffman14a.html}
 }
 
-% --- LOO-CV / PSIS ---
 
-@article{vehtari-loo,
-  author  = {Vehtari, Aki and Gelman, Andrew and Gabry, Jonah},
-  title   = {Practical {B}ayesian Model Evaluation Using Leave-One-Out
-             Cross-Validation and {WAIC}},
-  journal = {Statistics and Computing},
-  volume  = {27},
-  number  = {5},
-  pages   = {1413--1432},
+@book{hougaard2000,
+  author    = {Hougaard, Philip},
+  title     = {Analysis of Multivariate Survival Data},
+  publisher = {Springer},
+  year      = {2000},
+  address   = {New York},
+  doi       = {10.1007/978-1-4612-1304-8}
+}
+@book{ibrahim2001,
+  author    = {Ibrahim, Joseph G. and Chen, Ming-Hui and Sinha, Debajyoti},
+  title     = {Bayesian Survival Analysis},
+  publisher = {Springer},
+  year      = {2001},
+  address   = {New York},
+  doi       = {10.1007/978-1-4757-3447-8}
+}
+
+% --- Frailty / unobserved heterogeneity ---
+@book{kalbfleisch2003statistical,
+  title     = {The Statistical Analysis of Failure Time Data},
+  author    = {Kalbfleisch, John D. and Prentice, Ross L.},
+  year      = {2003},
+  edition   = {2nd},
+  publisher = {John Wiley \& Sons},
+  address   = {Hoboken, N.J.},
+  isbn      = {978-0-471-36357-6}
+}
+@article{lagakos1979general,
+  title     = {General Right Censoring and Its Impact on the Analysis of Survival Data},
+  author    = {Lagakos, S. W.},
+  issn      = {0006341X, 15410420},
+  url       = {http://www.jstor.org/stable/2529941},
+  journal   = {Biometrics},
+  number    = {1},
+  pages     = {139--156},
+  publisher = {[Wiley, International Biometric Society]},
+  urldate   = {2026-04-06},
+  volume    = {35},
+  year      = {1979}
+}
+@article{lancaster1979,
+  author  = {Lancaster, Tony},
+  title   = {Econometric Methods for the Duration of Unemployment},
+  journal = {Econometrica},
+  volume  = {47},
+  number  = {4},
+  pages   = {939--956},
+  year    = {1979},
+  doi     = {10.2307/1914140}
+}
+@article{neal-funnel,
+  author  = {Neal, Radford M.},
+  title   = {Slice Sampling},
+  journal = {The Annals of Statistics},
+  volume  = {31},
+  number  = {3},
+  pages   = {705--767},
+  year    = {2003},
+  doi     = {10.1214/aos/1056562461},
+  note    = {Section 6 introduces the ``funnel'' distribution illustrating hierarchical sampling difficulties}
+}
+
+% --- Non-identifiability in competing risks ---
+@unpublished{oganisian,
+  author       = {Oganisian, Arman},
+  title        = {Lecture Notes on {Bayesian Statistical Methods}},
+  note         = {PHP2630 Bayesian Statistical Methods, Spring 2026 },
+  year         = {2026},
+  month        = {April},
+  school       = {Brown University},
+  howpublished = {Unpublished course notes, distributed in class}
+}
+
+@article{PhysioNet-mimiciii-1.4,
+  author  = {Johnson, Alistair and Pollard, Tom and Mark, Roger},
+  title   = {{MIMIC-III Clinical Database}},
+  journal = {{PhysioNet}},
+  year    = {2016},
+  month   = sep,
+  note    = {Version 1.4},
+  doi     = {10.13026/C2XW26},
+  url     = {https://doi.org/10.13026/C2XW26}
+}
+
+@article{polya-gamma,
+  author    = {Nicholas G. Polson and James G. Scott and Jesse Windle},
+  title     = {Bayesian Inference for Logistic Models Using Pólya–Gamma Latent Variables},
+  journal   = {Journal of the American Statistical Association},
+  volume    = {108},
+  number    = {504},
+  pages     = {1339--1349},
+  year      = {2013},
+  publisher = {Taylor \& Francis},
+  doi       = {10.1080/01621459.2013.829001},
+  url       = {https://doi.org/10.1080/01621459.2013.829001},
+  eprint    = {https://doi.org/10.1080/01621459.2013.829001}
+}
+
+
+% --- Bayesian missing data / longitudinal dropout ---
+@article{rubin1976,
+  author  = {Rubin, Donald B.},
+  title   = {Inference and Missing Data},
+  journal = {Biometrika},
+  volume  = {63},
+  number  = {3},
+  pages   = {581--592},
+  year    = {1976},
+  doi     = {10.1093/biomet/63.3.581}
+}
+
+% --- Penalized complexity priors ---
+@article{scharfstein1999,
+  author  = {Scharfstein, Daniel O. and Rotnitzky, Andrea and Robins, James M.},
+  title   = {Adjusting for Nonignorable Drop-Out Using Semiparametric
+             Nonresponse Models},
+  journal = {Journal of the American Statistical Association},
+  volume  = {94},
+  number  = {448},
+  pages   = {1096--1120},
+  year    = {1999},
+  doi     = {10.1080/01621459.1999.10473862}
+}
+
+% --- Stan software ---
+@article{simpson-pc-priors,
+  author  = {Simpson, Daniel P. and Rue, H{\aa}vard and Riebler, Andrea
+             and Martins, Thiago G. and S{\o}rbye, Sigrunn H.},
+  title   = {Penalising Model Component Complexity: A Principled,
+             Practical Approach to Constructing Priors},
+  journal = {Statistical Science},
+  volume  = {32},
+  number  = {1},
+  pages   = {1--28},
   year    = {2017},
-  doi     = {10.1007/s11222-016-9696-4}
+  doi     = {10.1214/16-STS576}
+}
+
+@book{singer-willett,
+  title     = {Applied Longitudinal Data Analysis: Modeling Change and Event Occurrence},
+  author    = {Singer, Judith D. and Willett, John B.},
+  year      = {2003},
+  publisher = {Oxford University Press},
+  address   = {New York},
+  isbn      = {978-0195152968},
+  note      = {Chapters 10--14 cover discrete-time survival analysis and person-period data structure}
+}
+
+% --- NUTS / HMC ---
+@misc{stan-software,
+  author = {{Stan Development Team}},
+  title  = {Stan Modeling Language Users Guide and Reference Manual,
+            Version 2.35},
+  year   = {2024},
+  url    = {https://mc-stan.org}
 }
 
 % --- Neal's funnel ---
 
-@article{neal-funnel,
-  author    = {Neal, Radford M.},
-  title     = {Slice Sampling},
-  journal   = {The Annals of Statistics},
-  volume    = {31},
-  number    = {3},
-  pages     = {705--767},
-  year      = {2003},
-  doi       = {10.1214/aos/1056562461},
-  note      = {Section 6 introduces the ``funnel'' distribution illustrating hierarchical sampling difficulties}
+@article{tsiatis1975,
+  author  = {Tsiatis, Anastasios},
+  title   = {A Nonidentifiability Aspect of the Problem of Competing
+             Risks},
+  journal = {Proceedings of the National Academy of Sciences},
+  volume  = {72},
+  number  = {1},
+  pages   = {20--22},
+  year    = {1975},
+  doi     = {10.1073/pnas.72.1.20}
 }
 
 % --- Weakly informative priors ---
 
-@article{gelman-prior-2006,
-  author  = {Gelman, Andrew},
-  title   = {Prior Distributions for Variance Parameters in Hierarchical
-             Models (Comment on Article by {B}rowne and {D}raper)},
-  journal = {Bayesian Analysis},
-  volume  = {1},
+@article{vaupel1979,
+  author  = {Vaupel, James W. and Manton, Kenneth G. and Stallard, Eric},
+  title   = {The Impact of Heterogeneity in Individual Frailty on the
+             Dynamics of Mortality},
+  journal = {Demography},
+  volume  = {16},
   number  = {3},
-  pages   = {515--534},
-  year    = {2006},
-  doi     = {10.1214/06-BA117A}
+  pages   = {439--454},
+  year    = {1979},
+  doi     = {10.2307/2061224}
+}
+
+
+@misc{wiki:regression_dilution,
+  author = {{Wikipedia contributors}},
+  title  = {Regression dilution --- {W}ikipedia{,} The Free Encyclopedia},
+  year   = {2024},
+  url    = {https://en.wikipedia.org/wiki/Regression_dilution},
+  note   = {[Online; accessed 26-April-2026]}
 }

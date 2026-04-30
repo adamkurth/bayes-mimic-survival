@@ -3,40 +3,39 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: final-project.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-Warning--I didn't find a database entry for "cmdstanr"
 You've used 14 entries,
             2773 wiz_defined-function locations,
-            701 strings with 7480 characters,
-and the built_in function-call counts, 5987 in all, are:
-= -- 569
-> -- 271
-< -- 10
-+ -- 96
-- -- 81
-* -- 484
-:= -- 942
-add.period$ -- 58
+            698 strings with 7458 characters,
+and the built_in function-call counts, 5791 in all, are:
+= -- 552
+> -- 251
+< -- 11
++ -- 90
+- -- 75
+* -- 459
+:= -- 914
+add.period$ -- 55
 call.type$ -- 14
-change.case$ -- 67
+change.case$ -- 65
 chr.to.int$ -- 13
 cite$ -- 28
-duplicate$ -- 275
-empty$ -- 514
-format.name$ -- 101
-if$ -- 1238
+duplicate$ -- 268
+empty$ -- 502
+format.name$ -- 95
+if$ -- 1195
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 14
-newline$ -- 94
+missing$ -- 13
+newline$ -- 91
 num.names$ -- 56
-pop$ -- 115
+pop$ -- 110
 preamble$ -- 1
-purify$ -- 55
+purify$ -- 53
 quote$ -- 0
-skip$ -- 197
+skip$ -- 193
 stack$ -- 0
 substring$ -- 250
-swap$ -- 18
+swap$ -- 17
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
@@ -44,5 +43,4 @@ type$ -- 144
 warning$ -- 0
 while$ -- 60
 width$ -- 0
-write$ -- 219
-(There was 1 warning)
+write$ -- 213
