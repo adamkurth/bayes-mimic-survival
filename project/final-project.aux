@@ -22,9 +22,9 @@
 \newlabel{sc:censoring-pattern}{{2.3}{2}{Censoring Pattern}{subsection.2.3}{}}
 \citation{rubin1976,oganisian}
 \citation{kalbfleisch2003statistical}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf  {(a)}~Histogram stratified by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. \textbf  {(b)}~Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap illustrates that the risk set depletes primarily through discharge, especially in the first week.}}{3}{figure.caption.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Empirical follow-up distribution and risk set evolution ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf  {(a)}~Histogram of follow-up times stratified by death (red) and discharge (blue). Dashed line marks the 30-day window. \textbf  {(b)}~Risk set size (black) alongside cumulative discharges (blue) and deaths (red). The risk set depletes primarily through discharge during the first week.}}{3}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:censoring-pattern}{{1}{3}{Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf {(a)}~Histogram stratified by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. \textbf {(b)}~Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap illustrates that the risk set depletes primarily through discharge, especially in the first week}{figure.caption.1}{}}
+\newlabel{fig:censoring-pattern}{{1}{3}{Empirical follow-up distribution and risk set evolution ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf {(a)}~Histogram of follow-up times stratified by death (red) and discharge (blue). Dashed line marks the 30-day window. \textbf {(b)}~Risk set size (black) alongside cumulative discharges (blue) and deaths (red). The risk set depletes primarily through discharge during the first week}{figure.caption.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{3}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Selection Factorization}{3}{subsection.3.1}\protected@file@percent }
 \newlabel{eq:selection-factorization}{{1}{3}{Selection Factorization}{equation.1}{}}
@@ -37,13 +37,13 @@
 \newlabel{sc:consequences}{{3.3}{4}{Consequences of Informative Censoring}{subsection.3.3}{}}
 \newlabel{eq:bias-approx}{{3}{4}{Consequences of Informative Censoring}{equation.3}{}}
 \newlabel{eq:confounding-bias}{{4}{4}{Consequences of Informative Censoring}{equation.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Logistic Hazard Model}{4}{subsection.3.4}\protected@file@percent }
+\newlabel{sc:model}{{3.4}{4}{Logistic Hazard Model}{subsection.3.4}{}}
 \citation{gelman-prior-2006}
 \citation{simpson-pc-priors}
 \citation{daniels2008}
 \citation{scharfstein1999}
 \citation{daniels2008}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Logistic Hazard Model}{5}{subsection.3.4}\protected@file@percent }
-\newlabel{sc:model}{{3.4}{5}{Logistic Hazard Model}{subsection.3.4}{}}
 \newlabel{sc:standard-model}{{3.4}{5}{Logistic Hazard Model}{subsection.3.4}{}}
 \@writefile{toc}{\contentsline {paragraph}{Standard Model (Model A)}{5}{subsection.3.4}\protected@file@percent }
 \newlabel{eq:obs-model}{{5}{5}{Logistic Hazard Model}{equation.5}{}}
@@ -58,15 +58,14 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Sensitivity Analysis via Exponential Tilting}{5}{subsection.3.5}\protected@file@percent }
 \newlabel{sc:sensitivity}{{3.5}{5}{Sensitivity Analysis via Exponential Tilting}{subsection.3.5}{}}
 \citation{oganisian}
+\citation{polya-gamma}
+\citation{neal-funnel}
+\citation{stan-software}
 \newlabel{eq:tilted-hazard}{{13}{6}{Sensitivity Analysis via Exponential Tilting}{equation.13}{}}
 \@writefile{toc}{\contentsline {paragraph}{MNAR model.}{6}{equation.13}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}Computation}{6}{section.4}\protected@file@percent }
 \newlabel{sc:computation}{{4}{6}{Sensitivity Analysis via Exponential Tilting}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Joint Posterior}{6}{subsection.4.1}\protected@file@percent }
-\citation{polya-gamma}
-\citation{polya-gamma}
-\citation{neal-funnel}
-\citation{stan-software}
 \citation{hoffman-gelman-nuts}
 \citation{cmdstan}
 \citation{cmdstan}
@@ -76,40 +75,36 @@
 \newlabel{sc:stan}{{4.3}{7}{HMC via Stan}{subsection.4.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Data Analysis: Application to MIMIC-III}{7}{section.5}\protected@file@percent }
 \newlabel{sc:application}{{5}{7}{HMC via Stan}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Summary Statistics}{7}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}MCMC Convergence}{8}{subsection.5.2}\protected@file@percent }
-\newlabel{sc:convergence}{{5.2}{8}{MCMC Convergence}{subsection.5.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Results}{8}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Model A (Standard Logistic Hazard).}{8}{subsection.5.3}\protected@file@percent }
-\newlabel{fig:baseline-hazard}{{2a}{9}{Estimated baseline hazard $h_0(t) = \text {logit}^{-1}(\alpha _t)$ under Model~A with 95\% credible interval. The hazard peaks on day~1 and declines through the first week. Widening bands after day~20 reflect the shrinking risk set}{figure.caption.2}{}}
-\newlabel{sub@fig:baseline-hazard}{{a}{9}{Estimated baseline hazard $h_0(t) = \text {logit}^{-1}(\alpha _t)$ under Model~A with 95\% credible interval. The hazard peaks on day~1 and declines through the first week. Widening bands after day~20 reflect the shrinking risk set}{figure.caption.2}{}}
-\newlabel{fig:calibration}{{2b}{9}{Risk-decile calibration for Model~A. Points above the diagonal indicate over-prediction, consistent with~\eqref {eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients}{figure.caption.2}{}}
-\newlabel{sub@fig:calibration}{{b}{9}{Risk-decile calibration for Model~A. Points above the diagonal indicate over-prediction, consistent with~\eqref {eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients}{figure.caption.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Model~A diagnostics: \textbf  {(a)}~estimated baseline hazard over time and \textbf  {(b)}~risk-decile calibration.}}{9}{figure.caption.2}\protected@file@percent }
-\newlabel{fig:modelA-diagnostics}{{2}{9}{Model~A diagnostics: \textbf {(a)}~estimated baseline hazard over time and \textbf {(b)}~risk-decile calibration}{figure.caption.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Population-averaged survival $S(t)$ under MAR and MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival under $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Wider priors produce both larger shifts and wider posterior spread.}}{9}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:survival}{{3}{9}{Population-averaged survival $S(t)$ under MAR and MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival under $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Wider priors produce both larger shifts and wider posterior spread}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}MCMC Convergence}{7}{subsection.5.1}\protected@file@percent }
+\newlabel{sc:convergence}{{5.1}{7}{MCMC Convergence}{subsection.5.1}{}}
+\newlabel{fig:baseline-hazard}{{2a}{8}{Baseline hazard $h_0(t)$}{figure.caption.2}{}}
+\newlabel{sub@fig:baseline-hazard}{{a}{8}{Baseline hazard $h_0(t)$}{figure.caption.2}{}}
+\newlabel{fig:calibration}{{2b}{8}{Risk-decile calibration}{figure.caption.2}{}}
+\newlabel{sub@fig:calibration}{{b}{8}{Risk-decile calibration}{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Model~A diagnostics. \textbf  {(a)}~Estimated baseline hazard $h_0(t) = \text  {logit}^{-1}(\alpha _t)$ with 95\% credible interval. The hazard peaks on day~1 and declines; widening bands after day~20 reflect the shrinking risk set. \textbf  {(b)}~Risk-decile calibration. Points above the diagonal indicate over-prediction, consistent with~\eqref  {eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients.}}{8}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:modelA-diagnostics}{{2}{8}{Model~A diagnostics. \textbf {(a)}~Estimated baseline hazard $h_0(t) = \text {logit}^{-1}(\alpha _t)$ with 95\% credible interval. The hazard peaks on day~1 and declines; widening bands after day~20 reflect the shrinking risk set. \textbf {(b)}~Risk-decile calibration. Points above the diagonal indicate over-prediction, consistent with~\eqref {eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Results}{8}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Model A (Standard Logistic Hazard).}{8}{subsection.5.2}\protected@file@percent }
 \citation{daniels2008}
-\@writefile{toc}{\contentsline {paragraph}{Model B (Frailty as Comparator).}{10}{figure.caption.3}\protected@file@percent }
-\newlabel{sec:mnar-results}{{5.3}{10}{Results}{figure.caption.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{MNAR Sensitivity Analysis.}{10}{figure.caption.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Conclusions.}{10}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:mnar-gamma}{{4a}{11}{Posterior density of $\gamma $ under three prior widths $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal {N}(0, \sigma _\gamma ^2)$ priors. The vertical dashed line at $\gamma = 0$ marks MAR. All posteriors are decisively negative}{figure.caption.4}{}}
-\newlabel{sub@fig:mnar-gamma}{{a}{11}{Posterior density of $\gamma $ under three prior widths $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal {N}(0, \sigma _\gamma ^2)$ priors. The vertical dashed line at $\gamma = 0$ marks MAR. All posteriors are decisively negative}{figure.caption.4}{}}
-\newlabel{fig:emergency}{{4b}{11}{Posterior density of $\beta _{\text {emergency}}$ under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma _\gamma = 2$, yet remains decisively positive}{figure.caption.4}{}}
-\newlabel{sub@fig:emergency}{{b}{11}{Posterior density of $\beta _{\text {emergency}}$ under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma _\gamma = 2$, yet remains decisively positive}{figure.caption.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces MNAR sensitivity analysis: \textbf  {(a)}~inferred selection parameter $\gamma $ across prior widths, and \textbf  {(b)}~resulting attenuation of the emergency admission covariate effect.}}{11}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:mnar-sensitivity}{{4}{11}{MNAR sensitivity analysis: \textbf {(a)}~inferred selection parameter $\gamma $ across prior widths, and \textbf {(b)}~resulting attenuation of the emergency admission covariate effect}{figure.caption.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Posterior summary of $\gamma $ under three prior widths $\sigma _\gamma $.}}{11}{table.caption.5}\protected@file@percent }
-\newlabel{tab:mnar-gamma}{{1}{11}{Posterior summary of $\gamma $ under three prior widths $\sigma _\gamma $}{table.caption.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{11}{section.6}\protected@file@percent }
-\newlabel{sc:discussion}{{6}{11}{Results}{section.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta $) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat  {R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma _b$).}}{12}{table.caption.6}\protected@file@percent }
-\newlabel{tab:master_results}{{2}{12}{Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta $) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat {R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma _b$)}{table.caption.6}{}}
-\@writefile{toc}{\contentsline {paragraph}{Limitations.}{12}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Future work.}{12}{section.6}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Baseline characteristics and covariate definitions ($\mathbf  {X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph  {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph  {Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables.}}{13}{table.caption.7}\protected@file@percent }
-\newlabel{tab:cohort}{{3}{13}{Baseline characteristics and covariate definitions ($\mathbf {X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph {Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables}{table.caption.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Model B (Frailty as Comparator).}{9}{figure.caption.2}\protected@file@percent }
+\newlabel{sec:mnar-results}{{5.2}{9}{Results}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{MNAR Sensitivity Analysis.}{9}{figure.caption.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Posterior summary of $\gamma $ under three prior widths $\sigma _\gamma $.}}{9}{table.caption.4}\protected@file@percent }
+\newlabel{tab:mnar-gamma}{{1}{9}{Posterior summary of $\gamma $ under three prior widths $\sigma _\gamma $}{table.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{9}{section.6}\protected@file@percent }
+\newlabel{sc:discussion}{{6}{9}{Results}{section.6}{}}
+\newlabel{fig:mnar-gamma}{{3a}{10}{Posterior density of $\gamma $}{figure.caption.3}{}}
+\newlabel{sub@fig:mnar-gamma}{{a}{10}{Posterior density of $\gamma $}{figure.caption.3}{}}
+\newlabel{fig:emergency}{{3b}{10}{Posterior of $\beta _{\text {emergency}}$}{figure.caption.3}{}}
+\newlabel{sub@fig:emergency}{{b}{10}{Posterior of $\beta _{\text {emergency}}$}{figure.caption.3}{}}
+\newlabel{fig:survival}{{3c}{10}{Population-averaged survival $S(t)$}{figure.caption.3}{}}
+\newlabel{sub@fig:survival}{{c}{10}{Population-averaged survival $S(t)$}{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces MNAR sensitivity analysis: \textbf  {(a)}~Inferred selection parameter $\gamma $ under three prior widths $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal  {N}(0, \sigma _\gamma ^2)$ priors, and the vertical line at $\gamma = 0$ marks MAR (all posteriors are decisively negative). \textbf  {(b)}~Resulting attenuation of the emergency admission covariate effect under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma _\gamma = 2$, yet remains decisively positive. \textbf  {(c)}~Population-averaged survival $S(t)$ comparing MAR and varying MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival; wider priors produce larger shifts and wider posterior spread.}}{10}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:mnar-sensitivity}{{3}{10}{MNAR sensitivity analysis: \textbf {(a)}~Inferred selection parameter $\gamma $ under three prior widths $\sigma _\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal {N}(0, \sigma _\gamma ^2)$ priors, and the vertical line at $\gamma = 0$ marks MAR (all posteriors are decisively negative). \textbf {(b)}~Resulting attenuation of the emergency admission covariate effect under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma _\gamma = 2$, yet remains decisively positive. \textbf {(c)}~Population-averaged survival $S(t)$ comparing MAR and varying MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival; wider priors produce larger shifts and wider posterior spread}{figure.caption.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta $) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat  {R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma _b$).}}{10}{table.caption.5}\protected@file@percent }
+\newlabel{tab:master_results}{{2}{10}{Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta $) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat {R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma _b$)}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{11}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future work.}{11}{section.6}\protected@file@percent }
 \bibdata{references}
 \bibcite{allison-discrete}{{1}{1982}{{Allison}}{{}}}
 \bibcite{daniels2008}{{2}{2008}{{Daniels and Hogan}}{{}}}
@@ -117,6 +112,8 @@
 \bibcite{hoffman-gelman-nuts}{{4}{2014}{{Hoffman and Gelman}}{{}}}
 \bibcite{kalbfleisch2003statistical}{{5}{2003}{{Kalbfleisch and Prentice}}{{}}}
 \bibcite{neal-funnel}{{6}{2003}{{Neal}}{{}}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Baseline characteristics and covariate definitions ($\mathbf  {X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph  {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables.}}{12}{table.caption.6}\protected@file@percent }
+\newlabel{tab:cohort}{{3}{12}{Baseline characteristics and covariate definitions ($\mathbf {X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph {Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism). Values are $n$ (\%) for categorical variables and mean $\pm $ SD or median [IQR] for continuous variables}{table.caption.6}{}}
 \bibcite{oganisian}{{7}{2026}{{Oganisian}}{{}}}
 \bibcite{polya-gamma}{{8}{2013}{{Polson et~al.}}{{Polson, Scott, and Windle}}}
 \bibcite{rubin1976}{{9}{1976}{{Rubin}}{{}}}
@@ -125,4 +122,4 @@
 \bibcite{cmdstan}{{12}{2024{a}}{{Stan Development Team}}{{}}}
 \bibcite{stan-software}{{13}{2024{b}}{{Stan Development Team}}{{}}}
 \bibcite{tsiatis1975}{{14}{1975}{{Tsiatis}}{{}}}
-\gdef \@abspage@last{15}
+\gdef \@abspage@last{13}

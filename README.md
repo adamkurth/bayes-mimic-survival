@@ -3,10 +3,10 @@
 Bayesian (final project) on discrete-time survival analysis of ICU mortality using the full MIMIC-III database. The project combines tex manuscripts, R data-processing and analysis scripts, Stan models, and generated figures/tables for the main paper and supplement material that didn't fit within the main paper. 
 
 <table>
-	<tr>
-		<td width="50%"><img src="plots/mimic/mimic_followup.pdf" alt="Follow-up" /></td>
-		<td width="50%"><img src="plots/mimic/mimic_mnar_gamma_posterior.pdf" alt="Gamma Posterior" /></td>
-	</tr>
+  <tr>
+    <td width="50%"><img src="plots/mimic/mimic_followup.png" alt="Follow-up" /></td>
+    <td width="50%"><img src="plots/mimic/mimic_mnar_gamma_posterior.png" alt="Gamma Posterior" /></td>
+  </tr>
 </table>
 
 ## Repository structure

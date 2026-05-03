@@ -54,9 +54,10 @@ supplement/*.log
 supplement/*.out
 supplement/*.synctex.gz
 # ============================================================================
-# Proposal Directory
+# Proposal/Old Directory
 # ============================================================================
 proposal/
+old/
 
 # ============================================================================
 # Stan Compilation Artifacts

@@ -52,41 +52,41 @@ PHP2530
 \section{Introduction} \label{sc:intro}
 % =============================================================================
 
-Accurate mortality risk profiling in the Intensive Care Unit (ICU) is essential for clinical decision-making and resource allocation. Essentially all survival models rely on the non-informative independent censoring assumption, that is, the censoring mechanism (e.g., hospital discharge) carries no information about the underlying survival process beyond observed covariates \citep{kalbfleisch2003statistical}. In the ICU, this assumption is immediately suspect. Patient discharge is a purposeful clinical decision, exactly dependent on patient health status, creating a dependence between censoring $C_i$ and unobserved failure time $T_i$, which breaks the standard assumption and biases hazard estimates and covariate effects.
-
+ 
+Accurate mortality risk profiling in the Intensive Care Unit (ICU) is essential for clinical decision-making and resource allocation. Essentially all survival models rely on the non-informative independent censoring assumption. The censoring mechanism (e.g., hospital discharge) carries no information about the underlying survival process beyond observed covariates \citep{kalbfleisch2003statistical}. In the ICU, this assumption is immediately suspect. Patient discharge is a purposeful clinical decision, exactly dependent on patient health status, creating a dependence between censoring $C_i$ and unobserved failure time $T_i$, which breaks the standard assumption and biases hazard estimates and covariate effects.
+ 
 \citet{tsiatis1975} established a fundamental identifiability result: from the observed data alone $(y_i, \delta_i)$, marginal distributions of $T_i$ and $C_i$ cannot be separately identified without structural assumptions on their joint distribution. Diagnostics based on the observed data alone cannot distinguish informative from non-informative censoring, motivating sensitivity analyses.
-
-This paper addresses the central question: \emph{how robust are Bayesian posterior inferences about ICU mortality risk factors to departures from the independent censoring assumption?} We make three contributions within a discrete-time framework using person-period format \citep{allison-discrete}. First, we formalize the independent censoring assumption in the missing data taxonomy, deriving explicit bias formulas for hazard estimation and covariate effects (Section~\ref{sc:naive-likelihood}).\footnote{Full derivations, simulation study details, and supplementary cohort tables are available at \url{https://github.com/adamkurth/bayes-mimic-survival}.} Second, we develop a sensitivity analysis following \citet{scharfstein1999} (and course notes) by introducing $\gamma$ under a selection model approach that indexes the departure from MAR (Section~\ref{sc:sensitivity}). Third, we compare this with a shared frailty model (Section~\ref{sc:frailty}) and demonstrate through both simulation and application to 57,694 MIMIC-III patients (Section~\ref{sc:application}) that frailty is weakly identified from data sparsity in panel data. This paper provides a framework for assessing robustness of inferences to this pervasive issue.
+ 
+This paper addresses the central question: \emph{how robust are Bayesian posterior inferences about ICU mortality risk factors to departures from the independent censoring assumption?} We make three contributions within a discrete-time framework using person-period format \citep{allison-discrete}. First, we formalize the independent censoring assumption in the missing data taxonomy, deriving explicit bias formulas for hazard estimation and covariate effects (Section~\ref{sc:naive-likelihood}).\footnote{Full derivations, simulation study details, and supplementary cohort tables are available at \url{https://github.com/adamkurth/bayes-mimic-survival}.} Second, we develop a sensitivity analysis following \citet{scharfstein1999} (and course notes) by introducing $\gamma$ under a selection model approach that indexes the departure from MAR (Section~\ref{sc:sensitivity}). Third, we compare this with a shared frailty model (Section~\ref{sc:frailty}) and demonstrate through both simulation and application to 57,694 MIMIC-III patients (Section~\ref{sc:application}) that frailty is weakly identified from data sparsity in panel data. This paper provides a framework for assessing the robustness of survival inferences to informative censoring.
 
 %=============================================================================
 \section{Data Structure \& Notation}\label{sc:notation}
 % =============================================================================
-
 \subsection{MIMIC-III Cohort}\label{sc:cohort}
-Let $i = 1, \dots, N$ index unique ICU admissions from MIMIC-III. Define \(T_i > 0\) as latent time to death, \(C_i > 0 \) as the censoring time (hospital discharge), and \(y_i = \min(T_i, C_i)\) as the observed follow-up time. The failure indicator is \(\delta_i = \ind(T_i \le C_i)\), \(\delta_i = 1\) when patient died in the ICU, or \(\delta_i = 0\) if discharged. \(\bx_i \in \mathbb{R}^P\) is a vector of static baseline covariates measured at admission. The observed data for patient \(i\) is thus \((y_i, \delta_i, \bx_i)\). The data covariate characteristics are described in more detail in Section~\ref{sc:application}, and Table~\ref{tab:cohort}. 
-
-
+Let $i = 1, \dots, N$ index unique ICU admissions from MIMIC-III. Define \(T_i > 0\) as latent time to death, \(C_i > 0 \) as the censoring time (hospital discharge), and \(y_i = \min(T_i, C_i)\) as the observed follow-up time. The failure indicator is \(\delta_i = \ind(T_i \le C_i)\), \(\delta_i = 1\) when patient died in the ICU, or \(\delta_i = 0\) if discharged. \(\bx_i \in \mathbb{R}^P\) is a vector of static baseline covariates measured at admission. The observed data for patient \(i\) is thus \((y_i, \delta_i, \bx_i)\). The covariate characteristics are described in more detail in Section~\ref{sc:covariates} and Table~\ref{tab:cohort}.
+ 
+ 
 \paragraph{Discretization.}
-We partition continuous time into discrete intervals of width \(\Delta\): The intervals are \([0,\Delta)\), \([\Delta, 2\Delta), \dots, [(K-1)\Delta, K\Delta)\) with \(t = 1, \dots, K\). The discrete failure time is \(\tilde{T}_i = \lceil T_i / \Delta \rceil\) and \(\tilde{C}_i = \lceil C_i / \Delta \rceil\). Our primary analysis uses daily discretization (\(\Delta = 1\) day), over 30-day window (\(K = 30\)), motivated by the standard use of 30-day ICU outcome metric, the median follow-up of \(\approx 6\) days in MIMIC-III, so the window captures the clinically relevant risk period. We drop the tildes hereafter, so $T_i$ and $C_i$ refer to the discretized times. Our simulation study confirms stability across $\Delta \in \{1, 3, 7, 14\}$.
-
+We partition continuous time into discrete intervals of width \(\Delta\): the intervals are \([0,\Delta)\), \([\Delta, 2\Delta), \dots, [(K-1)\Delta, K\Delta)\) with \(t = 1, \dots, K\). The discrete failure time is \(\tilde{T}_i = \lceil T_i / \Delta \rceil\) and \(\tilde{C}_i = \lceil C_i / \Delta \rceil\). The primary analysis uses daily discretization (\(\Delta = 1\) day), over a 30-day window (\(K = 30\)), creating a standard 30-day ICU outcome metric. The median follow-up is approximately 6 days in MIMIC-III, so the window captures the clinically relevant risk period. We drop the tildes hereafter, so $T_i$ and $C_i$ refer to the discretized times. Our simulation study confirms stability across $\Delta \in \{1, 3, 7, 14\}$.
+ 
 \paragraph{Person-period expansion.}
 Following \citet{allison-discrete}, the data is reconstructed into a ``person-period'' format: each patient $i$ contributes one row per interval $t = 1, \dots, K_i$ where $K_i = \min(T_i, C_i)$ is the last interval for which patient $i$ is at risk. At time $t = K_i$, the binary outcome is $y_{i,K_i} = \ind(\delta_i = 1)$, either 1 if patient $i$ dies or 0 if censored. These are absorbing states, so patients exit the risk set thereafter. The risk set at time $t$ is $\mathcal{R}_t = \{i: y_i \ge t\} = \{i: T_i \ge t, C_i \ge t\}$ and the censored set is $\mathcal{C}_t = \{i: C_i < t\}$. The person-period expansion yields $R = 509,944$ rows.
-
+ 
 \subsection{Covariate Matrix}\label{sc:covariates}
 The design matrix $\mathbf{X}\in \mathbb{R}^{N \times P}$ with $P = 17$ includes baseline covariates measured at ICU admission (Table~\ref{tab:cohort}): age (standardized), sex, emergency admission, ICD-9 codes for sepsis, heart/respiratory failure, acute kidney injury, pneumonia, diabetes, chronic liver disease, malignancy, and COPD, Glasgow Coma Scale impairment (GCS $<$ 12), vasopressor usage, and binary indicators for mechanical ventilation, renal replacement therapy, and positive blood cultures. All covariates are binary except standardized age.
-
-Table~\ref{tab:cohort} presents baseline covariates by prevalence across outcomes. Patients who died are substantially older (mean age 70 vs.\ 61 for discharged), more likely to have been admitted emergently, and have markedly higher rates of sepsis, respiratory failure, and vasopressor use. The discharged-alive group was younger with lower comorbidity burden, consistent with the hypothesis that discharge represents a positive prognostic signal---exactly the pattern that makes informative censoring plausible.
-
+ 
+Table~\ref{tab:cohort} presents baseline covariates by prevalence across outcomes. Patients who died are substantially older (mean age 70 vs.\ 61 for discharged), more likely to have been admitted emergently, and have markedly higher rates of sepsis, respiratory failure, and vasopressor use. The discharged-alive group was younger with lower comorbidity burden, consistent with the hypothesis that discharge represents a positive prognostic signal. 
+ 
 \subsection{Censoring Pattern}\label{sc:censoring-pattern}
-Figure~\ref{fig:censoring-pattern} shows the empirical follow-up distribution and risk set evolution. The follow-up distribution is heavily front-loaded with a mode at 4--6 days and by day~30, only approximately 3,200 patients remain at risk. Furthermore, discretization past \(\Delta = 1\) daily intervals, would result in a substantial loss of information. This front-loaded discharge pattern underscores the importance of the sensitivity analysis. If discharged patients would have survived longer under continued observation, the standard analysis overestimates later-interval hazards per the bias formula derived in Section~\ref{sc:consequences}.
-
+Figure~\ref{fig:censoring-pattern} shows the empirical follow-up distribution and risk set evolution. The follow-up distribution is heavily front-loaded with a mode at 4--6 days and by day~30, only approximately 3,200 patients remain at risk. Furthermore, discretization past \(\Delta = 1\) daily intervals would result in a substantial loss of information. This front-loaded discharge pattern underscores the importance of the sensitivity analysis. If discharged patients would have survived longer under continued observation, the standard analysis overestimates later-interval hazards per the bias formula derived in Section~\ref{sc:consequences}.
+ 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=1\textwidth]{../plots/mimic/mimic_followup.pdf}
-    \caption{Empirical follow-up distribution and risk set evolution for the MIMIC-III cohort ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf{(a)}~Histogram stratified by outcome: death (red), discharge (blue). The dashed vertical line marks the 30-day observation window. \textbf{(b)}~Risk set size (black) with cumulative discharges (blue) and deaths (red). The widening gap illustrates that the risk set depletes primarily through discharge, especially in the first week.}
+    \includegraphics[width=0.95\textwidth]{../plots/mimic/mimic_followup.pdf}
+    \footnotesize 
+    \caption{Empirical follow-up distribution and risk set evolution ($N = 57,694$; $\Delta = 1$ day, $K=30$). \textbf{(a)}~Histogram of follow-up times stratified by death (red) and discharge (blue). Dashed line marks the 30-day window. \textbf{(b)}~Risk set size (black) alongside cumulative discharges (blue) and deaths (red). The risk set depletes primarily through discharge during the first week.}
     \label{fig:censoring-pattern}
 \end{figure}
-
 % =============================================================================
 \section{Methodology} 
 % =============================================================================
@@ -95,9 +95,9 @@ Censoring is treated as a missing-outcome problem. The failure indicator $\delta
 \begin{equation}\label{eq:selection-factorization}
     f(\delta_i , y_i, \bx_i \mid \omega) = \underbrace{f( \delta_i \mid y_i, \bx_i; \xi )}_{\text{Selection model}} \cdot \underbrace{f(y_i \mid \bx_i; \eta )}_{\text{Outcome model}} \cdot \underbrace{f(\bx_i; \theta )}_{\text{Covariate model}}
 \end{equation}
-where $\omega = (\xi, \eta, \theta)$ are distinct independent a priori parameters governing each component. The selection model $f(\delta_i \mid y_i, \bx_i; \xi )$ describes the censoring mechanism, the outcome model is of inferential interest, and the covariate model is ancillary. The censoring mechanism is ignorable for inference about $T_i$ if the selection model is MAR, where $M_i \perp Y_i \mid X_i$ implies $f(\delta_i \mid y_i, \bx_i; \xi ) = f(\delta_i \mid \bx_i; \xi )$. Under MAR, inference proceeds using only observed data. Otherwise, censoring is informative and classified as Missing Not at Random (MNAR): $M_i \not\perp Y_i \mid X_i$, requiring joint modeling. In the ICU, MNAR is the more plausible scenario, as discharge decisions may reflect systematically different mortality risk than those who remain, even conditional on $\bx_i$.
-
-
+where $\omega = (\xi, \eta, \theta)$ are distinct parameters, assumed independent a priori. The selection model $f(\delta_i \mid y_i, \bx_i; \xi )$ describes the censoring mechanism, the outcome model is of inferential interest, and the covariate model is ancillary. The censoring mechanism is ignorable for inference about $T_i$ if the selection model is MAR, where $M_i \perp Y_i \mid X_i$ implies $f(\delta_i \mid y_i, \bx_i; \xi ) = f(\delta_i \mid \bx_i; \xi )$. Under MAR, inference proceeds using only observed data. Otherwise, censoring is informative and classified as Missing Not at Random (MNAR): $M_i \not\perp Y_i \mid X_i$, requiring joint modeling. In the ICU, MNAR is the more plausible scenario, as discharge decisions may reflect systematically different mortality risk than those who remain, even conditional on $\bx_i$.
+ 
+ 
 \subsection{Standard Likelihood \& Censoring Assumption} \label{sc:naive-likelihood}
 The discrete-time hazard for patient $i$ at time $t$ is $h_{i,t} = P(T_i = t \mid T_i \geq t, \mathbf{x}_i)$, with survival function $S_i(t) = P(T_i > t \mid \mathbf{x}_i) = \prod_{s=1}^t (1 - h_{i,s})$. The full data likelihood involves the joint density of $(y_i, \delta_i)$ depending both on failure and censoring parameters $\boldsymbol{\theta}, \boldsymbol{\phi}$ respectively \citep[Section 3.2]{kalbfleisch2003statistical}:
 \begin{equation}\label{eq:full-lik}
@@ -105,14 +105,14 @@ The discrete-time hazard for patient $i$ at time $t$ is $h_{i,t} = P(T_i = t \mi
     = \bigl[f_T(y_i \mid \bx_i)\, S_C(y_i \mid \bx_i)\bigr]^{\delta_i}
       \bigl[S_T(y_i \mid \bx_i)\, f_C(y_i \mid \bx_i)\bigr]^{1 - \delta_i}
 \end{equation}
-
+ 
 \begin{assumption}[][Independent Right-Censoring; K\&P Section~2.4]
   \label{assump:indep-cens}
   $T_i \perp C_i \mid \bx_i$: knowing the censoring time provides no additional information about survival beyond $\bx_i$.
 \end{assumption}
-
+ 
 Under Assumption~\ref{assump:indep-cens}, \eqref{eq:full-lik} factors so that inference about $\boldsymbol{\theta}$ proceeds without modeling censoring. In person-period form: $\mathcal{L}(\boldsymbol{\theta}) = \prod_{i=1}^N \prod_{t=1}^{K_i} h_{i,t}^{y_{i,t}} (1 - h_{i,t})^{1 - y_{i,t}}$, where each $(i,t)$ term is an independent Bernoulli trial. This corresponds to MAR in the selection factorization \eqref{eq:selection-factorization}. Since time-varying information is likely far more informative for discharge decisions, and $\bx_i$ only contains baseline covariates, MAR is unlikely to hold ($T_i \not\perp C_i \mid \bx_i$), motivating the methods below.
-
+ 
 \subsection{Consequences of Informative Censoring}\label{sc:consequences}
 When the independent censoring assumption fails, two consequences follow. First, systematic discharge of healthier patients inflates the observed hazard. Let $\lambda_t = |\mathcal{C}_t|/|\mathcal{R}_t|$ be the proportion of patients censored at $t$, and $\Delta_t = h_t^\ast - \hat{h}_t$ the difference between the true marginal hazard $h_t^\ast$ and the observed hazard $\hat{h}_t$. The bias formula (derived in the supplementary material) shows:
 \begin{equation} \label{eq:bias-approx}
@@ -120,19 +120,18 @@ When the independent censoring assumption fails, two consequences follow. First,
     \hat{h}_t = \frac{ \sum_{i \in \mathcal{R}_t} \ind(T_i = t) }{ |\mathcal{R}_t| }
 \end{equation}
 The bias is positive when $\lambda_t, \Delta_t > 0$ (censored patients are healthier), but $\Delta_t$ could be negative if censored patients are sicker (e.g., hospice discharge).
-
+ 
 Second, covariate effects $\boldsymbol{\beta}$ are confounded by the censoring process. \citet{scharfstein1999} formalizes this as a failure of the semiparametric estimation equations when MAR is violated, where the score function for $\boldsymbol{\beta}$ is biased proportional to a non-identifiable selection parameter (see supplementary derivation). If the selection model is misspecified by a factor $\alpha$ (the log-odds ratio of death between censored and uncensored patients at time $t$), then:
 \begin{equation}  \label{eq:confounding-bias}
     \text{Bias}(\alpha) \approx -\alpha \, \mathbb{E} \Big[ \Lambda_0(C_i \mid \bx_i) \, T_i \, S_\text{full}(\boldsymbol{\beta}) \Big]
 \end{equation}
-The bias is driven by $\alpha$---the severity of the MAR violation---and the covariance between $T_i$ and cumulative censoring hazard $\Lambda_0$. Because $\alpha$ cannot be identified from observed data alone, standard estimation fails, motivating the sensitivity analysis and frailty model. Our simulation demonstrates that the frailty approach faces identifiability challenges; the primary model (Model~A) is given below alongside the frailty extension (Model~B).
-
+The bias is driven by $\alpha$---the severity of the MAR violation---and the covariance between $T_i$ and cumulative censoring hazard $\Lambda_0$. Because $\alpha$ cannot be identified from observed data alone, standard estimation fails, motivating the sensitivity analysis and frailty model. Our simulation demonstrates that the frailty approach faces identifiability challenges.
 
 % =============================================================================
 \subsection{Logistic Hazard Model} \label{sc:model}
 % =============================================================================
-The person-period format recasts discrete-time survival as a first-order Markov chain on $\{0,1\}$ where $0$ denotes ``alive'' and $1$ denotes ``dead'' (absorbing state). The discrete-time hazard is the one-step transition probability, modeled as a Bernoulli GLMM with a logistic link.
-
+ The person-period format recasts discrete-time survival as a first-order Markov chain on $\{0,1\}$ where $0$ denotes ``alive'' and $1$ denotes ``dead'' (absorbing state). The discrete-time hazard is the one-step transition probability, modeled as a Bernoulli GLMM with a logistic link. Model A is the primary model, while Model B adds a frailty extension to capture unobserved patient-level heterogeneity. Both models are fit under Assumption~\ref{assump:indep-cens}.
+ 
 \paragraph{Standard Model (Model A)}  \label{sc:standard-model} 
 \begin{align}
     y_{i,t} \mid h_{i,t} &\sim \text{Bernoulli}(h_{i,t}), \quad t = 1, \dots, K_i,\; i = 1, \dots, N, \label{eq:obs-model} \\
@@ -146,21 +145,22 @@ with priors:
     \sigma_\alpha &\sim \text{Student-}t^+(\text{df=}3, 0, 1), \label{eq:sigma-alpha-prior} \\
     \boldsymbol{\beta} &\sim \mathcal{N}(\mathbf{0}, \tau^2 \mathbf{I}_P). \label{eq:beta-prior}
 \end{alignat}
-The first-order random walk prior on \(\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_K)^\top\) encodes the temporal correlation and the belief that neighboring intervals have similar baseline log-odds of death. As the risk set shrinks at later intervals, this prior borrows strength from adjacent time points, regularizing \(\alpha_t\) where data is sparse. The half Student-\(t\) prior on \(\sigma_\alpha\) is weakly informative and avoids the boundary issues of conjugate Inverse-Gamma priors with small shape parameters \citep{gelman-prior-2006}. We set $\sigma_0^2 = \tau^2 = 10$ as weakly informative defaults.
-
+The first-order random walk prior on \(\boldsymbol{\alpha} = (\alpha_1, \dots, \alpha_K)^\top\) encodes the temporal correlation and the belief that neighboring intervals have similar baseline log-odds of death. As the risk set shrinks at later intervals, this prior borrows strength from adjacent time points, regularizing \(\alpha_t\) where data is sparse. The half Student-\(t\) prior on \(\sigma_\alpha\) is weakly informative and avoids the boundary issues of conjugate Inverse-Gamma priors with small shape parameters \citep{gelman-prior-2006}. We set $\sigma_0^2 = \tau^2 = 10$ as weakly informative defaults. Halving or doubling \(\tau^2\) produced negligible changes in posterior means (not shown), indicating robustness to this prior choice.
+ 
 \paragraph{Frailty Extension (Model B)} \label{sc:frailty}
-To capture unobserved patient-level heterogeneity, we extend Model~A with a correlation random effect $b_i$ (frailty) for each patient $i$ to account for the \emph{within}-patient correlation across intervals:
+To capture unobserved patient-level heterogeneity, we extend Model~A with a correlated random effect $b_i$ (frailty) for each patient $i$ to account for the \emph{within}-patient correlation across intervals:
 \begin{align}
     \text{logit}(h_{i,t}) &= \alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i
     \label{eq:link-frailty}
 \end{align}
-with $b_i \sim \mathcal{N}(0, \sigma_b^2)$ and $\sigma_b \sim \mathrm{Exp}(1)$, called the penalized complexity (PC) prior, which shrinks towards no heterogeneity $b_i = 0$ \citep{simpson-pc-priors}. By conditioning on $b_i$, the censoring assumption relaxes to $T_i \perp C_i \mid \bx_i, b_i$---a strictly weaker condition than Assumption~\ref{assump:indep-cens} \citep{daniels2008}. An important caveat is that addition of $b_i$ does not guarantee $T_i \perp C_i \mid \bx_i, b_i$ holds, as the frailty is a misspecified proxy for the true unobserved confounders that drive both censoring and failure. If $b_i$ captures only partial heterogeneity, residual informative censoring bias remains. The practical downside is that $N$ random effects are weakly identified from sparse binary panel data. The preliminary simulation confirms ESS that $\sigma_b \approx 80$--$150$.
+with $b_i \sim \mathcal{N}(0, \sigma_b^2)$ and $\sigma_b \sim \mathrm{Exp}(1)$, called the penalized complexity (PC) prior, which shrinks towards no heterogeneity $b_i = 0$ \citep{simpson-pc-priors}. By conditioning on $b_i$, the censoring assumption relaxes to $T_i \perp C_i \mid \bx_i, b_i$---a strictly weaker condition than Assumption~\ref{assump:indep-cens} \citep{daniels2008}. An important caveat is that addition of $b_i$ does not guarantee $T_i \perp C_i \mid \bx_i, b_i$ holds, as the frailty is a misspecified proxy for the true unobserved confounders that drive both censoring and failure. If $b_i$ captures only partial heterogeneity, residual informative censoring bias remains. The practical downside is that $N$ random effects are weakly identified from sparse binary panel data. The preliminary simulation yields ESS for $\sigma_b \approx 80$--$150$.
+ 
 
 %=============================================================================
 \subsection{Sensitivity Analysis via Exponential Tilting} \label{sc:sensitivity}
 %==============================================================================
-The sensitivity analysis and frailty model address complementary aspects of informative censoring. The random effect \(b_i\) captures some heterogeneity \emph{parametrically}, assuming the Gaussian prior \eqref{eq:link-frailty} and the weaker conditional independence. The sensitivity analysis, by contrast, \emph{nonparametrically} aims to index the departures from independent censoring without specification of a particular structure.
-
+The sensitivity analysis and frailty model address complementary aspects of informative censoring. The random effect \(b_i\) captures some heterogeneity \emph{parametrically}, assuming the Gaussian prior \eqref{eq:link-frailty} and the weaker conditional independence. The sensitivity analysis, by contrast, aims to \emph{nonparametrically} index departures from independent censoring without specification of a particular structure.
+ 
 Following \citet{scharfstein1999} and the Bayesian treatment from \citet{daniels2008}, define \(\gamma\) as the log-odds ratio between patients censored at \(t\) and those remaining under observation:
 \begin{equation}
     \gamma = \log\left( \frac{\Pr( T_i = t \mid T_i \geq t, C_i = t, \bx_i)}{\Pr( T_i = t \mid T_i \geq t, C_i > t, \bx_i)} \right)
@@ -169,18 +169,18 @@ Here, $\gamma = 0$ corresponds to MAR, $\gamma < 0$ means censored patients have
 \begin{equation}\label{eq:tilted-hazard}
     \mathrm{logit}(h_{i,t}) + \gamma \ind(C_i = t, \delta_i = 0), \qquad \text{ where } \delta_i = \ind(T_i \le C_i)
 \end{equation}
-This addition to \(\gamma\) is an offset to the linear predictor. This multiplies by \(\exp(\gamma)\) the odds of death for censored patients at their terminal interval. 
-
+This term acts as an offset to the linear predictor, multiplying the odds of death by \(\exp(\gamma)\) for censored patients at their terminal interval. 
+ 
 \paragraph{MNAR model.}
-Rather than fixing \(\gamma\) at a point-mass, we place a prior \(\gamma \sim \mathcal{N}(0, \sigma_\gamma)\) and jointly estimate \(\gamma\) alongside \(\boldsymbol{\beta}\). Since \(\gamma\) is also not identified from the data, the posterior \(f(\gamma \mid \mathcal{D}^o)\) is heavily influenced by the prior. This is by design where the prior encodes substantive belief about plausible MNAR departures, and the posterior reflects the interaction between these beliefs and observed data likelihood. We assess prior sensitivity by fitting under different scales of \(\sigma_\gamma \in \{ 0.5, 1.5, 2.0\}\) where the smaller \(\sigma_\gamma\) concentrates the prior more tightly around MAR while the larger \(\sigma_\gamma\) allows for more extreme departures. If the posterior for \(\boldsymbol{\beta}\) is stable across prior scales, then clinical conclusions are robust to a wide range of MNAR assumptions.
+Rather than fixing \(\gamma\) at a point-mass, we place a prior \(\gamma \sim \mathcal{N}(0, \sigma_\gamma)\) and jointly estimate \(\gamma\) alongside \(\boldsymbol{\beta}\). Since \(\gamma\) is also not identified from the data, the posterior \(f(\gamma \mid \mathcal{D}^o)\) is heavily influenced by the prior. This is intentional. The prior encodes substantive belief about plausible MNAR departures, and the posterior reflects the interaction between these beliefs and observed data likelihood. We assess prior sensitivity by fitting under different scales of \(\sigma_\gamma \in \{ 0.5, 1.0, 2.0\}\) where the smaller \(\sigma_\gamma\) concentrates the prior more tightly around MAR while the larger \(\sigma_\gamma\) allows for more extreme departures. If the posterior for \(\boldsymbol{\beta}\) is stable across prior scales, then clinical conclusions are robust to a wide range of MNAR assumptions. 
 
-
+ 
 % =============================================================================
 \section{Computation} \label{sc:computation}
 % =============================================================================
 \subsection{Joint Posterior}
-The person-period likelihood combind with priors in Section~\ref{sc:model} yields the joint posterior distribution for Model A:
-\begin{align}
+The person-period likelihood combined with priors in Section~\ref{sc:model} yields the joint posterior distribution for Model A:
+\begin{align*}
     f(\boldsymbol{\alpha}, \boldsymbol{\beta}, \sigma_\alpha \mid \mathcal{D}^o) 
     \propto&
     \underbrace{ 
@@ -190,9 +190,9 @@ The person-period likelihood combind with priors in Section~\ref{sc:model} yield
         \mathcal{N}(\boldsymbol{\alpha}; \mathbf{0}, \sigma_0^2) \prod_{t=2}^K \mathcal{N}(\alpha_t; \alpha_{t-1}, \sigma_\alpha^2)
     }_{\text{RW prior}} 
     t_3^+ (\sigma_\alpha) \mathcal{N}(\boldsymbol{\beta} ; \mathbf{0}, \tau^2 \mathbf{I}_P) 
-\end{align} 
+\end{align*} 
 where \(h_{i,t} = \text{logit}^{-1}(\alpha_t + \bx_i^\top \boldsymbol{\beta})\) and the likelihood factorizes over \(R = \sum_{i} K_i\) person-period observations as independent Bernoulli trials. Model B extends this with \(N\) frailty terms and their hyperprior:
-\begin{align}
+\begin{align*}
     f(\boldsymbol{\alpha}, \boldsymbol{\beta}, \sigma_\alpha \mid \mathcal{D}^o) 
     \propto&
     \prod_{i,t} h_{i,t}^{y_{i,t}} (1 - h_{i,t})^{1-y_{i,t}} 
@@ -200,117 +200,119 @@ where \(h_{i,t} = \text{logit}^{-1}(\alpha_t + \bx_i^\top \boldsymbol{\beta})\) 
     f(\sigma_\alpha)
     f(\boldsymbol{\beta}) 
     \prod_{i=1}^N \mathcal{N}(b_i; 0, \sigma_b^2) \mathrm{Exp}(\sigma_b; 1)
-\end{align}
+\end{align*}
 where \(h_{i,t} = \text{logit}^{-1}(\alpha_t + \bx_i^\top \boldsymbol{\beta} + b_i)\). For the MNAR model, the tilted likelihood replaces the linear predictor with \(\alpha_t + \bx_i^\top \boldsymbol{\beta} + \gamma \ind(C_i = t, \delta_i = 0)\) and appends the prior \(\gamma \sim \mathcal{N}(0, \sigma_\gamma)\) giving the joint posterior over \((\boldsymbol{\alpha}, \boldsymbol{\beta}, \gamma)\).
-
+ 
 \subsection{Sampling Strategy}\label{sc:sampling}
-We initially developed a P\'olya-Gamma (PG) Gibbs sampler \citep{polya-gamma} for Model~A, which exploited the data-augmentation identity used in \citet{polya-gamma} to obtain full conditional Gaussians for both $\boldsymbol{\alpha}$ and $\boldsymbol{\beta}$, enabling efficient block Gibbs updates. For Model~A this scheme converges efficiently. However, for Model~B the centered parameterization exhibited Neal's funnel geometry \citep{neal-funnel}, meaning when $\sigma_b^2$ is small the frailties $b_i$ mix well, but for larger values the strong posterior correlation between $\sigma_b$ and $\{b_i\}$ caused the sampler to stall, yielding very low ESS. This motivated the switch to Hamiltonian Monte Carlo (HMC) via Stan \citep{stan-software}.
-
+We initially developed a P\'olya-Gamma (PG) Gibbs sampler which exploited their data-augmentation identity used in \citet{polya-gamma} to obtain full conditional conjugate Gaussian posteriors for both $\boldsymbol{\alpha}$ and $\boldsymbol{\beta}$, enabling efficient block Gibbs updates. For Model~A this scheme converges efficiently. However, for Model~B the centered parameterization exhibited Neal's funnel geometry \citep{neal-funnel}, meaning when $\sigma_b^2$ is small the frailties $b_i$ mix well, but for larger values the strong posterior correlation between $\sigma_b$ and $\{b_i\}$ caused the sampler to stall, yielding very low ESS. This motivated the switch to Hamiltonian Monte Carlo (HMC) via Stan \citep{stan-software}.
+ 
 \subsection{HMC via Stan}\label{sc:stan}
-We implement both models in Stan using the No-U-Turn Sampler (NUTS; \citealp{hoffman-gelman-nuts}), a self-tuning variant of HMC that adapts trajectory length during warmup via a recursive doubling procedure. Stan's non-centered parameterization ($b_i^{\text{raw}} \sim \mathcal{N}(0, 1)$) for Model~B eliminates the funnel geometry. Combined with the PC prior on $\sigma_b$, this yields substantially better mixing. For both models, we run 4 chains with 500 warmup and 2,000 sampling iterations, yielding 8,000 posterior draws in CmdStanR \citep{cmdstan}. Additionally, to avoid memory overflow from serializing 510K pointwise log-likelihoods per iteration, we fit ``slim'' models without the \texttt{generated\_quantities} block and computed $\log p(y_r \mid \theta^{(s)})$ post-hoc in R.
-
+We implement both models in Stan using the No-U-Turn Sampler (NUTS; \citealp{hoffman-gelman-nuts}), a self-tuning variant of HMC that adapts trajectory length during warmup via a recursive doubling procedure. Stan's non-centered parameterization ($b_i^{\text{raw}} \sim \mathcal{N}(0, 1)$) for Model~B eliminates the funnel geometry. Combined with the PC prior on $\sigma_b$, this yields substantially better mixing. For both models, we run 4 chains with 500 warmup and 2,000 sampling iterations, yielding 8,000 posterior draws in CmdStanR \citep{cmdstan}. Additionally, to avoid memory overflow from serializing 510K pointwise log-likelihoods per iteration, we fitted ``slim'' models without the \texttt{generated\_quantities} block and computed $\log p(y_r \mid \theta^{(s)})$ post-hoc in R.
+ 
 For the MNAR sensitivity analysis, the joint posterior over $(\boldsymbol{\alpha}, \boldsymbol{\beta}, \gamma)$ with $R > 500,000$ person-period rows makes full HMC prohibitively costly across three prior specifications. Instead, we use Stan's Automatic Differentiation Variational Inference (ADVI, full-rank) \citep{cmdstan}, which approximates the posterior $p(\theta \mid \mathbf{y})$ with a multivariate Gaussian $q_\phi(\theta)$ by maximizing the evidence lower bound $\text{ELBO}(\phi) = \mathbb{E}_{q_\phi}[\log p(\theta, \mathbf{y}) - \log q_\phi(\theta)]$ via stochastic gradient ascent. While ADVI may underestimate posterior uncertainty in the tails, it suffices for recovering the posterior location and quantifying how $\hat{\boldsymbol{\beta}}$ shifts under MNAR, at orders of magnitude lower cost. The HMC results for Model~A at $\gamma = 0$ serve as the gold-standard benchmark. The full code is available at \url{https://github.com/adamkurth/bayes-mimic-survival}.
+ 
 
-
-
-
-% =============================================================================
+ % =============================================================================
 \section{Data Analysis: Application to MIMIC-III} \label{sc:application}
 % =============================================================================
-
-\subsection{Summary Statistics}
-The analytic cohort described in Section~\ref{sc:cohort} comprises $N = 57,694$ first ICU admissions expanding to $R = 509,944$ person-period rows under daily discretization ($K = 30$). Table~\ref{tab:cohort} summarizes covariate prevalence stratified by outcome. Key contrasts are: patients who died were older (mean standardized age 0.58 vs.\ 0.08), more frequently admitted emergently (93\% vs.\ 82\%), and had higher rates of sepsis (30\% vs.\ 16\%), respiratory failure (51\% vs.\ 28\%), and mechanical ventilation (58\% vs.\ 25\%). These disparities motivate the research question posed in Section~\ref{sc:intro}: whether these apparent risk factors remain significant once informative censoring is accounted for. 
-
+ 
+% seems redundant with Section~\ref{sc:cohort} 
+% \subsection{Summary Statistics}
+% The analytic cohort described in Section~\ref{sc:cohort} comprises $N = 57,694$ first ICU admissions expanding to $R = 509,944$ person-period rows under daily discretization ($K = 30$). Table~\ref{tab:cohort} summarizes covariate prevalence stratified by outcome.  
+% Patients who died were older (mean standardized age 0.58 vs.\ 0.08), more frequently admitted emergently (93\% vs.\ 82\%), and had higher rates of sepsis (30\% vs.\ 16\%), respiratory failure (51\% vs.\ 28\%), and mechanical ventilation (58\% vs.\ 25\%). These disparities motivate the research question posed in Section~\ref{sc:intro}: whether these apparent risk factors remain significant once informative censoring is accounted for. 
+ 
 \subsection{MCMC Convergence}\label{sc:convergence}
-Table~\ref{tab:master_results} reports full convergence diagnostics alongside posterior estimates. Model~A converged cleanly with no divergent transitions across all 4 chains, all $\hat{R} < 1.01$, and minimum bulk ESS of 878 across all $\beta_j$. The random-walk intercepts $\alpha_t$ showed bulk ESS $> 1{,}500$ and tail ESS $> 1{,}200$, indicating adequate exploration of the posterior. The E-BFMI statistic exceeded 0.3 for all chains, confirming efficient energy transitions. Model~B also produced no divergent transitions, but exhibited the identifiability challenges predicted by our simulation. The frailty standard deviation $\sigma_b$ had ESS of only 97 with $\hat{R} = 1.03$, and E-BFMI flagged heavy tails in all chains. The fixed effects $\boldsymbol{\beta}$ under Model~B had adequate ESS ($> 500$), though uniformly lower than under Model~A. These diagnostics confirm that the $N = 57{,}694$ patient-level random effects are only weakly identified from sparse binary data, consistent with the simulation findings and reinforcing the motivation for the sensitivity analysis approach.
-
+Table~\ref{tab:master_results} reports full convergence diagnostics alongside posterior estimates. Model~A converged cleanly with no divergent transitions across all 4 chains, all $\hat{R} < 1.01$, and minimum bulk ESS of 878 across all $\beta_j$. The random-walk intercepts $\alpha_t$ showed bulk ESS $> 1{,}500$ and tail ESS $> 1{,}200$, indicating adequate exploration of the posterior. The E-BFMI statistic exceeded 0.3 for all chains, confirming efficient energy transitions. Model~B also produced no divergent transitions, but exhibited the identifiability challenges predicted by our simulation. The frailty standard deviation $\sigma_b$ had ESS of only 97 with $\hat{R} = 1.03$, and E-BFMI flagged heavy tails in all chains. The fixed effects $\boldsymbol{\beta}$ under Model~B had adequate ESS ($> 500$), though uniformly lower than under Model~A. These diagnostics are consistent with the identifiability challenges discussed in Section~\ref{sc:frailty}.
+ 
 \subsection{Results}
-
+ 
 \paragraph{Model A (Standard Logistic Hazard).}
 The estimated baseline hazard (Figure~\ref{fig:baseline-hazard}) peaks on ICU day~1, declining steeply through day~5 and stabilizing near 0.001 thereafter, with widening credible intervals as the risk set depletes. This temporal profile is consistent with the acute-on-chronic risk period typical of ICU admissions where the highest mortality risk occurs immediately, with survivors exhibiting progressively better prognosis.
-
-Figure~\ref{fig:calibration} shows a risk-decile calibration plot with consistent over-prediction in deciles 1--9, consistent with the bias formula in~\eqref{eq:bias-approx}: selective discharge of healthier patients inflates the predicted hazard for those remaining. Figure~\ref{fig:survival} overlays 200 posterior survival draws per model. The MAR cloud (grey) closely tracks the Kaplan--Meier estimate through day~10, while the three MNAR draw-clouds shift progressively upward, foreshadowing the sensitivity results.
-
-Table~\ref{tab:master_results} reports all posterior covariate effects (log-odds for daily mortality). The strongest risk factors were mechanical ventilation ($\hat{\beta} = 0.96$, 95\% CrI [0.91, 1.02]), emergency admission (0.90, [0.81, 1.00]), standardized age (0.76, [0.72, 0.80]), ICD-coded malignancy (0.66, [0.61, 0.72]), GCS impairment (0.61, [0.55, 0.68]), and sepsis (0.50, [0.44, 0.56]). Pneumonia ($-0.35$) and positive blood cultures ($-0.29$) showed protective effects, likely reflecting that these diagnoses prompt early aggressive treatment with favorable short-term prognosis. Sex, COPD, vasopressor use, and dialysis showed credible intervals overlapping or near zero, suggesting minimal independent effects on daily mortality.
+ 
+Figure~\ref{fig:calibration} shows a risk-decile calibration plot with consistent over-prediction in deciles 1--9, consistent with the bias formula in~\eqref{eq:bias-approx}. Figure~\ref{fig:survival} overlays 200 posterior survival draws per model. The MAR cloud (grey) closely tracks the Kaplan--Meier estimate through day~10, while the three MNAR draw-clouds shift progressively upward, foreshadowing the sensitivity results.
+ 
+Table~\ref{tab:master_results} reports all posterior covariate effects (log-odds for daily mortality). The strongest risk factors were mechanical ventilation ($\hat{\beta} = 0.96$, 95\% CrI [0.91, 1.02]), emergency admission (0.90, [0.81, 1.00]), standardized age (0.76, [0.72, 0.80]), ICD-coded malignancy (0.66, [0.61, 0.72]), GCS impairment (0.61, [0.55, 0.68]), and sepsis (0.50, [0.44, 0.56]). Pneumonia ($-0.35$) and positive blood cultures ($-0.29$) showed protective effects, likely reflecting that these diagnoses prompt early aggressive treatment with favorable short-term prognosis. Patients with pneumonia who reach the ICU may represent a healthier subset, or these diagnoses may be associated with more treatable conditions, leading to better outcomes and shorter ICU stays. Sex, COPD, vasopressor use, and dialysis showed credible intervals overlapping or near zero, suggesting minimal independent effects on daily mortality.
+ 
 % ── Model A diagnostics: baseline hazard + calibration ──────────────────────
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
-    \begin{subfigure}[t]{0.48\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{../plots/mimic/mimic_baseline_hazard.pdf}
-        \caption{Estimated baseline hazard $h_0(t) = \text{logit}^{-1}(\alpha_t)$ under Model~A with 95\% credible interval. The hazard peaks on day~1 and declines through the first week. Widening bands after day~20 reflect the shrinking risk set.}
+        \caption{Baseline hazard $h_0(t)$.}
         \label{fig:baseline-hazard}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{../plots/mimic/mimic_calibration.pdf}
-        \caption{Risk-decile calibration for Model~A. Points above the diagonal indicate over-prediction, consistent with~\eqref{eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients.}
+        \caption{Risk-decile calibration.}
         \label{fig:calibration}
     \end{subfigure}
-    \caption{Model~A diagnostics: \textbf{(a)}~estimated baseline hazard over time and \textbf{(b)}~risk-decile calibration.}
+    \caption{Model~A diagnostics. \textbf{(a)}~Estimated baseline hazard $h_0(t) = \text{logit}^{-1}(\alpha_t)$ with 95\% credible interval. The hazard peaks on day~1 and declines; widening bands after day~20 reflect the shrinking risk set. \textbf{(b)}~Risk-decile calibration. Points above the diagonal indicate over-prediction, consistent with~\eqref{eq:bias-approx}: selective discharge inflates the predicted hazard for remaining patients.}
     \label{fig:modelA-diagnostics}
 \end{figure}
-
-% ── Population-averaged survival ────────────────────────────────────────────
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../plots/mimic/mimic_survival.pdf}
-    \caption{Population-averaged survival $S(t)$ under MAR and MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival under $\sigma_\gamma \in \{0.5, 1.0, 2.0\}$. Wider priors produce both larger shifts and wider posterior spread.}
-    \label{fig:survival}
-\end{figure}
-
-
-
+ 
+ 
 \paragraph{Model B (Frailty as Comparator).}
-The posterior mean $\hat{\sigma}_b = 1.38$ (95\% CrI [1.17, 1.61]) indicates substantial unobserved heterogeneity. The 95th-percentile patient faces an odds of the event approximately 94 times higher (\(\exp(3.29 \times 1.38) \approx 93.7\)) than the 5th-percentile patient in any given day, holding covariates constant. This is clinically plausible given unmeasured factors such as pre-morbid functional status, goals-of-care decisions, and organ dysfunction severity not captured by ICD codes.
-
-Including frailty uniformly amplified all covariate effects (Table~\ref{tab:master_results}), with largest shifts for ventilation (+0.28), sepsis (+0.20), malignancy (+0.19), and emergency admission (+0.17). This is classical attenuation bias for binary outcome where omitting a random effect biases coefficients toward zero \citep{daniels2008}. Model~A's estimates therefore represent conservative lower bounds on the true covariate--hazard associations. However, the low ESS for $\sigma_b$ (Section~\ref{sc:convergence}) means the frailty variance is only weakly identified, reinforcing the motivation for the sensitivity analysis over exclusive reliance on the frailty model.
-
+The posterior mean $\hat{\sigma}_b = 1.38$ (95\% CrI [1.17, 1.61]) indicates substantial unobserved heterogeneity. The 95th-percentile patient faces odds of death approximately 94 times higher ($\exp(3.29 \times 1.38) \approx 93.7$) than the 5th-percentile patient on any given day, holding covariates constant.
+ 
+Including frailty uniformly amplified all covariate effects (Table~\ref{tab:master_results}), with largest shifts for ventilation (+0.28), sepsis (+0.20), malignancy (+0.19), and emergency admission (+0.17). This is classical attenuation bias for binary outcome where omitting a random effect biases coefficients toward zero \citep{daniels2008}. Model~A's estimates therefore represent conservative lower bounds on the true covariate--hazard associations. However, the low ESS for $\sigma_b$ (Section~\ref{sc:convergence}) limits the reliability of frailty-based inference alone.
+ 
 % \input{../output/tables/mimic_beta_comparison.tex}
 % \input{../output/tables/mimic_diagnostics.tex}
-
-
+ 
+ 
 \paragraph{MNAR Sensitivity Analysis.}\label{sec:mnar-results}
 Table~\ref{tab:mnar-gamma} and Figure~\ref{fig:mnar-gamma} present the posterior of $\gamma$ under three prior scales. The posterior is decisively negative across all specifications:
 $\hat{\gamma} = -3.54$ (95\% CrI $[-4.04, -3.06]$) for $\sigma_\gamma = 0.5$,
 $\hat{\gamma} = -4.71$ (CrI $[-5.64, -3.83]$) for $\sigma_\gamma = 1.0$, and
 $\hat{\gamma} = -6.42$ (CrI $[-8.13, -4.74]$) for $\sigma_\gamma = 2.0$.
 Because none of these credible intervals include zero, there is strong evidence that censoring is informative ($\gamma < 0$), supporting the hypothesis that discharged patients have systematically lower mortality risk than those remaining. The posterior mean shifts further from zero as the prior widens, illustrating that while the data provides a clear signal regarding the sign of the bias, it lacks the information to bound its magnitude and the posterior expands to reflect the scale of the chosen prior.
-
+ 
 Under $\sigma_\gamma = 1.0$, the most affected covariate is emergency admission, whose effect attenuates from $\hat\beta = 0.902$ under MAR to $0.539$ under MNAR ($\Delta \beta = -0.363$). Figure~\ref{fig:emergency} isolates this covariate across prior widths, showing that the MAR posterior concentrates near 0.90 while the MNAR posteriors shift progressively leftward as $\sigma_\gamma$ increases, reaching 0.56 under $\sigma_\gamma = 2.0$. Crucially, under this most permissive prior, the entire posterior distribution remains above zero, indicating that emergency admission remains a significant risk factor under all plausible departures from MAR.
-
-Other notable shifts include mechanical ventilation $\Delta \beta = -0.103$, GCS impairment $-0.091$, and malignancy $-0.066$. The pattern is: covariates associated with both higher mortality \emph{and} longer ICU stays are most affected by the MNAR adjustment, because the selection parameter re-weighs the contribution of discharged patients whose unobserved outcomes would have lowered the apparent effect. Covariates near zero under MAR (vasopressor, COPD, dialysis) show negligible MNAR shifts ($| \Delta \beta| < 0.03$), indicating clinically ambiguous effects remain ambiguous regardless of the censoring assumption. The stability of the remaining 14 covariates across $\sigma_\gamma$ values confirms that the core conclusions of the standard analysis are robust to a wide range of MNAR departures.
-
-\paragraph{Conclusions.}
-Returning to the central question posed in Section~\ref{sc:intro}---\emph{how robust are Bayesian posterior inferences about ICU mortality risk factors to departures from independent censoring?}---the answer is largely affirmative. All three analytical approaches (standard MAR, frailty, MNAR sensitivity) agree on the direction and rank ordering of covariate effects: mechanical ventilation, emergency admission, age, malignancy, GCS impairment, and sepsis are the dominant risk factors for 30-day ICU mortality. The frailty model and MNAR analysis both indicate that Model~A's MAR estimates are conservative, with true effects likely larger, but no covariate changes sign or loses significance under MNAR. Emergency admission is the most sensitive effect ($\Delta\beta = -0.36$ under $\sigma_\gamma = 1.0$), yet remains decisively positive. The calibration over-prediction (Figure~\ref{fig:calibration}) is consistent with the bias direction predicted by~\eqref{eq:bias-approx}, providing empirical corroboration of the theoretical framework. The MNAR posterior for $\gamma$ is strongly negative across all prior scales, confirming that ICU discharge is indeed a positive prognostic signal.
-
-% ── MNAR sensitivity: gamma posterior + emergency beta ──────────────────────
-\begin{figure}[H]
+ 
+% 3 PANELS
+% ── MNAR sensitivity & Population-averaged survival ─────────────────────────
+\begin{figure}[t]
     \centering
-    \begin{subfigure}[t]{0.48\textwidth}
+    % Use 0.32 to leave a tiny fraction (0.04) of textwidth for the two \hfill gaps
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{../plots/mimic/mimic_mnar_gamma_posterior.pdf}
-        \caption{Posterior density of $\gamma$ under three prior widths $\sigma_\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal{N}(0, \sigma_\gamma^2)$ priors. The vertical dashed line at $\gamma = 0$ marks MAR. All posteriors are decisively negative.}
+        \caption{Posterior density of $\gamma$.}
         \label{fig:mnar-gamma}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
+    \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{../plots/mimic/mimic_mnar_emergency.pdf}
-        \caption{Posterior density of $\beta_{\text{emergency}}$ under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma_\gamma = 2$, yet remains decisively positive.}
+        \caption{Posterior of $\beta_{\text{emergency}}$.}
         \label{fig:emergency}
     \end{subfigure}
-    \caption{MNAR sensitivity analysis: \textbf{(a)}~inferred selection parameter $\gamma$ across prior widths, and \textbf{(b)}~resulting attenuation of the emergency admission covariate effect.}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{../plots/mimic/mimic_survival.pdf}
+        \caption{Population-averaged survival $S(t)$.}
+        \label{fig:survival}
+    \end{subfigure}
+    
+    \caption{MNAR sensitivity analysis: \textbf{(a)}~Inferred selection parameter $\gamma$ under three prior widths $\sigma_\gamma \in \{0.5, 1.0, 2.0\}$. Solid lines show posteriors; dashed lines show the $\mathcal{N}(0, \sigma_\gamma^2)$ priors, and the vertical line at $\gamma = 0$ marks MAR (all posteriors are decisively negative). \textbf{(b)}~Resulting attenuation of the emergency admission covariate effect under MAR (grey) and three MNAR specifications. The MAR estimate (0.902) attenuates to 0.558 under $\sigma_\gamma = 2$, yet remains decisively positive. \textbf{(c)}~Population-averaged survival $S(t)$ comparing MAR and varying MNAR assumptions. Transparent curves show 200 posterior draws per model; bold lines show posterior means. The MAR draws (grey) and Kaplan--Meier (dashed black) closely track through day~10. Colored draw-clouds show MNAR-adjusted survival; wider priors produce larger shifts and wider posterior spread.}
     \label{fig:mnar-sensitivity}
 \end{figure}
-
+ 
+Other notable shifts include mechanical ventilation $\Delta \beta = -0.103$, GCS impairment $-0.091$, and malignancy $-0.066$. Covariates associated with both higher mortality \emph{and} longer ICU stays are most affected by the MNAR adjustment, because the selection parameter re-weighs the contribution of discharged patients whose unobserved outcomes would have lowered the apparent effect. Covariates near zero under MAR (vasopressor, COPD, dialysis) show negligible MNAR shifts ($| \Delta \beta| < 0.03$), indicating clinically ambiguous effects remain ambiguous regardless of the censoring assumption. The stability of the remaining 14 covariates across $\sigma_\gamma$ values confirms that the core conclusions of the standard analysis are robust to a wide range of MNAR departures.
 
 % ── MNAR gamma summary table ───────────────────────────────────────────────
 \begin{table}[ht!]
+\vspace{-1.0em} % Pulls the top of the table closer to the preceding text
 \centering
-\small
+\scriptsize 
+\setlength{\tabcolsep}{4pt} 
+\renewcommand{\arraystretch}{0.9} 
 \caption{Posterior summary of $\gamma$ under three prior widths $\sigma_\gamma$.}
+\vspace{-0.5em} % Tightens the gap between the caption and the top rule
 \label{tab:mnar-gamma}
 \begin{tabular}{cccc}
 \toprule
@@ -321,13 +323,15 @@ $\sigma_\gamma$ & Mean & SD & 95\% CrI \\
 2.0 & $-6.416$ & 0.881 & $[-8.134, -4.740]$ \\
 \bottomrule
 \end{tabular}
+\vspace{-1.5em} % Pulls the subsequent text closer to the bottom of the table
 \end{table}
-
-
+ 
 % ── Combined results table (replaces old beta-comparison + diagnostics) ─────
 \begin{table}[ht!]
 \centering
-\footnotesize
+\scriptsize % Changed from \footnotesize to \scriptsize for maximum space saving
+\setlength{\tabcolsep}{4pt} % Tighten horizontal spacing between columns
+\renewcommand{\arraystretch}{0.95} % Slightly compress vertical spacing
 \caption{Posterior means, standard deviations (SD), effective sample sizes (ESS), and the frailty attenuation difference ($\Delta$) for covariate effects. Both models exhibited excellent MCMC convergence (all $\hat{R} \le 1.01$, zero divergent transitions). Model~B additionally estimates the frailty standard deviation ($\sigma_b$).}
 \label{tab:master_results}
 \begin{tabular}{l rrr rrr r}
@@ -338,23 +342,23 @@ $\sigma_\gamma$ & Mean & SD & 95\% CrI \\
 \midrule
 $\sigma_b$ (Frailty SD) & --- & --- & --- & 1.378 & 0.133 & 97 & ---\\[2pt]
 \midrule
-\rowcolor{rowgray} age (std) & 0.757 & 0.026 & 5894 & 0.921 & 0.042 & 211 & +0.163 \\
+age (std) & 0.757 & 0.026 & 5894 & 0.921 & 0.042 & 211 & +0.163 \\
 male & $-$0.092 & 0.028 & 5256 & $-$0.119 & 0.037 & 4463 & $-$0.027 \\
-\rowcolor{rowgray} emergency & 0.902 & 0.056 & 878 & 1.074 & 0.072 & 381 & +0.172 \\
+emergency & 0.902 & 0.056 & 878 & 1.074 & 0.072 & 381 & +0.172 \\
 icd\_sepsis & 0.502 & 0.035 & 5462 & 0.704 & 0.055 & 283 & +0.202 \\
-\rowcolor{rowgray} icd\_hf & $-$0.099 & 0.032 & 5469 & $-$0.131 & 0.042 & 5186 & $-$0.031 \\
+icd\_hf & $-$0.099 & 0.032 & 5469 & $-$0.131 & 0.042 & 5186 & $-$0.031 \\
 icd\_resp & 0.202 & 0.035 & 4925 & 0.263 & 0.046 & 2284 & +0.061 \\
-\rowcolor{rowgray} icd\_aki & 0.193 & 0.032 & 6031 & 0.245 & 0.042 & 1845 & +0.051 \\
+icd\_aki & 0.193 & 0.032 & 6031 & 0.245 & 0.042 & 1845 & +0.051 \\
 gcs\_impaired & 0.614 & 0.039 & 3584 & 0.718 & 0.051 & 530 & +0.104 \\
-\rowcolor{rowgray} vasopressor & $-$0.063 & 0.035 & 5472 & $-$0.035 & 0.047 & 4713 & +0.028 \\
+vasopressor & $-$0.063 & 0.035 & 5472 & $-$0.035 & 0.047 & 4713 & +0.028 \\
 icd\_pneumonia & $-$0.353 & 0.034 & 5950 & $-$0.493 & 0.050 & 547 & $-$0.140 \\
-\rowcolor{rowgray} icd\_diabetes & $-$0.139 & 0.032 & 7363 & $-$0.188 & 0.041 & 3297 & $-$0.049 \\
+icd\_diabetes & $-$0.139 & 0.032 & 7363 & $-$0.188 & 0.041 & 3297 & $-$0.049 \\
 icd\_liver & 0.436 & 0.048 & 5946 & 0.515 & 0.065 & 2273 & +0.079 \\
-\rowcolor{rowgray} icd\_malignancy & 0.661 & 0.034 & 5393 & 0.852 & 0.054 & 294 & +0.190 \\
+icd\_malignancy & 0.661 & 0.034 & 5393 & 0.852 & 0.054 & 294 & +0.190 \\
 icd\_copd & $-$0.044 & 0.038 & 7041 & $-$0.068 & 0.051 & 5386 & $-$0.025 \\
-\rowcolor{rowgray} is\_ventilated & 0.964 & 0.036 & 4520 & 1.250 & 0.067 & 162 & +0.286 \\
+is\_ventilated & 0.964 & 0.036 & 4520 & 1.250 & 0.067 & 162 & +0.286 \\
 received\_dialysis & 0.046 & 0.047 & 6644 & 0.044 & 0.062 & 5174 & $-$0.002 \\
-\rowcolor{rowgray} positive\_blood\_cx & $-$0.286 & 0.038 & 7050 & $-$0.406 & 0.053 & 761 & $-$0.120 \\
+positive\_blood\_cx & $-$0.286 & 0.038 & 7050 & $-$0.406 & 0.053 & 761 & $-$0.120 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -363,61 +367,59 @@ received\_dialysis & 0.046 & 0.047 & 6644 & 0.044 & 0.062 & 5174 & $-$0.002 \\
 %=============================================================================
 \section{Discussion} \label{sc:discussion}
 % =============================================================================
-
-This work makes three contributions to ICU survival analysis under informative censoring. First, we formalized the connection between independent censoring and MAR, deriving explicit bias formulas for hazard estimation and covariate effects. Second, we developed a sensitivity analysis using selection factorization that jointly estimates non-identifiable $\gamma$ alongside $\boldsymbol{\beta}$ under proper priors, providing a principled assessment of robustness to MNAR departures. Third, through simulation and application to 57,694 MIMIC-III patients, we demonstrated that patient-level frailty is weakly identified, justifying the sensitivity analysis over direct frailty estimation.
-
-The MNAR results present a coherent narrative. The decisively negative $\hat{\gamma}$ confirms that ICU discharge is indeed a positive prognostic signal, where discharged patients have systematically lower mortality risk, consistent with clinical intuition that clinicians discharge patients who are improving. The frailty model reaches complementary conclusions---including $b_i$ uniformly amplifies all covariate effects, consistent with Model~A absorbing unobserved heterogeneity into the baseline hazard and attenuating fixed effects toward zero. The two approaches agree on direction, but the standard model produces conservative estimates. The sensitivity analysis quantifies \emph{how much} each covariate shifts under explicit MNAR departures, identifying emergency admission as the most sensitive effect and confirming that 14 of 17 covariates are robust to a wide range of MNAR assumptions.
-
+ 
+Returning to the central question posed in Section~\ref{sc:intro}, the answer is largely affirmative. All three analytical approaches (standard MAR, frailty, MNAR sensitivity) agree on the direction and rank ordering of covariate effects, and no covariate changes sign or loses significance under MNAR. The decisively negative $\hat{\gamma}$ confirms that ICU discharge is a positive prognostic signal, consistent with clinical intuition that clinicians discharge patients who are improving. The frailty model reaches complementary conclusions where including $b_i$ uniformly amplifies covariate effects, consistent with Model~A absorbing unobserved heterogeneity into the baseline hazard. The sensitivity analysis quantifies how much each effect shifts under explicit MNAR departures, identifying emergency admission as the most sensitive ($\Delta\beta = -0.36$ under $\sigma_\gamma = 1.0$) while confirming that 14 of 17 covariates remain robust. The calibration over-prediction (Figure~\ref{fig:calibration}) corroborates the bias direction predicted by~\eqref{eq:bias-approx}. From a clinical standpoint, these results suggest that standard risk factors derived under MAR can be trusted for triage and resource allocation without requiring explicit modeling of censoring. 
+ 
 \paragraph{Limitations.}
 A major limitation is that we include only static baseline covariates. Time-varying covariates (daily labs, vasopressor dosing) are likely informative for both mortality and discharge decisions, and their inclusion could reduce the degree of informative censoring. The sensitivity analysis assumes a constant $\gamma$ across all censoring times and patient profiles; in practice, the selection mechanism may vary by time and patient characteristics. Extensions to covariate-dependent $\gamma(\bx_i)$ are possible within this framework but increase the dimensionality of the sensitivity space. The MNAR model is fit using ADVI rather than full HMC, which may underestimate posterior uncertainty in tails.
-
+ 
 \paragraph{Future work.}
 Competing risks of death vs.\ discharge represent the most natural extension. In the discrete-time framework, this corresponds to a multinomial rather than Bernoulli observation model at each interval with separate hazards for each competing event, and the exponential tilting framework extends naturally by introducing event-specific sensitivity parameters $\gamma_k$.
-
+ 
 
 
 % ── Cohort characteristics table ────────────────────────────────────────────
 \begin{table}[ht!]
 \centering
-\small
-\caption{Baseline characteristics and covariate definitions ($\mathbf{X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph{Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism); \emph{Survived} denotes patients still alive at 30 days (administratively censored). Values are $n$ (\%) for categorical variables and mean $\pm$ SD or median [IQR] for continuous variables.}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.95}
+\caption{Baseline characteristics and covariate definitions ($\mathbf{X}$) for the MIMIC-III analytic cohort within the 30-day observation window, stratified by outcome. \emph{Discharged} denotes patients censored alive before the window closes (the clinically informative censoring mechanism). Values are $n$ (\%) for categorical variables and mean $\pm$ SD or median [IQR] for continuous variables.}
 \label{tab:cohort}
-\begin{tabular}{l C{2.4cm} C{2.2cm} C{2.4cm} C{2.4cm}}
+\begin{tabular}{l c c c}
 \toprule
- & \textbf{Overall} & \textbf{Died} & \textbf{Discharged} & \textbf{Survived} \\
- & (N=57,694) & (n=5,443) & (n=49,660) & (n=2,591) \\
+ & \textbf{Overall} & \textbf{Died} & \textbf{Discharged} \\
+ & (N=57,694) & (n=5,443) & (n=49,660) \\
 \midrule
-\multicolumn{5}{l}{\textit{Demographics \& Admission}} \\[2pt]
-\quad Age, years (std)\textsuperscript{a} & 55.1 $\pm$ 27.3 & 69.8 $\pm$ 17.2 & 54.2 $\pm$ 27.3 & 40.2 $\pm$ 31.1 \\
-\quad Male sex & 32,248 (55.9\%) & 2,906 (53.4\%) & 27,869 (56.1\%) & 1,473 (56.9\%) \\
-\quad Emergency admission & 41,580 (72.1\%) & 5,081 (93.3\%) & 34,969 (70.4\%) & 1,530 (59.1\%) \\
-\quad Follow-up, days & 5.9 [3.5, 10.6] & 4.5 [1.6, 9.8] & 5.7 [3.6, 9.6] & 42.0 [35.0, 57.3] \\
+\multicolumn{4}{l}{\textit{Demographics \& Admission}} \\
+\quad Age, years (std)\textsuperscript{a} & 55.1 $\pm$ 27.3 & 69.8 $\pm$ 17.2 & 54.2 $\pm$ 27.3 \\
+\quad Male sex & 32,248 (55.9\%) & 2,906 (53.4\%) & 27,869 (56.1\%) \\
+\quad Emergency admission & 41,580 (72.1\%) & 5,081 (93.3\%) & 34,969 (70.4\%) \\
+\quad Follow-up, days & 5.9 [3.5, 10.6] & 4.5 [1.6, 9.8] & 5.7 [3.6, 9.6] \\
 \midrule
-\multicolumn{5}{l}{\textit{Comorbidities [ICD-9 Codes]}} \\[2pt]
-\quad Sepsis [995.91/92, 038.x]\textsuperscript{b} & 6,320 (11.0\%) & 1,777 (32.6\%) & 3,878 (7.8\%) & 665 (25.7\%) \\
-\quad Heart failure [428.x]\textsuperscript{b} & 13,434 (23.3\%) & 1,840 (33.8\%) & 11,036 (22.2\%) & 558 (21.5\%) \\
-\quad Acute kidney injury [584.x]\textsuperscript{b} & 11,359 (19.7\%) & 2,335 (42.9\%) & 8,176 (16.5\%) & 848 (32.7\%) \\
-\quad Respiratory failure [518.8x]\textsuperscript{b} & 8,906 (15.4\%) & 2,460 (45.2\%) & 5,661 (11.4\%) & 785 (30.3\%) \\
-\quad Pneumonia [480--486] & 7,347 (12.7\%) & 1,332 (24.5\%) & 5,322 (10.7\%) & 693 (26.7\%) \\
-\quad Diabetes [250.x] & 13,900 (24.1\%) & 1,423 (26.1\%) & 12,078 (24.3\%) & 399 (15.4\%) \\
-\quad Liver disease [571.x] & 2,916 (5.1\%) & 538 (9.9\%) & 2,195 (4.4\%) & 183 (7.1\%) \\
-\quad Malignancy [140--208] & 6,730 (11.7\%) & 1,258 (23.1\%) & 5,184 (10.4\%) & 288 (11.1\%) \\
-\quad COPD [490--492, 494, 496] & 6,568 (11.4\%) & 870 (16.0\%) & 5,508 (11.1\%) & 190 (7.3\%) \\
+\multicolumn{4}{l}{\textit{Comorbidities [ICD-9 Codes]}} \\
+\quad Sepsis [995.91/92, 038.x]\textsuperscript{b} & 6,320 (11.0\%) & 1,777 (32.6\%) & 3,878 (7.8\%) \\
+\quad Heart failure [428.x]\textsuperscript{b} & 13,434 (23.3\%) & 1,840 (33.8\%) & 11,036 (22.2\%) \\
+\quad Acute kidney injury [584.x]\textsuperscript{b} & 11,359 (19.7\%) & 2,335 (42.9\%) & 8,176 (16.5\%) \\
+\quad Respiratory failure [518.8x]\textsuperscript{b} & 8,906 (15.4\%) & 2,460 (45.2\%) & 5,661 (11.4\%) \\
+\quad Pneumonia [480--486] & 7,347 (12.7\%) & 1,332 (24.5\%) & 5,322 (10.7\%) \\
+\quad Diabetes [250.x] & 13,900 (24.1\%) & 1,423 (26.1\%) & 12,078 (24.3\%) \\
+\quad Liver disease [571.x] & 2,916 (5.1\%) & 538 (9.9\%) & 2,195 (4.4\%) \\
+\quad Malignancy [140--208] & 6,730 (11.7\%) & 1,258 (23.1\%) & 5,184 (10.4\%) \\
+\quad COPD [490--492, 494, 496] & 6,568 (11.4\%) & 870 (16.0\%) & 5,508 (11.1\%) \\
 \midrule
-\multicolumn{5}{l}{\textit{Clinical Indicators [Procedure Codes]}} \\[2pt]
-\quad GCS impaired ($\leq 12$)\textsuperscript{b} & 30,190 (52.3\%) & 4,495 (82.6\%) & 24,358 (49.0\%) & 1,337 (51.6\%) \\
-\quad Mechanical ventilation [96.7x] & 14,477 (25.1\%) & 3,492 (64.2\%) & 9,240 (18.6\%) & 1,745 (67.3\%) \\
-\quad Vasopressor use\textsuperscript{b} & 6,836 (11.8\%) & 1,312 (24.1\%) & 5,134 (10.3\%) & 390 (15.1\%) \\
-\quad Dialysis [39.95] & 3,166 (5.5\%) & 596 (10.9\%) & 2,195 (4.4\%) & 375 (14.5\%) \\
-\quad Positive blood culture & 5,448 (9.4\%) & 1,049 (19.3\%) & 3,546 (7.1\%) & 853 (32.9\%) \\
+\multicolumn{4}{l}{\textit{Clinical Indicators [Procedure Codes]}} \\
+\quad GCS impaired ($\leq 12$)\textsuperscript{b} & 30,190 (52.3\%) & 4,495 (82.6\%) & 24,358 (49.0\%) \\
+\quad Mechanical ventilation [96.7x] & 14,477 (25.1\%) & 3,492 (64.2\%) & 9,240 (18.6\%) \\
+\quad Vasopressor use\textsuperscript{b} & 6,836 (11.8\%) & 1,312 (24.1\%) & 5,134 (10.3\%) \\
+\quad Dialysis [39.95] & 3,166 (5.5\%) & 596 (10.9\%) & 2,195 (4.4\%) \\
+\quad Positive blood culture & 5,448 (9.4\%) & 1,049 (19.3\%) & 3,546 (7.1\%) \\
 \bottomrule
-\multicolumn{5}{l}{\scriptsize \textsuperscript{a} Age was standardized to $\mu=0, \sigma=1$ for inclusion in the design matrix.} \\
-\multicolumn{5}{l}{\scriptsize \textsuperscript{b} Variables explicitly included in the simulation study.}
+\multicolumn{4}{l}{\scriptsize \textsuperscript{a} Age was standardized to $\mu=0, \sigma=1$. \textsuperscript{b} Variables explicitly included in the simulation study.} \\
 \end{tabular}
 \end{table}
 
-
-\newpage 
+\newpage
 \bibliography{references}
 
 \end{document}

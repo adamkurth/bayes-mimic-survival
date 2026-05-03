@@ -19,8 +19,8 @@
 rm(list = ls())
 
 # ---- Config ----------------------------------------------------------------
-LOAD_CHECKPOINT <- FALSE   # TRUE = skip fitting, load saved checkpoint
-LOAD_MNAR       <- FALSE   # TRUE = skip MNAR, load saved results
+LOAD_CHECKPOINT <- TRUE   # TRUE = skip fitting, load saved checkpoint
+LOAD_MNAR       <- TRUE   # TRUE = skip MNAR, load saved results
 
 STAN_CHAINS <- 4
 STAN_WARMUP <- 500
@@ -262,3 +262,4 @@ if ("1" %in% names(mnar_results)) {
 }
 
 cat("\n[mimic_analysis.R complete]\n")
+
